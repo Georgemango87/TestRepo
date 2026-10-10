@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plays-Like Golf Caddie Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: #059669;
+      cursor: pointer;
+      margin-top: -6px;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 8px;
+      cursor: pointer;
+      background: #e5e7eb;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-12">
+
+  <header class="bg-slate-800 border-b border-slate-700 py-4 px-4 sticky top-0 z-50 shadow-md">
+    <div class="max-w-xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-golf-ball-tee text-emerald-400 text-2xl"></i>
+        <h1 class="font-bold text-lg text-white">Plays-Like Caddie Pro</h1>
+      </div>
+      <button onclick="resetAll()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded transition">
+        <i class="fa-solid fa-rotate-left mr-1"></i> Reset
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-xl mx-auto p-4 space-y-5">
+
+    <!-- FAST SHORTHAND INPUT BOX -->
+    <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-lg">
+      <label class="block text-xs uppercase tracking-wider text-emerald-400 font-bold mb-1.5">
+        <i class="fa-solid fa-bolt mr-1"></i> Quick Shorthand Parser
+      </label>
+      <div class="flex space-x-2">
+        <input type="text" id="shorthandInput" placeholder="e.g. 171 -24 85b 12hw" 
+               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 font-mono">
+        <button onclick="parseShorthand()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 rounded-lg transition">
+          Parse
+        </button>
+      </div>
+      <p class="text-[11px] text-slate-400 mt-1.5">
+        Format: <span class="text-slate-300 font-mono">[dist] [elevation] [lie%] [wind]</span> (e.g. 129 -41 75r 10hw)
+      </p>
+    </div>
+
+    <!-- MAIN RESULT CARDS -->
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-slate-800 rounded-xl p-4 border border-emerald-500/40 text-center shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-emerald-500"></div>
+        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider block mb-1">Target Plays-Like</span>
+        <div id="playsLikeYardage" class="text-4xl font-extrabold text-emerald-400 font-mono">123 <span class="text-base font-normal text-emerald-300">yds</span></div>
+        <span id="elevationSubtext" class="text-[11px] text-slate-400 block mt-1">-10.3 yds drop effect</span>
+      </div>
+
+      <div class="bg-slate-800 rounded-xl p-4 border border-amber-500/40 text-center shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-amber-500"></div>
+        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider block mb-1">Stock Club Needed</span>
+        <div id="requiredClubYardage" class="text-4xl font-extrabold text-amber-400 font-mono">123 <span class="text-base font-normal text-amber-300">yds</span></div>
+        <span id="lieSubtext" class="text-[11px] text-slate-400 block mt-1">100% Lie Efficiency</span>
+      </div>
+    </div>
+
+    <!-- CADDIE SHORTHAND STRING OUTPUT -->
+    <div class="bg-slate-800/80 rounded-lg p-3 border border-slate-700 flex items-center justify-between">
+      <div class="overflow-x-auto whitespace-nowrap mr-2">
+        <span class="text-xs text-slate-400 mr-2 font-semibold">Caddie Note:</span>
+        <span id="caddieNoteString" class="text-xs font-mono text-emerald-300 font-bold">133y -31' 100r% -> PL 123y</span>
+      </div>
+      <button onclick="copyCaddieNote()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1 rounded shrink-0">
+        <i class="fa-regular fa-copy"></i>
+      </button>
+    </div>
+
+    <!-- CONTROLS SECTION -->
+    <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-lg space-y-4">
+      
+      <!-- DISTANCE & ELEVATION -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Laser Distance</label>
+            <span class="text-xs font-bold text-emerald-400 font-mono"><span id="distVal">133</span> yds</span>
+          </div>
+          <input type="number" id="laserDistInput" value="133" min="10" max="500"
+                 class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-white">
+        </div>
+
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Elevation (+/- ft)</label>
+            <span class="text-xs font-bold text-emerald-400 font-mono"><span id="elevVal">-31</span> ft</span>
+          </div>
+          <input type="number" id="elevInput" value="-31" min="-150" max="150"
+                 class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-white">
+        </div>
+      </div>
+
+      <!-- LIE EFFICIENCY & PRESETS -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label class="text-xs font-semibold text-slate-300">Lie Efficiency Quality</label>
+          <span class="text-xs font-bold text-amber-400 font-mono"><span id="lieVal">100</span>%</span>
+        </div>
+        <input type="range" id="lieSlider" min="40" max="100" value="100" class="w-full">
+        
+        <!-- LIE PRESETS -->
+        <div class="grid grid-cols-4 gap-1.5 mt-2">
+          <button onclick="setLiePreset(100)" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 py-1 px-1 rounded text-center">
+            Clean (100%)
+          </button>
+          <button onclick="setLiePreset(90)" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 py-1 px-1 rounded text-center">
+            Lt Rough (90%)
+          </button>
+          <button onclick="setLiePreset(80)" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 py-1 px-1 rounded text-center">
+            Bunker (80%)
+          </button>
+          <button onclick="setLiePreset(65)" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 py-1 px-1 rounded text-center">
+            Hvy Rough (65%)
+          </button>
+        </div>
+      </div>
+
+      <!-- WIND CONTROLS -->
+      <div class="border-t border-slate-700 pt-3">
+        <div class="flex justify-between items-center mb-2">
+          <label class="text-xs font-semibold text-slate-300 flex items-center">
+            <i class="fa-solid fa-wind mr-1.5 text-sky-400"></i> Wind Conditions
+          </label>
+          <span class="text-xs font-bold text-sky-400 font-mono"><span id="windSpeedVal">0</span> mph</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-2">
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Wind Speed (mph)</label>
+            <input type="number" id="windSpeedInput" value="0" min="0" max="50"
+                   class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-white">
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-400 block mb-1">Wind Direction</label>
+            <select id="windDirSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white">
+              <option value="none">None / Calm</option>
+              <option value="headwind">Headwind (Into)</option>
+              <option value="tailwind">Tailwind (Down)</option>
+              <option value="crosswind">Crosswind (Side)</option>
+              <option value="quartering_head">Quartering Headwind</option>
+              <option value="quartering_tail">Quartering Tailwind</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALTITUDE ADJUSTMENT -->
+      <div class="border-t border-slate-700 pt-3 flex items-center justify-between">
+        <div>
+          <label class="text-xs font-semibold text-slate-300 block">Altitude Above Sea Level</label>
+          <span class="text-[11px] text-slate-400">Adds ~2% distance per 1,000 ft</span>
+        </div>
+        <select id="altitudeSelect" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-white">
+          <option value="0">0 - 500 ft (Sea Level)</option>
+          <option value="2000">2,000 ft (+4%)</option>
+          <option value="5000">5,000 ft (Denver +10%)</option>
+        </select>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const laserInput = document.getElementById('laserDistInput');
+    const elevInput = document.getElementById('elevInput');
+    const lieSlider = document.getElementById('lieSlider');
+    const windSpeedInput = document.getElementById('windSpeedInput');
+    const windDirSelect = document.getElementById('windDirSelect');
+    const altitudeSelect = document.getElementById('altitudeSelect');
+    const shorthandInput = document.getElementById('shorthandInput');
+
+    function calculate() {
+      const rawDist = parseFloat(laserInput.value) || 0;
+      const elevFt = parseFloat(elevInput.value) || 0;
+      const lieEff = parseFloat(lieSlider.value) || 100;
+      const windSpeed = parseFloat(windSpeedInput.value) || 0;
+      const windDir = windDirSelect.value;
+      const altitude = parseFloat(altitudeSelect.value) || 0;
+
+      // Update basic labels
+      document.getElementById('distVal').innerText = rawDist;
+      document.getElementById('elevVal').innerText = elevFt > 0 ? `+${elevFt}` : elevFt;
+      document.getElementById('lieVal').innerText = lieEff;
+      document.getElementById('windSpeedVal').innerText = windSpeed;
+
+      // 1. Elevation calculation (3 ft = 1 yd)
+      const elevYards = elevFt / 3;
+      let playsLikeDist = rawDist + elevYards;
+
+      // 2. Altitude calculation (~2% per 1000ft)
+      const altitudeBonusPct = (altitude / 1000) * 0.02;
+      if (altitudeBonusPct > 0) {
+        playsLikeDist = playsLikeDist / (1 + altitudeBonusPct);
+      }
+
+      // 3. Wind calculations
+      let windEffectYards = 0;
+      let lateralNote = '';
+
+      if (windSpeed > 0 && windDir !== 'none') {
+        if (windDir === 'headwind') {
+          windEffectYards = windSpeed * 1.0; 
+        } else if (windDir === 'tailwind') {
+          windEffectYards = -windSpeed * 0.5; 
+        } else if (windDir === 'crosswind') {
+          lateralNote = ` (Aim ~${Math.round(windSpeed * 0.7)}y into wind)`;
+        } else if (windDir === 'quartering_head') {
+          windEffectYards = windSpeed * 0.7;
+          lateralNote = ` (Aim ~${Math.round(windSpeed * 0.5)}y into wind)`;
+        } else if (windDir === 'quartering_tail') {
+          windEffectYards = -windSpeed * 0.35;
+          lateralNote = ` (Aim ~${Math.round(windSpeed * 0.4)}y into wind)`;
+        }
+      }
+
+      playsLikeDist += windEffectYards;
+
+      // 4. Lie Efficiency Calculation (Club needed)
+      const lieDecimal = lieEff / 100;
+      const requiredClub = playsLikeDist / lieDecimal;
+
+      // Render Outputs
+      document.getElementById('playsLikeYardage').innerHTML = `${Math.round(playsLikeDist)} <span class="text-base font-normal text-emerald-300">yds</span>`;
+      document.getElementById('requiredClubYardage').innerHTML = `${Math.round(requiredClub)} <span class="text-base font-normal text-amber-300">yds</span>`;
+
+      // Subtext
+      const elevSign = elevFt >= 0 ? '+' : '';
+      document.getElementById('elevationSubtext').innerText = `${elevSign}${(elevYards).toFixed(1)}y elevation effect`;
+      document.getElementById('lieSubtext').innerText = `${lieEff}% lie quality${lateralNote}`;
+
+      // Build Caddie Note String
+      let noteWind = windSpeed > 0 ? ` ${windSpeed}mph ${windDir}` : '';
+      let note = `${rawDist}y ${elevSign}${elevFt}' ${lieEff}%lie${noteWind} -> PL ${Math.round(playsLikeDist)}y`;
+      if (lieEff < 100) {
+        note += ` (Club ${Math.round(requiredClub)}y)`;
+      }
+      document.getElementById('caddieNoteString').innerText = note;
+    }
+
+    function setLiePreset(val) {
+      lieSlider.value = val;
+      calculate();
+    }
+
+    function parseShorthand() {
+      const val = shorthandInput.value.trim();
+      if (!val) return;
+
+      const tokens = val.split(/\s+/);
+      if (tokens.length >= 1) laserInput.value = parseFloat(tokens[0]) || laserInput.value;
+      if (tokens.length >= 2) elevInput.value = parseFloat(tokens[1]) || elevInput.value;
+      if (tokens.length >= 3) {
+        let lieNum = parseFloat(tokens[2]);
+        if (!isNaN(lieNum)) lieSlider.value = lieNum;
+      }
+      if (tokens.length >= 4) {
+        const windToken = tokens[3].toLowerCase();
+        const num = parseFloat(windToken);
+        if (!isNaN(num)) windSpeedInput.value = num;
+        if (windToken.includes('hw')) windDirSelect.value = 'headwind';
+        else if (windToken.includes('tw')) windDirSelect.value = 'tailwind';
+        else if (windToken.includes('cw')) windDirSelect.value = 'crosswind';
+      }
+      calculate();
+    }
+
+    function resetAll() {
+      laserInput.value = 133;
+      elevInput.value = -31;
+      lieSlider.value = 100;
+      windSpeedInput.value = 0;
+      windDirSelect.value = 'none';
+      altitudeSelect.value = 0;
+      shorthandInput.value = '';
+      calculate();
+    }
+
+    function copyCaddieNote() {
+      const text = document.getElementById('caddieNoteString').innerText;
+      navigator.clipboard.writeText(text);
+      alert('Caddie note copied to clipboard!');
+    }
+
+    // Attach Event Listeners
+    [laserInput, elevInput, lieSlider, windSpeedInput, windDirSelect, altitudeSelect].forEach(el => {
+      el.addEventListener('input', calculate);
+      el.addEventListener('change', calculate);
+    });
+
+    shorthandInput.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') parseShorthand();
+    });
+
+    // Initial run
+    calculate();
+  </script>
+</body>
+</html>
