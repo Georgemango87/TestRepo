@@ -1,320 +1,669 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plays-Like Golf Caddie Calculator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      height: 20px;
-      width: 20px;
-      border-radius: 50%;
-      background: #059669;
-      cursor: pointer;
-      margin-top: -6px;
-    }
-    input[type=range]::-webkit-slider-runnable-track {
-      width: 100%;
-      height: 8px;
-      cursor: pointer;
-      background: #e5e7eb;
-      border-radius: 4px;
-    }
-  </style>
-</head>
-<body class="bg-slate-900 text-slate-100 min-h-screen pb-12">
-
-  <header class="bg-slate-800 border-b border-slate-700 py-4 px-4 sticky top-0 z-50 shadow-md">
-    <div class="max-w-xl mx-auto flex items-center justify-between">
-      <div class="flex items-center space-x-2">
-        <i class="fa-solid fa-golf-ball-tee text-emerald-400 text-2xl"></i>
-        <h1 class="font-bold text-lg text-white">Plays-Like Caddie Pro</h1>
-      </div>
-      <button onclick="resetAll()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded transition">
-        <i class="fa-solid fa-rotate-left mr-1"></i> Reset
-      </button>
-    </div>
-  </header>
-
-  <main class="max-w-xl mx-auto p-4 space-y-5">
-
-    <!-- FAST SHORTHAND INPUT BOX -->
-    <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-lg">
-      <label class="block text-xs uppercase tracking-wider text-emerald-400 font-bold mb-1.5">
-        <i class="fa-solid fa-bolt mr-1"></i> Quick Shorthand Parser
-      </label>
-      <div class="flex space-x-2">
-        <input type="text" id="shorthandInput" placeholder="e.g. 171 -24 85b 12hw" 
-               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 font-mono">
-        <button onclick="parseShorthand()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 rounded-lg transition">
-          Parse
-        </button>
-      </div>
-      <p class="text-[11px] text-slate-400 mt-1.5">
-        Format: <span class="text-slate-300 font-mono">[dist] [elevation] [lie%] [wind]</span> (e.g. 129 -41 75r 10hw)
-      </p>
-    </div>
-
-    <!-- MAIN RESULT CARDS -->
-    <div class="grid grid-cols-2 gap-3">
-      <div class="bg-slate-800 rounded-xl p-4 border border-emerald-500/40 text-center shadow-lg relative overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-1 bg-emerald-500"></div>
-        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider block mb-1">Target Plays-Like</span>
-        <div id="playsLikeYardage" class="text-4xl font-extrabold text-emerald-400 font-mono">123 <span class="text-base font-normal text-emerald-300">yds</span></div>
-        <span id="elevationSubtext" class="text-[11px] text-slate-400 block mt-1">-10.3 yds drop effect</span>
-      </div>
-
-      <div class="bg-slate-800 rounded-xl p-4 border border-amber-500/40 text-center shadow-lg relative overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-1 bg-amber-500"></div>
-        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider block mb-1">Stock Club Needed</span>
-        <div id="requiredClubYardage" class="text-4xl font-extrabold text-amber-400 font-mono">123 <span class="text-base font-normal text-amber-300">yds</span></div>
-        <span id="lieSubtext" class="text-[11px] text-slate-400 block mt-1">100% Lie Efficiency</span>
-      </div>
-    </div>
-
-    <!-- CADDIE SHORTHAND STRING OUTPUT -->
-    <div class="bg-slate-800/80 rounded-lg p-3 border border-slate-700 flex items-center justify-between">
-      <div class="overflow-x-auto whitespace-nowrap mr-2">
-        <span class="text-xs text-slate-400 mr-2 font-semibold">Caddie Note:</span>
-        <span id="caddieNoteString" class="text-xs font-mono text-emerald-300 font-bold">133y -31' 100r% -> PL 123y</span>
-      </div>
-      <button onclick="copyCaddieNote()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1 rounded shrink-0">
-        <i class="fa-regular fa-copy"></i>
-      </button>
-    </div>
-
-    <!-- CONTROLS SECTION -->
-    <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-lg space-y-4">
-      
-      <!-- DISTANCE & ELEVATION -->
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <div class="flex justify-between items-center mb-1">
-            <label class="text-xs font-semibold text-slate-300">Laser Distance</label>
-            <span class="text-xs font-bold text-emerald-400 font-mono"><span id="distVal">133</span> yds</span>
-          </div>
-          <input type="number" id="laserDistInput" value="133" min="10" max="500"
-                 class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-white">
-        </div>
-
-        <div>
-          <div class="flex justify-between items-center mb-1">
-            <label class="text-xs font-semibold text-slate-300">Elevation (+/- ft)</label>
-            <span class="text-xs font-bold text-emerald-400 font-mono"><span id="elevVal">-31</span> ft</span>
-          </div>
-          <input type="number" id="elevInput" value="-31" min="-150" max="150"
-                 class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-white">
-        </div>
-      </div>
-
-      <!-- LIE EFFICIENCY & PRESETS -->
-      <div>
-        <div class="flex justify-between items-center mb-1">
-          <label class="text-xs font-semibold text-slate-300">Lie Efficiency Quality</label>
-          <span class="text-xs font-bold text-amber-400 font-mono"><span id="lieVal">100</span>%</span>
-        </div>
-        <input type="range" id="lieSlider" min="40" max="100" value="100" class="w-full">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10iron Caddie - Golf Plays-Like Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
         
-        <!-- LIE PRESETS -->
-        <div class="grid grid-cols-4 gap-1.5 mt-2">
-          <button onclick="setLiePreset(100)" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 py-1 px-1 rounded text-center">
-            Clean (100%)
-          </button>
-          <button onclick="setLiePreset(90)" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 py-1 px-1 rounded text-center">
-            Lt Rough (90%)
-          </button>
-          <button onclick="setLiePreset(80)" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 py-1 px-1 rounded text-center">
-            Bunker (80%)
-          </button>
-          <button onclick="setLiePreset(65)" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 py-1 px-1 rounded text-center">
-            Hvy Rough (65%)
-          </button>
-        </div>
-      </div>
-
-      <!-- WIND CONTROLS -->
-      <div class="border-t border-slate-700 pt-3">
-        <div class="flex justify-between items-center mb-2">
-          <label class="text-xs font-semibold text-slate-300 flex items-center">
-            <i class="fa-solid fa-wind mr-1.5 text-sky-400"></i> Wind Conditions
-          </label>
-          <span class="text-xs font-bold text-sky-400 font-mono"><span id="windSpeedVal">0</span> mph</span>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 mb-2">
-          <div>
-            <label class="text-[11px] text-slate-400 block mb-1">Wind Speed (mph)</label>
-            <input type="number" id="windSpeedInput" value="0" min="0" max="50"
-                   class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-white">
-          </div>
-          <div>
-            <label class="text-[11px] text-slate-400 block mb-1">Wind Direction</label>
-            <select id="windDirSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white">
-              <option value="none">None / Calm</option>
-              <option value="headwind">Headwind (Into)</option>
-              <option value="tailwind">Tailwind (Down)</option>
-              <option value="crosswind">Crosswind (Side)</option>
-              <option value="quartering_head">Quartering Headwind</option>
-              <option value="quartering_tail">Quartering Tailwind</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- ALTITUDE ADJUSTMENT -->
-      <div class="border-t border-slate-700 pt-3 flex items-center justify-between">
-        <div>
-          <label class="text-xs font-semibold text-slate-300 block">Altitude Above Sea Level</label>
-          <span class="text-[11px] text-slate-400">Adds ~2% distance per 1,000 ft</span>
-        </div>
-        <select id="altitudeSelect" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-white">
-          <option value="0">0 - 500 ft (Sea Level)</option>
-          <option value="2000">2,000 ft (+4%)</option>
-          <option value="5000">5,000 ft (Denver +10%)</option>
-        </select>
-      </div>
-
-    </div>
-
-  </main>
-
-  <script>
-    const laserInput = document.getElementById('laserDistInput');
-    const elevInput = document.getElementById('elevInput');
-    const lieSlider = document.getElementById('lieSlider');
-    const windSpeedInput = document.getElementById('windSpeedInput');
-    const windDirSelect = document.getElementById('windDirSelect');
-    const altitudeSelect = document.getElementById('altitudeSelect');
-    const shorthandInput = document.getElementById('shorthandInput');
-
-    function calculate() {
-      const rawDist = parseFloat(laserInput.value) || 0;
-      const elevFt = parseFloat(elevInput.value) || 0;
-      const lieEff = parseFloat(lieSlider.value) || 100;
-      const windSpeed = parseFloat(windSpeedInput.value) || 0;
-      const windDir = windDirSelect.value;
-      const altitude = parseFloat(altitudeSelect.value) || 0;
-
-      // Update basic labels
-      document.getElementById('distVal').innerText = rawDist;
-      document.getElementById('elevVal').innerText = elevFt > 0 ? `+${elevFt}` : elevFt;
-      document.getElementById('lieVal').innerText = lieEff;
-      document.getElementById('windSpeedVal').innerText = windSpeed;
-
-      // 1. Elevation calculation (3 ft = 1 yd)
-      const elevYards = elevFt / 3;
-      let playsLikeDist = rawDist + elevYards;
-
-      // 2. Altitude calculation (~2% per 1000ft)
-      const altitudeBonusPct = (altitude / 1000) * 0.02;
-      if (altitudeBonusPct > 0) {
-        playsLikeDist = playsLikeDist / (1 + altitudeBonusPct);
-      }
-
-      // 3. Wind calculations
-      let windEffectYards = 0;
-      let lateralNote = '';
-
-      if (windSpeed > 0 && windDir !== 'none') {
-        if (windDir === 'headwind') {
-          windEffectYards = windSpeed * 1.0; 
-        } else if (windDir === 'tailwind') {
-          windEffectYards = -windSpeed * 0.5; 
-        } else if (windDir === 'crosswind') {
-          lateralNote = ` (Aim ~${Math.round(windSpeed * 0.7)}y into wind)`;
-        } else if (windDir === 'quartering_head') {
-          windEffectYards = windSpeed * 0.7;
-          lateralNote = ` (Aim ~${Math.round(windSpeed * 0.5)}y into wind)`;
-        } else if (windDir === 'quartering_tail') {
-          windEffectYards = -windSpeed * 0.35;
-          lateralNote = ` (Aim ~${Math.round(windSpeed * 0.4)}y into wind)`;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1320;
+            color: #f3f4f6;
         }
-      }
+        
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .golf-card {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
 
-      playsLikeDist += windEffectYards;
+        .input-dark {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            color: #f9fafb;
+            transition: all 0.2s ease;
+        }
 
-      // 4. Lie Efficiency Calculation (Club needed)
-      const lieDecimal = lieEff / 100;
-      const requiredClub = playsLikeDist / lieDecimal;
+        .input-dark:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
 
-      // Render Outputs
-      document.getElementById('playsLikeYardage').innerHTML = `${Math.round(playsLikeDist)} <span class="text-base font-normal text-emerald-300">yds</span>`;
-      document.getElementById('requiredClubYardage').innerHTML = `${Math.round(requiredClub)} <span class="text-base font-normal text-amber-300">yds</span>`;
+        /* Custom range slider styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: #374151;
+            height: 6px;
+            border-radius: 3px;
+        }
 
-      // Subtext
-      const elevSign = elevFt >= 0 ? '+' : '';
-      document.getElementById('elevationSubtext').innerText = `${elevSign}${(elevYards).toFixed(1)}y elevation effect`;
-      document.getElementById('lieSubtext').innerText = `${lieEff}% lie quality${lateralNote}`;
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #10b981;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
 
-      // Build Caddie Note String
-      let noteWind = windSpeed > 0 ? ` ${windSpeed}mph ${windDir}` : '';
-      let note = `${rawDist}y ${elevSign}${elevFt}' ${lieEff}%lie${noteWind} -> PL ${Math.round(playsLikeDist)}y`;
-      if (lieEff < 100) {
-        note += ` (Club ${Math.round(requiredClub)}y)`;
-      }
-      document.getElementById('caddieNoteString').innerText = note;
-    }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
 
-    function setLiePreset(val) {
-      lieSlider.value = val;
-      calculate();
-    }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1320;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
 
-    function parseShorthand() {
-      const val = shorthandInput.value.trim();
-      if (!val) return;
+    <!-- Header Navigation -->
+    <header class="border-b border-gray-800 bg-gray-900/90 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-gray-950 font-extrabold text-lg shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-flag-checkered"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        10iron Caddie <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">PRO</span>
+                    </h1>
+                    <p class="text-xs text-gray-400 hidden sm:block">Plays-Like Math • Altitude • Wind Vectors • Rough Lie</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button id="resetBtn" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium px-3 py-1.5 rounded-lg border border-gray-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+            </div>
+        </div>
+    </header>
 
-      const tokens = val.split(/\s+/);
-      if (tokens.length >= 1) laserInput.value = parseFloat(tokens[0]) || laserInput.value;
-      if (tokens.length >= 2) elevInput.value = parseFloat(tokens[1]) || elevInput.value;
-      if (tokens.length >= 3) {
-        let lieNum = parseFloat(tokens[2]);
-        if (!isNaN(lieNum)) lieSlider.value = lieNum;
-      }
-      if (tokens.length >= 4) {
-        const windToken = tokens[3].toLowerCase();
-        const num = parseFloat(windToken);
-        if (!isNaN(num)) windSpeedInput.value = num;
-        if (windToken.includes('hw')) windDirSelect.value = 'headwind';
-        else if (windToken.includes('tw')) windDirSelect.value = 'tailwind';
-        else if (windToken.includes('cw')) windDirSelect.value = 'crosswind';
-      }
-      calculate();
-    }
+    <main class="max-w-5xl mx-auto px-4 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    function resetAll() {
-      laserInput.value = 133;
-      elevInput.value = -31;
-      lieSlider.value = 100;
-      windSpeedInput.value = 0;
-      windDirSelect.value = 'none';
-      altitudeSelect.value = 0;
-      shorthandInput.value = '';
-      calculate();
-    }
+        <!-- Left / Top Input Section -->
+        <div class="lg:col-span-7 space-y-5">
 
-    function copyCaddieNote() {
-      const text = document.getElementById('caddieNoteString').innerText;
-      navigator.clipboard.writeText(text);
-      alert('Caddie note copied to clipboard!');
-    }
+            <!-- Fast Shorthand Parser Box -->
+            <div class="golf-card p-4 rounded-2xl border-l-4 border-l-emerald-500 shadow-xl">
+                <div class="flex justify-between items-center mb-2">
+                    <label for="shorthandInput" class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-bolt-lightning"></i> Fast Shorthand Parser
+                    </label>
+                    <span class="text-[10px] text-gray-400">Press Enter or type to calculate</span>
+                </div>
+                <div class="relative">
+                    <input type="text" id="shorthandInput" placeholder="e.g. 171 -24 85b 12hw 5000alt" 
+                           class="w-full input-dark font-mono-code text-sm px-3.5 py-2.5 rounded-xl pr-10 border-gray-700 focus:border-emerald-500">
+                    <div class="absolute right-3 top-2.5 text-gray-500 text-xs font-mono-code pointer-events-none">
+                        AUTO
+                    </div>
+                </div>
+                <p class="text-[11px] text-gray-400 mt-2">
+                    Format: <code class="text-emerald-300 font-mono-code">[dist] [elevation] [lie%] [wind] [altitude]</code><br>
+                    Examples: <button class="underline hover:text-emerald-400 sample-tag" data-sample="129 -41 100r 0 100">129 -41 100r</button> • 
+                    <button class="underline hover:text-emerald-400 sample-tag" data-sample="171 -24 85b 12hw 5000alt">171 -24 85b 12hw 5000alt</button>
+                </p>
+            </div>
 
-    // Attach Event Listeners
-    [laserInput, elevInput, lieSlider, windSpeedInput, windDirSelect, altitudeSelect].forEach(el => {
-      el.addEventListener('input', calculate);
-      el.addEventListener('change', calculate);
-    });
+            <!-- Main Parameters Form -->
+            <div class="golf-card p-5 rounded-2xl shadow-xl space-y-5">
+                
+                <!-- 1. Laser Distance & Slope -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-bullseye text-emerald-400"></i> Laser Pin Distance
+                            </label>
+                            <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="distVal">143</span> yds</span>
+                        </div>
+                        <input type="number" id="distInput" value="143" min="10" max="600" class="w-full input-dark rounded-xl px-3 py-2 text-sm font-semibold">
+                    </div>
 
-    shorthandInput.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') parseShorthand();
-    });
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrows-up-down text-emerald-400"></i> Cup Elevation (Feet)
+                            </label>
+                            <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="elevVal">-25</span> ft</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="elevInput" value="-25" min="-200" max="200" class="w-full input-dark rounded-xl px-3 py-2 text-sm font-semibold">
+                            <div class="flex rounded-lg bg-gray-800 p-0.5 border border-gray-700">
+                                <button type="button" id="slopeDownBtn" class="px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white">-</button>
+                                <button type="button" id="slopeUpBtn" class="px-2.5 py-1 text-xs font-bold rounded-md hover:bg-gray-700 text-gray-300">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    // Initial run
-    calculate();
-  </script>
+                <hr class="border-gray-800">
+
+                <!-- 2. Lie & Surface Condition -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-grass text-emerald-400"></i> Lie Quality & Efficiency (%)
+                        </label>
+                        <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="lieVal">80</span>% (<span id="lieLabel">Fairway Sand</span>)</span>
+                    </div>
+                    <input type="range" id="lieSlider" min="30" max="100" value="80" class="w-full">
+                    
+                    <!-- Quick Presets -->
+                    <div class="grid grid-cols-5 gap-1.5 mt-2.5">
+                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="100" data-type="100r%">
+                            Clean 100%
+                        </button>
+                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="90" data-type="90r%">
+                            Light Rough 90%
+                        </button>
+                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="80" data-type="80b%">
+                            Sand / Deep 80%
+                        </button>
+                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="70" data-type="70r%">
+                            Heavy Rough 70%
+                        </button>
+                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="55" data-type="55b%">
+                            Buried / Plugged 55%
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="border-gray-800">
+
+                <!-- 3. Altitude above Sea Level -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-mountain text-emerald-400"></i> Course Altitude (Sea Level Elevation)
+                        </label>
+                        <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="altVal">0</span> ft</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+                        <div class="sm:col-span-2">
+                            <input type="range" id="altSlider" min="0" max="10000" step="250" value="0" class="w-full">
+                        </div>
+                        <div>
+                            <input type="number" id="altInput" value="0" min="0" max="12000" step="100" class="w-full input-dark rounded-xl px-3 py-1.5 text-xs font-mono-code text-right">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-1.5 mt-2">
+                        <button type="button" class="alt-preset text-[10px] py-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-center" data-val="0">Sea Level (0')</button>
+                        <button type="button" class="alt-preset text-[10px] py-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-center" data-val="2500">2,500 ft</button>
+                        <button type="button" class="alt-preset text-[10px] py-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-center" data-val="5280">Denver (5,280')</button>
+                        <button type="button" class="alt-preset text-[10px] py-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-center" data-val="8000">Mountain (8,000')</button>
+                    </div>
+                </div>
+
+                <hr class="border-gray-800">
+
+                <!-- 4. Wind Speed and Direction -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-wind text-emerald-400"></i> Wind Conditions
+                        </label>
+                        <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="windSpeedVal">10</span> mph <span id="windDirText">Headwind</span></span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <span class="text-[11px] text-gray-400 block mb-1">Wind Speed (mph)</span>
+                            <input type="number" id="windSpeedInput" value="10" min="0" max="50" class="w-full input-dark rounded-xl px-3 py-1.5 text-sm font-semibold">
+                        </div>
+                        <div>
+                            <span class="text-[11px] text-gray-400 block mb-1">Wind Direction</span>
+                            <select id="windDirSelect" class="w-full input-dark rounded-xl px-3 py-1.5 text-sm font-semibold">
+                                <option value="hw">Headwind (Into)</option>
+                                <option value="tw">Tailwind (Down)</option>
+                                <option value="cw">Crosswind (Side)</option>
+                                <option value="qhw">Quartering Headwind</option>
+                                <option value="qtw">Quartering Tailwind</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right / Bottom Result Section -->
+        <div class="lg:col-span-5 space-y-5">
+            
+            <!-- Primary Result Card -->
+            <div class="golf-card p-6 rounded-2xl border border-emerald-500/30 bg-gradient-to-b from-gray-900/90 via-gray-900 to-emerald-950/20 shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-8 -bottom-8 opacity-5 text-emerald-400 pointer-events-none">
+                    <i class="fa-solid fa-golf-ball-tee text-9xl"></i>
+                </div>
+
+                <div class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-1 flex items-center justify-between">
+                    <span>Effective Plays-Like</span>
+                    <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 font-mono-code">10iron Math Engine</span>
+                </div>
+
+                <!-- Big Main Numbers -->
+                <div class="my-4">
+                    <div class="flex items-baseline gap-2">
+                        <span id="finalPlaysLike" class="text-5xl sm:text-6xl font-black text-white tracking-tight font-mono-code">135</span>
+                        <span class="text-xl text-emerald-400 font-bold">Yards</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">Distance the ball will carry in current conditions.</p>
+                </div>
+
+                <!-- Club Callout Box -->
+                <div class="bg-gray-800/90 rounded-xl p-3.5 border border-gray-700/80 mb-5">
+                    <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Required Stock Club Distance</div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-gray-300">To reach pin from <span id="liePercentBadge" class="text-emerald-400 font-bold">80%</span> lie:</span>
+                        <span id="stockClubDistance" class="text-xl font-bold text-emerald-300 font-mono-code">169 Yds</span>
+                    </div>
+                    <p id="clubAdviceText" class="text-[11px] text-gray-400 mt-1.5 italic border-t border-gray-700/50 pt-1.5">
+                        Pull your ~170y stock club to compensate for grass/sand friction loss.
+                    </p>
+                </div>
+
+                <!-- Generated Caddie Output string -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between items-center text-[11px]">
+                        <span class="text-gray-400 font-medium">Caddie Shorthand String</span>
+                        <button id="copyStringBtn" class="text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1 transition">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div id="shorthandOutput" class="bg-gray-950 p-3 rounded-xl border border-gray-800 font-mono-code text-xs text-emerald-300 break-all select-all">
+                        143y -25' 80b% 10hw 0alt -> PL 135y (Club 169y)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Breakdown Accordion / Card -->
+            <div class="golf-card p-5 rounded-2xl shadow-xl space-y-3">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-300 flex items-center gap-1.5 border-b border-gray-800 pb-2">
+                    <i class="fa-solid fa-sliders text-emerald-400"></i> Environmental Breakdown
+                </h3>
+
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+                        <span class="text-gray-400">Laser Pin Distance:</span>
+                        <span id="breakdownLaser" class="font-mono-code font-semibold text-white">143.0 yds</span>
+                    </div>
+                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+                        <span class="text-gray-400">Elevation Slope (Feet/3):</span>
+                        <span id="breakdownElev" class="font-mono-code font-semibold text-emerald-400">-8.3 yds</span>
+                    </div>
+                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+                        <span class="text-gray-400">Wind Factor:</span>
+                        <span id="breakdownWind" class="font-mono-code font-semibold text-emerald-400">+10.0 yds</span>
+                    </div>
+                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+                        <span class="text-gray-400">Air Thinness (Altitude):</span>
+                        <span id="breakdownAlt" class="font-mono-code font-semibold text-emerald-400">0.0 yds</span>
+                    </div>
+                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+                        <span class="text-gray-400">Lie Efficiency Modifier:</span>
+                        <span id="breakdownLie" class="font-mono-code font-semibold text-amber-400">80% (1.25x Power)</span>
+                    </div>
+                </div>
+
+                <!-- Lateral Aim Note for Crosswinds -->
+                <div id="lateralAimBox" class="mt-3 bg-amber-500/10 border border-amber-500/20 p-2.5 rounded-xl text-[11px] text-amber-300 hidden">
+                    <i class="fa-solid fa-compass text-amber-400 mr-1"></i> <span id="lateralAimText">Aim ~8 yards left to compensate for crosswind.</span>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="max-w-5xl mx-auto px-4 mt-8 text-center text-xs text-gray-500">
+        <p>10iron Caddie Golf Calculator • Standard Caddie Slope (Drop/3) & Aerodynamic Physics</p>
+    </footer>
+
+    <script>
+        // State management
+        const state = {
+            distance: 143,
+            elevation: -25, // feet
+            lie: 80, // percentage
+            lieType: '80b%',
+            altitude: 0, // feet
+            windSpeed: 10, // mph
+            windDir: 'hw' // hw, tw, cw, qhw, qtw
+        };
+
+        // DOM Elements
+        const distInput = document.getElementById('distInput');
+        const distVal = document.getElementById('distVal');
+        const elevInput = document.getElementById('elevInput');
+        const elevVal = document.getElementById('elevVal');
+        const slopeDownBtn = document.getElementById('slopeDownBtn');
+        const slopeUpBtn = document.getElementById('slopeUpBtn');
+        const lieSlider = document.getElementById('lieSlider');
+        const lieVal = document.getElementById('lieVal');
+        const lieLabel = document.getElementById('lieLabel');
+        const altSlider = document.getElementById('altSlider');
+        const altInput = document.getElementById('altInput');
+        const altVal = document.getElementById('altVal');
+        const windSpeedInput = document.getElementById('windSpeedInput');
+        const windSpeedVal = document.getElementById('windSpeedVal');
+        const windDirSelect = document.getElementById('windDirSelect');
+        const windDirText = document.getElementById('windDirText');
+        const shorthandInput = document.getElementById('shorthandInput');
+
+        // Output DOM Elements
+        const finalPlaysLike = document.getElementById('finalPlaysLike');
+        const stockClubDistance = document.getElementById('stockClubDistance');
+        const liePercentBadge = document.getElementById('liePercentBadge');
+        const clubAdviceText = document.getElementById('clubAdviceText');
+        const shorthandOutput = document.getElementById('shorthandOutput');
+        const copyStringBtn = document.getElementById('copyStringBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Breakdown DOM Elements
+        const breakdownLaser = document.getElementById('breakdownLaser');
+        const breakdownElev = document.getElementById('breakdownElev');
+        const breakdownWind = document.getElementById('breakdownWind');
+        const breakdownAlt = document.getElementById('breakdownAlt');
+        const breakdownLie = document.getElementById('breakdownLie');
+        const lateralAimBox = document.getElementById('lateralAimBox');
+        const lateralAimText = document.getElementById('lateralAimText');
+
+        // Direction Labels
+        const windDirLabels = {
+            'hw': 'Headwind',
+            'tw': 'Tailwind',
+            'cw': 'Crosswind',
+            'qhw': 'Quartering Headwind',
+            'qtw': 'Quartering Tailwind'
+        };
+
+        // Calculation Engine
+        function calculate() {
+            // 1. Base Laser Distance
+            const dist = parseFloat(state.distance) || 0;
+
+            // 2. Elevation Adjustment (Feet / 3)
+            const elevAdjYards = state.elevation / 3.0;
+
+            // 3. Altitude Adjustment (~2% extra distance per 1000ft elevation above sea level)
+            const altPct = (state.altitude / 1000.0) * 0.02;
+            const altAdjYards = -(dist * altPct); // Thinner air makes distance play shorter
+
+            // 4. Wind Adjustment Physics
+            let windYards = 0;
+            let lateralYards = 0;
+            const spd = state.windSpeed;
+
+            switch(state.windDir) {
+                case 'hw': // Headwind: ~1% extra per mph + slight drag curve
+                    windYards = spd * (1.0 + (spd > 15 ? 0.02 * (spd - 15) : 0));
+                    break;
+                case 'tw': // Tailwind: ~0.5% decrease per mph
+                    windYards = -(spd * 0.6);
+                    break;
+                case 'cw': // Crosswind: minor distance drop + lateral push
+                    windYards = spd * 0.15; // slightly hurts carry
+                    lateralYards = spd * 0.8;
+                    break;
+                case 'qhw': // Quartering Headwind: ~70% headwind impact
+                    windYards = (spd * 0.7) * 1.0;
+                    lateralYards = spd * 0.5;
+                    break;
+                case 'qtw': // Quartering Tailwind
+                    windYards = -(spd * 0.7 * 0.5);
+                    lateralYards = spd * 0.5;
+                    break;
+            }
+
+            // Un-adjusted Plays-Like Distance for clean lie (Target carry distance required)
+            const playsLikeCarryYards = dist + elevAdjYards + windYards + altAdjYards;
+
+            // 5. Lie Quality Penalty
+            const efficiency = Math.max(0.3, state.lie / 100.0);
+            const requiredClubDistance = playsLikeCarryYards / efficiency;
+
+            // Render Results
+            const roundedPL = Math.round(playsLikeCarryYards);
+            const roundedClub = Math.round(requiredClubDistance);
+
+            finalPlaysLike.textContent = roundedPL;
+            stockClubDistance.textContent = `${roundedClub} Yds`;
+            liePercentBadge.textContent = `${state.lie}%`;
+
+            // Breakdown Update
+            breakdownLaser.textContent = `${dist.toFixed(1)} yds`;
+            breakdownElev.textContent = `${elevAdjYards >= 0 ? '+' : ''}${elevAdjYards.toFixed(1)} yds`;
+            breakdownWind.textContent = `${windYards >= 0 ? '+' : ''}${windYards.toFixed(1)} yds`;
+            breakdownAlt.textContent = `${altAdjYards >= 0 ? '+' : ''}${altAdjYards.toFixed(1)} yds`;
+            
+            const multiplier = (1 / efficiency).toFixed(2);
+            breakdownLie.textContent = `${state.lie}% (${multiplier}x Power)`;
+
+            // Lateral Aim Note
+            if (lateralYards > 2) {
+                lateralAimBox.classList.remove('hidden');
+                lateralAimText.textContent = `Crosswind Push: Aim ~${Math.round(lateralYards)} yards INTO the wind vector.`;
+            } else {
+                lateralAimBox.classList.add('hidden');
+            }
+
+            // Club advice text
+            if (state.lie < 95) {
+                clubAdviceText.textContent = `Due to a ${state.lie}% lie penalty, select your ~${roundedClub}y stock club to carry ${roundedPL}y.`;
+            } else {
+                clubAdviceText.textContent = `Clean lie: Select your stock ${roundedPL}y club.`;
+            }
+
+            // Format Output String
+            const signElev = state.elevation >= 0 ? `+${state.elevation}` : `${state.elevation}`;
+            const strOutput = `${dist}y ${signElev}' ${state.lieType} ${spd}${state.windDir} ${state.altitude}alt -> PL ${roundedPL}y (Club ${roundedClub}y)`;
+            shorthandOutput.textContent = strOutput;
+        }
+
+        // Label update helper for Lie
+        function getLieLabel(val) {
+            if (val >= 98) return 'Clean Fairway';
+            if (val >= 88) return 'Light Rough';
+            if (val >= 78) return 'Fairway Sand';
+            if (val >= 68) return 'Heavy Rough';
+            return 'Buried / Plugged';
+        }
+
+        // Sync State to UI
+        function syncUI() {
+            distVal.textContent = state.distance;
+            distInput.value = state.distance;
+            
+            elevVal.textContent = state.elevation >= 0 ? `+${state.elevation}` : state.elevation;
+            elevInput.value = state.elevation;
+
+            lieVal.textContent = state.lie;
+            lieSlider.value = state.lie;
+            lieLabel.textContent = getLieLabel(state.lie);
+
+            altVal.textContent = state.altitude;
+            altSlider.value = state.altitude;
+            altInput.value = state.altitude;
+
+            windSpeedVal.textContent = state.windSpeed;
+            windSpeedInput.value = state.windSpeed;
+            windDirSelect.value = state.windDir;
+            windDirText.textContent = windDirLabels[state.windDir];
+
+            calculate();
+        }
+
+        // Parse shorthand string e.g. "171 -24 85b 12hw 5000alt"
+        function parseShorthand(str) {
+            if (!str.trim()) return;
+
+            const tokens = str.trim().toLowerCase().split(/\s+/);
+            
+            tokens.forEach((token, index) => {
+                // 1. Distance (plain number or number ending in 'y')
+                if (index === 0 && /^^\d+y?$/.test(token)) {
+                    state.distance = parseInt(token);
+                }
+                // 2. Elevation (signed number or number ending in 'ft'/'')
+                else if (index === 1 && /^[-+]?\d+(ft|')?$/.test(token)) {
+                    state.elevation = parseInt(token);
+                }
+                // 3. Lie percentage (e.g. 85b%, 80%, 75r)
+                else if (/\d+(r|b)?%?$/.test(token) && parseInt(token) <= 100) {
+                    const match = token.match(/(\d+)/);
+                    if (match) {
+                        state.lie = parseInt(match[1]);
+                        state.lieType = token;
+                    }
+                }
+                // 4. Altitude (e.g. 5000alt, 2500a, 5280ft)
+                else if (/\d+(alt|a|ft)$/.test(token)) {
+                    const match = token.match(/(\d+)/);
+                    if (match) state.altitude = parseInt(match[1]);
+                }
+                // 5. Wind (e.g. 12hw, 10tw, 15cw, 8qhw)
+                else if (/\d+(hw|tw|cw|qhw|qtw)$/.test(token)) {
+                    const spdMatch = token.match(/(\d+)/);
+                    const dirMatch = token.match(/(hw|tw|cw|qhw|qtw)/);
+                    if (spdMatch) state.windSpeed = parseInt(spdMatch[1]);
+                    if (dirMatch) state.windDir = dirMatch[1];
+                }
+            });
+
+            syncUI();
+        }
+
+        // Event Listeners
+        distInput.addEventListener('input', (e) => {
+            state.distance = parseFloat(e.target.value) || 0;
+            distVal.textContent = state.distance;
+            calculate();
+        });
+
+        elevInput.addEventListener('input', (e) => {
+            state.elevation = parseFloat(e.target.value) || 0;
+            elevVal.textContent = state.elevation >= 0 ? `+${state.elevation}` : state.elevation;
+            calculate();
+        });
+
+        slopeDownBtn.addEventListener('click', () => {
+            if (state.elevation > -200) {
+                state.elevation -= 5;
+                syncUI();
+            }
+        });
+
+        slopeUpBtn.addEventListener('click', () => {
+            if (state.elevation < 200) {
+                state.elevation += 5;
+                syncUI();
+            }
+        });
+
+        lieSlider.addEventListener('input', (e) => {
+            state.lie = parseInt(e.target.value);
+            state.lieType = `${state.lie}%`;
+            lieVal.textContent = state.lie;
+            lieLabel.textContent = getLieLabel(state.lie);
+            calculate();
+        });
+
+        document.querySelectorAll('.lie-preset').forEach(btn => {
+            btn.addEventListener('click', () => {
+                state.lie = parseInt(btn.dataset.val);
+                state.lieType = btn.dataset.type;
+                syncUI();
+            });
+        });
+
+        altSlider.addEventListener('input', (e) => {
+            state.altitude = parseInt(e.target.value);
+            altInput.value = state.altitude;
+            altVal.textContent = state.altitude;
+            calculate();
+        });
+
+        altInput.addEventListener('input', (e) => {
+            state.altitude = parseInt(e.target.value) || 0;
+            altSlider.value = state.altitude;
+            altVal.textContent = state.altitude;
+            calculate();
+        });
+
+        document.querySelectorAll('.alt-preset').forEach(btn => {
+            btn.addEventListener('click', () => {
+                state.altitude = parseInt(btn.dataset.val);
+                syncUI();
+            });
+        });
+
+        windSpeedInput.addEventListener('input', (e) => {
+            state.windSpeed = parseInt(e.target.value) || 0;
+            windSpeedVal.textContent = state.windSpeed;
+            calculate();
+        });
+
+        windDirSelect.addEventListener('change', (e) => {
+            state.windDir = e.target.value;
+            windDirText.textContent = windDirLabels[state.windDir];
+            calculate();
+        });
+
+        shorthandInput.addEventListener('input', (e) => {
+            parseShorthand(e.target.value);
+        });
+
+        document.querySelectorAll('.sample-tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                shorthandInput.value = tag.dataset.sample;
+                parseShorthand(tag.dataset.sample);
+            });
+        });
+
+        copyStringBtn.addEventListener('click', () => {
+            const textToCopy = shorthandOutput.textContent.trim();
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                copyStringBtn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
+                setTimeout(() => {
+                    copyStringBtn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy`;
+                }, 1800);
+            });
+        });
+
+        resetBtn.addEventListener('click', () => {
+            state.distance = 143;
+            state.elevation = -25;
+            state.lie = 80;
+            state.lieType = '80b%';
+            state.altitude = 0;
+            state.windSpeed = 10;
+            state.windDir = 'hw';
+            shorthandInput.value = '';
+            syncUI();
+        });
+
+        // Initial Calculation
+        syncUI();
+    </script>
 </body>
 </html>
