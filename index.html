@@ -1,669 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10iron Caddie - Golf Plays-Like Calculator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0b1320;
-            color: #f3f4f6;
-        }
-        
-        .font-mono-code {
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .golf-card {
-            background: rgba(17, 24, 39, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>75% BATTERY SANCTUM - ULTIMATE EDITION</title>
+  <style>
+    :root {
+      --bat-green: #00ff66;
+      --bat-yellow: #ffcc00;
+      --bat-dark: #0a0f0d;
+      --bat-card: #141f1a;
+      --bat-border: #1e3328;
+      --bat-text: #e0f5ea;
+    }
 
-        .input-dark {
-            background-color: #1f2937;
-            border: 1px solid #374151;
-            color: #f9fafb;
-            transition: all 0.2s ease;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        .input-dark:focus {
-            outline: none;
-            border-color: #10b981;
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-        }
+    body {
+      background-color: var(--bat-dark);
+      color: var(--bat-text);
+      padding: 12px;
+      padding-bottom: 80px;
+      overflow-x: hidden;
+    }
 
-        /* Custom range slider styling */
-        input[type=range] {
-            -webkit-appearance: none;
-            background: #374151;
-            height: 6px;
-            border-radius: 3px;
-        }
+    /* Floating background 75s */
+    .bg-matrix {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.05;
+      font-weight: 900;
+      font-size: 2rem;
+      word-break: break-all;
+      line-height: 1.1;
+      user-select: none;
+    }
 
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 18px;
-            width: 18px;
-            border-radius: 50%;
-            background: #10b981;
-            cursor: pointer;
-            transition: transform 0.1s ease;
-        }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-        input[type=range]::-webkit-slider-thumb:hover {
-            transform: scale(1.15);
-        }
+    /* Header */
+    header {
+      text-align: center;
+      background: linear-gradient(180deg, rgba(0,255,102,0.1) 0%, rgba(0,0,0,0) 100%);
+      padding: 16px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--bat-border);
+    }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0b1320;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #374151;
-            border-radius: 3px;
-        }
-    </style>
+    h1 {
+      font-size: 1.5rem;
+      color: var(--bat-green);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(0,255,102,0.4);
+    }
+
+    p.subtitle {
+      font-size: 0.8rem;
+      color: #88a396;
+      margin-top: 4px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bat-card);
+      border: 1px solid var(--bat-border);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--bat-green);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Battery Graphic Component */
+    .battery-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .battery-outer {
+      width: 100%;
+      max-width: 280px;
+      height: 80px;
+      border: 4px solid var(--bat-green);
+      border-radius: 12px;
+      padding: 4px;
+      position: relative;
+      background: #000;
+      box-shadow: 0 0 15px rgba(0,255,102,0.2);
+    }
+
+    .battery-nub {
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 30px;
+      background: var(--bat-green);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .battery-fill {
+      width: 75%;
+      height: 100%;
+      background: linear-gradient(90deg, #00bb44, var(--bat-green));
+      border-radius: 6px;
+      position: relative;
+      transition: width 0.3s ease;
+      overflow: hidden;
+    }
+
+    .battery-fill::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shine 2s infinite;
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .battery-text-large {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      z-index: 2;
+    }
+
+    /* Buttons */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+    }
+
+    button {
+      background: #1e3328;
+      border: 1px solid var(--bat-green);
+      color: var(--bat-green);
+      padding: 12px 8px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: background 0.1s;
+    }
+
+    button:active {
+      background: var(--bat-green);
+      color: #000;
+    }
+
+    /* Stats Grid */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .stat-box {
+      background: #0d1410;
+      padding: 10px;
+      border-radius: 8px;
+      border-left: 3px solid var(--bat-green);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: #7a998a;
+      text-transform: uppercase;
+    }
+
+    .stat-val {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    /* Scrollable Text Feeds */
+    .feed-box {
+      background: #000;
+      border: 1px solid #1a2e22;
+      border-radius: 8px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      max-height: 120px;
+      overflow-y: auto;
+      color: #00ff66;
+    }
+
+    /* Fact Carousel */
+    .fact-card {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #c2e0d1;
+    }
+
+    /* Range slider custom */
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--bat-green);
+      margin: 10px 0;
+    }
+
+    /* Bottom Fixed Action Bar */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(10, 15, 13, 0.95);
+      border-top: 1px solid var(--bat-border);
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      backdrop-filter: blur(8px);
+      z-index: 10;
+    }
+
+    .bottom-bar button {
+      flex: 1;
+      margin: 0 4px;
+      padding: 10px;
+      font-size: 0.75rem;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: var(--bat-green);
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 15px rgba(0,255,102,0.5);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
 </head>
-<body class="min-h-screen pb-12">
+<body>
 
-    <!-- Header Navigation -->
-    <header class="border-b border-gray-800 bg-gray-900/90 sticky top-0 z-50 backdrop-blur-md">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-gray-950 font-extrabold text-lg shadow-lg shadow-emerald-500/20">
-                    <i class="fa-solid fa-flag-checkered"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-                        10iron Caddie <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">PRO</span>
-                    </h1>
-                    <p class="text-xs text-gray-400 hidden sm:block">Plays-Like Math • Altitude • Wind Vectors • Rough Lie</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                <button id="resetBtn" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium px-3 py-1.5 rounded-lg border border-gray-700 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-rotate-left"></i> Reset
-                </button>
-            </div>
-        </div>
+  <div class="bg-matrix" id="bgMatrix"></div>
+  <div id="toast" class="toast">75% LOCKED IN PERFECT HARMONY</div>
+
+  <div class="container">
+    
+    <!-- HEADER -->
+    <header>
+      <h1>75% BATTERY SANCTUM</h1>
+      <p class="subtitle">Optimal State of Existing. Neither Low Nor Full.</p>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        <!-- Left / Top Input Section -->
-        <div class="lg:col-span-7 space-y-5">
-
-            <!-- Fast Shorthand Parser Box -->
-            <div class="golf-card p-4 rounded-2xl border-l-4 border-l-emerald-500 shadow-xl">
-                <div class="flex justify-between items-center mb-2">
-                    <label for="shorthandInput" class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <i class="fa-solid fa-bolt-lightning"></i> Fast Shorthand Parser
-                    </label>
-                    <span class="text-[10px] text-gray-400">Press Enter or type to calculate</span>
-                </div>
-                <div class="relative">
-                    <input type="text" id="shorthandInput" placeholder="e.g. 171 -24 85b 12hw 5000alt" 
-                           class="w-full input-dark font-mono-code text-sm px-3.5 py-2.5 rounded-xl pr-10 border-gray-700 focus:border-emerald-500">
-                    <div class="absolute right-3 top-2.5 text-gray-500 text-xs font-mono-code pointer-events-none">
-                        AUTO
-                    </div>
-                </div>
-                <p class="text-[11px] text-gray-400 mt-2">
-                    Format: <code class="text-emerald-300 font-mono-code">[dist] [elevation] [lie%] [wind] [altitude]</code><br>
-                    Examples: <button class="underline hover:text-emerald-400 sample-tag" data-sample="129 -41 100r 0 100">129 -41 100r</button> • 
-                    <button class="underline hover:text-emerald-400 sample-tag" data-sample="171 -24 85b 12hw 5000alt">171 -24 85b 12hw 5000alt</button>
-                </p>
-            </div>
-
-            <!-- Main Parameters Form -->
-            <div class="golf-card p-5 rounded-2xl shadow-xl space-y-5">
-                
-                <!-- 1. Laser Distance & Slope -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <div class="flex justify-between items-center mb-1.5">
-                            <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
-                                <i class="fa-solid fa-bullseye text-emerald-400"></i> Laser Pin Distance
-                            </label>
-                            <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="distVal">143</span> yds</span>
-                        </div>
-                        <input type="number" id="distInput" value="143" min="10" max="600" class="w-full input-dark rounded-xl px-3 py-2 text-sm font-semibold">
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between items-center mb-1.5">
-                            <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
-                                <i class="fa-solid fa-arrows-up-down text-emerald-400"></i> Cup Elevation (Feet)
-                            </label>
-                            <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="elevVal">-25</span> ft</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input type="number" id="elevInput" value="-25" min="-200" max="200" class="w-full input-dark rounded-xl px-3 py-2 text-sm font-semibold">
-                            <div class="flex rounded-lg bg-gray-800 p-0.5 border border-gray-700">
-                                <button type="button" id="slopeDownBtn" class="px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white">-</button>
-                                <button type="button" id="slopeUpBtn" class="px-2.5 py-1 text-xs font-bold rounded-md hover:bg-gray-700 text-gray-300">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr class="border-gray-800">
-
-                <!-- 2. Lie & Surface Condition -->
-                <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
-                            <i class="fa-solid fa-grass text-emerald-400"></i> Lie Quality & Efficiency (%)
-                        </label>
-                        <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="lieVal">80</span>% (<span id="lieLabel">Fairway Sand</span>)</span>
-                    </div>
-                    <input type="range" id="lieSlider" min="30" max="100" value="80" class="w-full">
-                    
-                    <!-- Quick Presets -->
-                    <div class="grid grid-cols-5 gap-1.5 mt-2.5">
-                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="100" data-type="100r%">
-                            Clean 100%
-                        </button>
-                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="90" data-type="90r%">
-                            Light Rough 90%
-                        </button>
-                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="80" data-type="80b%">
-                            Sand / Deep 80%
-                        </button>
-                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="70" data-type="70r%">
-                            Heavy Rough 70%
-                        </button>
-                        <button type="button" class="lie-preset text-[10px] sm:text-xs py-1.5 px-1 bg-gray-800 hover:bg-emerald-900/40 hover:border-emerald-500/50 border border-gray-700 rounded-lg text-center transition font-medium" data-val="55" data-type="55b%">
-                            Buried / Plugged 55%
-                        </button>
-                    </div>
-                </div>
-
-                <hr class="border-gray-800">
-
-                <!-- 3. Altitude above Sea Level -->
-                <div>
-                    <div class="flex justify-between items-center mb-1.5">
-                        <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
-                            <i class="fa-solid fa-mountain text-emerald-400"></i> Course Altitude (Sea Level Elevation)
-                        </label>
-                        <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="altVal">0</span> ft</span>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
-                        <div class="sm:col-span-2">
-                            <input type="range" id="altSlider" min="0" max="10000" step="250" value="0" class="w-full">
-                        </div>
-                        <div>
-                            <input type="number" id="altInput" value="0" min="0" max="12000" step="100" class="w-full input-dark rounded-xl px-3 py-1.5 text-xs font-mono-code text-right">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-4 gap-1.5 mt-2">
-                        <button type="button" class="alt-preset text-[10px] py-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-center" data-val="0">Sea Level (0')</button>
-                        <button type="button" class="alt-preset text-[10px] py-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-center" data-val="2500">2,500 ft</button>
-                        <button type="button" class="alt-preset text-[10px] py-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-center" data-val="5280">Denver (5,280')</button>
-                        <button type="button" class="alt-preset text-[10px] py-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-center" data-val="8000">Mountain (8,000')</button>
-                    </div>
-                </div>
-
-                <hr class="border-gray-800">
-
-                <!-- 4. Wind Speed and Direction -->
-                <div>
-                    <div class="flex justify-between items-center mb-1.5">
-                        <label class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
-                            <i class="fa-solid fa-wind text-emerald-400"></i> Wind Conditions
-                        </label>
-                        <span class="text-xs font-bold text-emerald-400 font-mono-code"><span id="windSpeedVal">10</span> mph <span id="windDirText">Headwind</span></span>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <span class="text-[11px] text-gray-400 block mb-1">Wind Speed (mph)</span>
-                            <input type="number" id="windSpeedInput" value="10" min="0" max="50" class="w-full input-dark rounded-xl px-3 py-1.5 text-sm font-semibold">
-                        </div>
-                        <div>
-                            <span class="text-[11px] text-gray-400 block mb-1">Wind Direction</span>
-                            <select id="windDirSelect" class="w-full input-dark rounded-xl px-3 py-1.5 text-sm font-semibold">
-                                <option value="hw">Headwind (Into)</option>
-                                <option value="tw">Tailwind (Down)</option>
-                                <option value="cw">Crosswind (Side)</option>
-                                <option value="qhw">Quartering Headwind</option>
-                                <option value="qtw">Quartering Tailwind</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+    <!-- MAIN BATTERY DISPLAY -->
+    <div class="card">
+      <div class="battery-wrapper">
+        <div class="battery-outer">
+          <div class="battery-nub"></div>
+          <div class="battery-fill" id="mainFill"></div>
+          <div class="battery-text-large" id="mainPercent">75%</div>
         </div>
-
-        <!-- Right / Bottom Result Section -->
-        <div class="lg:col-span-5 space-y-5">
-            
-            <!-- Primary Result Card -->
-            <div class="golf-card p-6 rounded-2xl border border-emerald-500/30 bg-gradient-to-b from-gray-900/90 via-gray-900 to-emerald-950/20 shadow-2xl relative overflow-hidden">
-                <div class="absolute -right-8 -bottom-8 opacity-5 text-emerald-400 pointer-events-none">
-                    <i class="fa-solid fa-golf-ball-tee text-9xl"></i>
-                </div>
-
-                <div class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-1 flex items-center justify-between">
-                    <span>Effective Plays-Like</span>
-                    <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 font-mono-code">10iron Math Engine</span>
-                </div>
-
-                <!-- Big Main Numbers -->
-                <div class="my-4">
-                    <div class="flex items-baseline gap-2">
-                        <span id="finalPlaysLike" class="text-5xl sm:text-6xl font-black text-white tracking-tight font-mono-code">135</span>
-                        <span class="text-xl text-emerald-400 font-bold">Yards</span>
-                    </div>
-                    <p class="text-xs text-gray-400 mt-1">Distance the ball will carry in current conditions.</p>
-                </div>
-
-                <!-- Club Callout Box -->
-                <div class="bg-gray-800/90 rounded-xl p-3.5 border border-gray-700/80 mb-5">
-                    <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Required Stock Club Distance</div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-gray-300">To reach pin from <span id="liePercentBadge" class="text-emerald-400 font-bold">80%</span> lie:</span>
-                        <span id="stockClubDistance" class="text-xl font-bold text-emerald-300 font-mono-code">169 Yds</span>
-                    </div>
-                    <p id="clubAdviceText" class="text-[11px] text-gray-400 mt-1.5 italic border-t border-gray-700/50 pt-1.5">
-                        Pull your ~170y stock club to compensate for grass/sand friction loss.
-                    </p>
-                </div>
-
-                <!-- Generated Caddie Output string -->
-                <div class="space-y-1.5">
-                    <div class="flex justify-between items-center text-[11px]">
-                        <span class="text-gray-400 font-medium">Caddie Shorthand String</span>
-                        <button id="copyStringBtn" class="text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1 transition">
-                            <i class="fa-regular fa-copy"></i> Copy
-                        </button>
-                    </div>
-                    <div id="shorthandOutput" class="bg-gray-950 p-3 rounded-xl border border-gray-800 font-mono-code text-xs text-emerald-300 break-all select-all">
-                        143y -25' 80b% 10hw 0alt -> PL 135y (Club 169y)
-                    </div>
-                </div>
-            </div>
-
-            <!-- Detailed Breakdown Accordion / Card -->
-            <div class="golf-card p-5 rounded-2xl shadow-xl space-y-3">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-300 flex items-center gap-1.5 border-b border-gray-800 pb-2">
-                    <i class="fa-solid fa-sliders text-emerald-400"></i> Environmental Breakdown
-                </h3>
-
-                <div class="space-y-2 text-xs">
-                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
-                        <span class="text-gray-400">Laser Pin Distance:</span>
-                        <span id="breakdownLaser" class="font-mono-code font-semibold text-white">143.0 yds</span>
-                    </div>
-                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
-                        <span class="text-gray-400">Elevation Slope (Feet/3):</span>
-                        <span id="breakdownElev" class="font-mono-code font-semibold text-emerald-400">-8.3 yds</span>
-                    </div>
-                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
-                        <span class="text-gray-400">Wind Factor:</span>
-                        <span id="breakdownWind" class="font-mono-code font-semibold text-emerald-400">+10.0 yds</span>
-                    </div>
-                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
-                        <span class="text-gray-400">Air Thinness (Altitude):</span>
-                        <span id="breakdownAlt" class="font-mono-code font-semibold text-emerald-400">0.0 yds</span>
-                    </div>
-                    <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
-                        <span class="text-gray-400">Lie Efficiency Modifier:</span>
-                        <span id="breakdownLie" class="font-mono-code font-semibold text-amber-400">80% (1.25x Power)</span>
-                    </div>
-                </div>
-
-                <!-- Lateral Aim Note for Crosswinds -->
-                <div id="lateralAimBox" class="mt-3 bg-amber-500/10 border border-amber-500/20 p-2.5 rounded-xl text-[11px] text-amber-300 hidden">
-                    <i class="fa-solid fa-compass text-amber-400 mr-1"></i> <span id="lateralAimText">Aim ~8 yards left to compensate for crosswind.</span>
-                </div>
-            </div>
-
+        
+        <div class="btn-grid">
+          <button onclick="enforce75()">FORCE 75%</button>
+          <button onclick="play75Sound()">EMIT 75Hz</button>
         </div>
+      </div>
+    </div>
 
-    </main>
+    <!-- LOCK SLIDER -->
+    <div class="card">
+      <div class="card-title">
+        <span>CHARGE CONTROL</span>
+        <span id="sliderVal">75%</span>
+      </div>
+      <input type="range" id="chargeSlider" min="0" max="100" value="75" oninput="handleSlider(this.value)">
+      <p style="font-size: 0.75rem; color: #7a998a; text-align: center;">*Slider is locked to return to 75% automatically.</p>
+    </div>
 
-    <footer class="max-w-5xl mx-auto px-4 mt-8 text-center text-xs text-gray-500">
-        <p>10iron Caddie Golf Calculator • Standard Caddie Slope (Drop/3) & Aerodynamic Physics</p>
-    </footer>
+    <!-- LIVE TELEMETRY -->
+    <div class="card">
+      <div class="card-title">LIVE TELEMETRY</div>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-label">Voltage</div>
+          <div class="stat-val">3.75 V</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Optimal Charge</div>
+          <div class="stat-val">75.00%</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Anxiety Level</div>
+          <div class="stat-val">0.75%</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">3/4 Ratio</div>
+          <div class="stat-val">100%</div>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        // State management
-        const state = {
-            distance: 143,
-            elevation: -25, // feet
-            lie: 80, // percentage
-            lieType: '80b%',
-            altitude: 0, // feet
-            windSpeed: 10, // mph
-            windDir: 'hw' // hw, tw, cw, qhw, qtw
-        };
+    <!-- 75 FACTS CAROUSEL -->
+    <div class="card">
+      <div class="card-title">
+        <span>75% TRUTHS</span>
+        <button style="padding: 2px 8px; font-size: 0.7rem;" onclick="nextFact()">NEXT</button>
+      </div>
+      <div class="fact-card" id="factDisplay">
+        Loading 75% hyper-fact...
+      </div>
+    </div>
 
-        // DOM Elements
-        const distInput = document.getElementById('distInput');
-        const distVal = document.getElementById('distVal');
-        const elevInput = document.getElementById('elevInput');
-        const elevVal = document.getElementById('elevVal');
-        const slopeDownBtn = document.getElementById('slopeDownBtn');
-        const slopeUpBtn = document.getElementById('slopeUpBtn');
-        const lieSlider = document.getElementById('lieSlider');
-        const lieVal = document.getElementById('lieVal');
-        const lieLabel = document.getElementById('lieLabel');
-        const altSlider = document.getElementById('altSlider');
-        const altInput = document.getElementById('altInput');
-        const altVal = document.getElementById('altVal');
-        const windSpeedInput = document.getElementById('windSpeedInput');
-        const windSpeedVal = document.getElementById('windSpeedVal');
-        const windDirSelect = document.getElementById('windDirSelect');
-        const windDirText = document.getElementById('windDirText');
-        const shorthandInput = document.getElementById('shorthandInput');
+    <!-- DIAGNOSTIC FEED -->
+    <div class="card">
+      <div class="card-title">LOGS (ALWAYS 75%)</div>
+      <div class="feed-box" id="logFeed">
+        <div>[00:00:00] Initialized at 75%...</div>
+      </div>
+    </div>
 
-        // Output DOM Elements
-        const finalPlaysLike = document.getElementById('finalPlaysLike');
-        const stockClubDistance = document.getElementById('stockClubDistance');
-        const liePercentBadge = document.getElementById('liePercentBadge');
-        const clubAdviceText = document.getElementById('clubAdviceText');
-        const shorthandOutput = document.getElementById('shorthandOutput');
-        const copyStringBtn = document.getElementById('copyStringBtn');
-        const resetBtn = document.getElementById('resetBtn');
+    <!-- EMERGENCY COMPASS -->
+    <div class="card">
+      <div class="card-title">ORIENTATION TO 75%</div>
+      <div style="text-align: center; font-size: 2rem; font-weight: bold; color: var(--bat-green);">
+        75° NE
+      </div>
+      <p style="font-size: 0.75rem; color: #7a998a; text-align: center;">Pointing towards maximum three-quarter efficiency.</p>
+    </div>
 
-        // Breakdown DOM Elements
-        const breakdownLaser = document.getElementById('breakdownLaser');
-        const breakdownElev = document.getElementById('breakdownElev');
-        const breakdownWind = document.getElementById('breakdownWind');
-        const breakdownAlt = document.getElementById('breakdownAlt');
-        const breakdownLie = document.getElementById('breakdownLie');
-        const lateralAimBox = document.getElementById('lateralAimBox');
-        const lateralAimText = document.getElementById('lateralAimText');
+  </div>
 
-        // Direction Labels
-        const windDirLabels = {
-            'hw': 'Headwind',
-            'tw': 'Tailwind',
-            'cw': 'Crosswind',
-            'qhw': 'Quartering Headwind',
-            'qtw': 'Quartering Tailwind'
-        };
+  <!-- FIXED BOTTOM NAVIGATION BAR FOR MOBILE -->
+  <div class="bottom-bar">
+    <button onclick="triggerToast('STUCK AT 75% FOREVER')">STATUS: 75%</button>
+    <button onclick="triggerToast('3/4 POWER ENGAGED')">BOOST 75%</button>
+    <button onclick="vibrate75()">VIBRATE (75ms)</button>
+  </div>
 
-        // Calculation Engine
-        function calculate() {
-            // 1. Base Laser Distance
-            const dist = parseFloat(state.distance) || 0;
+  <script>
+    // Matrix BG Fill
+    const bg = id('bgMatrix');
+    bg.innerText = '75% '.repeat(400);
 
-            // 2. Elevation Adjustment (Feet / 3)
-            const elevAdjYards = state.elevation / 3.0;
+    // Helper
+    function id(str) { return document.getElementById(str); }
 
-            // 3. Altitude Adjustment (~2% extra distance per 1000ft elevation above sea level)
-            const altPct = (state.altitude / 1000.0) * 0.02;
-            const altAdjYards = -(dist * altPct); // Thinner air makes distance play shorter
+    // Toast
+    function triggerToast(msg) {
+      const t = id('toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
 
-            // 4. Wind Adjustment Physics
-            let windYards = 0;
-            let lateralYards = 0;
-            const spd = state.windSpeed;
+    // Force 75 Rule
+    function enforce75() {
+      id('mainFill').style.width = '75%';
+      id('mainPercent').innerText = '75%';
+      id('chargeSlider').value = 75;
+      id('sliderVal').innerText = '75%';
+      triggerToast('OVERRIDDEN TO PERFECT 75%');
+      addLog('User attempted change. Overridden to 75%.');
+    }
 
-            switch(state.windDir) {
-                case 'hw': // Headwind: ~1% extra per mph + slight drag curve
-                    windYards = spd * (1.0 + (spd > 15 ? 0.02 * (spd - 15) : 0));
-                    break;
-                case 'tw': // Tailwind: ~0.5% decrease per mph
-                    windYards = -(spd * 0.6);
-                    break;
-                case 'cw': // Crosswind: minor distance drop + lateral push
-                    windYards = spd * 0.15; // slightly hurts carry
-                    lateralYards = spd * 0.8;
-                    break;
-                case 'qhw': // Quartering Headwind: ~70% headwind impact
-                    windYards = (spd * 0.7) * 1.0;
-                    lateralYards = spd * 0.5;
-                    break;
-                case 'qtw': // Quartering Tailwind
-                    windYards = -(spd * 0.7 * 0.5);
-                    lateralYards = spd * 0.5;
-                    break;
-            }
+    // Slider behavior: snaps back to 75%
+    let slideTimer;
+    function handleSlider(val) {
+      id('sliderVal').innerText = val + '%';
+      id('mainFill').style.width = val + '%';
+      id('mainPercent').innerText = val + '%';
+      
+      clearTimeout(slideTimer);
+      slideTimer = setTimeout(() => {
+        enforce75();
+      }, 600);
+    }
 
-            // Un-adjusted Plays-Like Distance for clean lie (Target carry distance required)
-            const playsLikeCarryYards = dist + elevAdjYards + windYards + altAdjYards;
+    // Sound Synthesis (75Hz Sine Wave)
+    function play75Sound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(75, ctx.currentTime); // 75 Hz!
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.75); // 0.75 seconds!
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.75);
+        triggerToast('EMITTING 75Hz FREQUENCY FOR 0.75s');
+      } catch(e) {
+        triggerToast('AUDIO BLOCKED BY BROWSER');
+      }
+    }
 
-            // 5. Lie Quality Penalty
-            const efficiency = Math.max(0.3, state.lie / 100.0);
-            const requiredClubDistance = playsLikeCarryYards / efficiency;
+    // Vibrate
+    function vibrate75() {
+      if ('vibrate' in navigator) {
+        navigator.vibrate([75, 75, 75]);
+        triggerToast('VIBRATED 75ms');
+      } else {
+        triggerToast('VIBRATION NOT SUPPORTED');
+      }
+    }
 
-            // Render Results
-            const roundedPL = Math.round(playsLikeCarryYards);
-            const roundedClub = Math.round(requiredClubDistance);
+    // Facts
+    const facts = [
+      "75% is exactly three-quarters, the most stable fraction in battery geometry.",
+      "Lithium-ion batteries stored at 75% charge retain optimal shelf longevity.",
+      "75% charged is neither too high to stress the anode, nor too low to cause panic.",
+      "Scientists agree: 75% is the ultimate perfection of battery states.",
+      "If you cut 100% into 4 parts, 75% gets 3 of them. Unbeatable value.",
+      "75% battery remaining gives you enough time to think about 75% battery.",
+      "In a 75% state, world stability increases exponentially."
+    ];
+    let factIdx = 0;
+    function nextFact() {
+      factIdx = (factIdx + 1) % facts.length;
+      id('factDisplay').innerText = `"${facts[factIdx]}"`;
+    }
+    nextFact();
 
-            finalPlaysLike.textContent = roundedPL;
-            stockClubDistance.textContent = `${roundedClub} Yds`;
-            liePercentBadge.textContent = `${state.lie}%`;
+    // Log Feed
+    function addLog(msg) {
+      const feed = id('logFeed');
+      const time = new Date().toLocaleTimeString();
+      const div = document.createElement('div');
+      div.innerText = `[${time}] ${msg}`;
+      feed.appendChild(div);
+      feed.scrollTop = feed.scrollHeight;
+    }
 
-            // Breakdown Update
-            breakdownLaser.textContent = `${dist.toFixed(1)} yds`;
-            breakdownElev.textContent = `${elevAdjYards >= 0 ? '+' : ''}${elevAdjYards.toFixed(1)} yds`;
-            breakdownWind.textContent = `${windYards >= 0 ? '+' : ''}${windYards.toFixed(1)} yds`;
-            breakdownAlt.textContent = `${altAdjYards >= 0 ? '+' : ''}${altAdjYards.toFixed(1)} yds`;
-            
-            const multiplier = (1 / efficiency).toFixed(2);
-            breakdownLie.textContent = `${state.lie}% (${multiplier}x Power)`;
+    // Auto-generate logs keep 75% alive
+    setInterval(() => {
+      const msgs = [
+        "System check: 75% state confirmed.",
+        "Voltage steady at 3.75V.",
+        "Scanning nearby power sources... all calibrated to 75%.",
+        "Battery health: 75/75.",
+        "75% harmony maintained."
+      ];
+      const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
+      addLog(randomMsg);
+    }, 4000);
 
-            // Lateral Aim Note
-            if (lateralYards > 2) {
-                lateralAimBox.classList.remove('hidden');
-                lateralAimText.textContent = `Crosswind Push: Aim ~${Math.round(lateralYards)} yards INTO the wind vector.`;
-            } else {
-                lateralAimBox.classList.add('hidden');
-            }
-
-            // Club advice text
-            if (state.lie < 95) {
-                clubAdviceText.textContent = `Due to a ${state.lie}% lie penalty, select your ~${roundedClub}y stock club to carry ${roundedPL}y.`;
-            } else {
-                clubAdviceText.textContent = `Clean lie: Select your stock ${roundedPL}y club.`;
-            }
-
-            // Format Output String
-            const signElev = state.elevation >= 0 ? `+${state.elevation}` : `${state.elevation}`;
-            const strOutput = `${dist}y ${signElev}' ${state.lieType} ${spd}${state.windDir} ${state.altitude}alt -> PL ${roundedPL}y (Club ${roundedClub}y)`;
-            shorthandOutput.textContent = strOutput;
-        }
-
-        // Label update helper for Lie
-        function getLieLabel(val) {
-            if (val >= 98) return 'Clean Fairway';
-            if (val >= 88) return 'Light Rough';
-            if (val >= 78) return 'Fairway Sand';
-            if (val >= 68) return 'Heavy Rough';
-            return 'Buried / Plugged';
-        }
-
-        // Sync State to UI
-        function syncUI() {
-            distVal.textContent = state.distance;
-            distInput.value = state.distance;
-            
-            elevVal.textContent = state.elevation >= 0 ? `+${state.elevation}` : state.elevation;
-            elevInput.value = state.elevation;
-
-            lieVal.textContent = state.lie;
-            lieSlider.value = state.lie;
-            lieLabel.textContent = getLieLabel(state.lie);
-
-            altVal.textContent = state.altitude;
-            altSlider.value = state.altitude;
-            altInput.value = state.altitude;
-
-            windSpeedVal.textContent = state.windSpeed;
-            windSpeedInput.value = state.windSpeed;
-            windDirSelect.value = state.windDir;
-            windDirText.textContent = windDirLabels[state.windDir];
-
-            calculate();
-        }
-
-        // Parse shorthand string e.g. "171 -24 85b 12hw 5000alt"
-        function parseShorthand(str) {
-            if (!str.trim()) return;
-
-            const tokens = str.trim().toLowerCase().split(/\s+/);
-            
-            tokens.forEach((token, index) => {
-                // 1. Distance (plain number or number ending in 'y')
-                if (index === 0 && /^^\d+y?$/.test(token)) {
-                    state.distance = parseInt(token);
-                }
-                // 2. Elevation (signed number or number ending in 'ft'/'')
-                else if (index === 1 && /^[-+]?\d+(ft|')?$/.test(token)) {
-                    state.elevation = parseInt(token);
-                }
-                // 3. Lie percentage (e.g. 85b%, 80%, 75r)
-                else if (/\d+(r|b)?%?$/.test(token) && parseInt(token) <= 100) {
-                    const match = token.match(/(\d+)/);
-                    if (match) {
-                        state.lie = parseInt(match[1]);
-                        state.lieType = token;
-                    }
-                }
-                // 4. Altitude (e.g. 5000alt, 2500a, 5280ft)
-                else if (/\d+(alt|a|ft)$/.test(token)) {
-                    const match = token.match(/(\d+)/);
-                    if (match) state.altitude = parseInt(match[1]);
-                }
-                // 5. Wind (e.g. 12hw, 10tw, 15cw, 8qhw)
-                else if (/\d+(hw|tw|cw|qhw|qtw)$/.test(token)) {
-                    const spdMatch = token.match(/(\d+)/);
-                    const dirMatch = token.match(/(hw|tw|cw|qhw|qtw)/);
-                    if (spdMatch) state.windSpeed = parseInt(spdMatch[1]);
-                    if (dirMatch) state.windDir = dirMatch[1];
-                }
-            });
-
-            syncUI();
-        }
-
-        // Event Listeners
-        distInput.addEventListener('input', (e) => {
-            state.distance = parseFloat(e.target.value) || 0;
-            distVal.textContent = state.distance;
-            calculate();
-        });
-
-        elevInput.addEventListener('input', (e) => {
-            state.elevation = parseFloat(e.target.value) || 0;
-            elevVal.textContent = state.elevation >= 0 ? `+${state.elevation}` : state.elevation;
-            calculate();
-        });
-
-        slopeDownBtn.addEventListener('click', () => {
-            if (state.elevation > -200) {
-                state.elevation -= 5;
-                syncUI();
-            }
-        });
-
-        slopeUpBtn.addEventListener('click', () => {
-            if (state.elevation < 200) {
-                state.elevation += 5;
-                syncUI();
-            }
-        });
-
-        lieSlider.addEventListener('input', (e) => {
-            state.lie = parseInt(e.target.value);
-            state.lieType = `${state.lie}%`;
-            lieVal.textContent = state.lie;
-            lieLabel.textContent = getLieLabel(state.lie);
-            calculate();
-        });
-
-        document.querySelectorAll('.lie-preset').forEach(btn => {
-            btn.addEventListener('click', () => {
-                state.lie = parseInt(btn.dataset.val);
-                state.lieType = btn.dataset.type;
-                syncUI();
-            });
-        });
-
-        altSlider.addEventListener('input', (e) => {
-            state.altitude = parseInt(e.target.value);
-            altInput.value = state.altitude;
-            altVal.textContent = state.altitude;
-            calculate();
-        });
-
-        altInput.addEventListener('input', (e) => {
-            state.altitude = parseInt(e.target.value) || 0;
-            altSlider.value = state.altitude;
-            altVal.textContent = state.altitude;
-            calculate();
-        });
-
-        document.querySelectorAll('.alt-preset').forEach(btn => {
-            btn.addEventListener('click', () => {
-                state.altitude = parseInt(btn.dataset.val);
-                syncUI();
-            });
-        });
-
-        windSpeedInput.addEventListener('input', (e) => {
-            state.windSpeed = parseInt(e.target.value) || 0;
-            windSpeedVal.textContent = state.windSpeed;
-            calculate();
-        });
-
-        windDirSelect.addEventListener('change', (e) => {
-            state.windDir = e.target.value;
-            windDirText.textContent = windDirLabels[state.windDir];
-            calculate();
-        });
-
-        shorthandInput.addEventListener('input', (e) => {
-            parseShorthand(e.target.value);
-        });
-
-        document.querySelectorAll('.sample-tag').forEach(tag => {
-            tag.addEventListener('click', () => {
-                shorthandInput.value = tag.dataset.sample;
-                parseShorthand(tag.dataset.sample);
-            });
-        });
-
-        copyStringBtn.addEventListener('click', () => {
-            const textToCopy = shorthandOutput.textContent.trim();
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                copyStringBtn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
-                setTimeout(() => {
-                    copyStringBtn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy`;
-                }, 1800);
-            });
-        });
-
-        resetBtn.addEventListener('click', () => {
-            state.distance = 143;
-            state.elevation = -25;
-            state.lie = 80;
-            state.lieType = '80b%';
-            state.altitude = 0;
-            state.windSpeed = 10;
-            state.windDir = 'hw';
-            shorthandInput.value = '';
-            syncUI();
-        });
-
-        // Initial Calculation
-        syncUI();
-    </script>
+    // Attempt real battery lock if browser supports it
+    if ('getBattery' in navigator) {
+      navigator.getBattery().then(function(battery) {
+        addLog(`Real Battery Detected: ${Math.round(battery.level * 100)}% (Virtual Override to 75%)`);
+      });
+    }
+  </script>
 </body>
 </html>
