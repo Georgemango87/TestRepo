@@ -1,513 +1,497 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>75% BATTERY SANCTUM - ULTIMATE EDITION</title>
-  <style>
-    :root {
-      --bat-green: #00ff66;
-      --bat-yellow: #ffcc00;
-      --bat-dark: #0a0f0d;
-      --bat-card: #141f1a;
-      --bat-border: #1e3328;
-      --bat-text: #e0f5ea;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guess the Baby Name</title>
+<meta name="description" content="Add your guess for the baby's name!">
+<style>
+  :root {
+    --pink: #ec4899;
+    --purple: #8b5cf6;
+    --ink: #1f2937;
+    --muted: #6b7280;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 32px 16px 64px;
+    font-family: ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(900px 500px at 8% -10%, #ffe4f1 0%, transparent 60%),
+      radial-gradient(800px 500px at 100% 0%, #dbeafe 0%, transparent 55%),
+      linear-gradient(180deg, #fffafc 0%, #f6f6ff 100%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 640px; margin: 0 auto; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+  header { text-align: center; margin-bottom: 28px; }
+  .emoji { font-size: 44px; line-height: 1; }
+  h1 {
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    margin: 10px 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .sub { color: var(--muted); margin: 0 auto; max-width: 44ch; line-height: 1.55; }
 
-    body {
-      background-color: var(--bat-dark);
-      color: var(--bat-text);
-      padding: 12px;
-      padding-bottom: 80px;
-      overflow-x: hidden;
-    }
+  .card {
+    background: #fff;
+    border: 1px solid rgba(236, 72, 153, 0.12);
+    border-radius: 22px;
+    padding: 22px;
+    margin-bottom: 22px;
+    box-shadow:
+      0 10px 30px -12px rgba(139, 92, 246, 0.35),
+      0 2px 8px rgba(0, 0, 0, 0.04);
+  }
 
-    /* Floating background 75s */
-    .bg-matrix {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.05;
-      font-weight: 900;
-      font-size: 2rem;
-      word-break: break-all;
-      line-height: 1.1;
-      user-select: none;
-    }
+  label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: #4b5563;
+  }
+  input {
+    width: 100%;
+    padding: 13px 15px;
+    margin-bottom: 16px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fcfcfd;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+    transition: border-color .15s, box-shadow .15s, background .15s;
+  }
+  input::placeholder { color: #b6bcc7; }
+  input:focus {
+    outline: none;
+    background: #fff;
+    border-color: var(--pink);
+    box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.15);
+  }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+  button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    border: 0;
+    border-radius: 14px;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #f472b6, #a855f7);
+    box-shadow: 0 8px 20px -8px rgba(168, 85, 247, 0.85);
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  button[type="submit"]:hover { transform: translateY(-1px); box-shadow: 0 12px 24px -8px rgba(168, 85, 247, 0.9); }
+  button[type="submit"]:active { transform: translateY(1px); }
+  button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
 
-    /* Header */
-    header {
-      text-align: center;
-      background: linear-gradient(180deg, rgba(0,255,102,0.1) 0%, rgba(0,0,0,0) 100%);
-      padding: 16px 8px;
-      border-radius: 12px;
-      border: 1px solid var(--bat-border);
-    }
+  .msg { margin: 14px 0 0; font-size: 0.9rem; text-align: center; }
+  .msg.ok { color: #059669; }
+  .msg.error { color: #dc2626; }
 
-    h1 {
-      font-size: 1.5rem;
-      color: var(--bat-green);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-shadow: 0 0 10px rgba(0,255,102,0.4);
-    }
+  .list-head {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0 0 16px;
+  }
+  .list-head h2 { font-size: 1.15rem; margin: 0; }
+  .count { color: var(--muted); font-size: 0.95rem; font-weight: 600; }
 
-    p.subtitle {
-      font-size: 0.8rem;
-      color: #88a396;
-      margin-top: 4px;
-    }
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .guess {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid #f0e9ff;
+    border-radius: 16px;
+    background: #faf7ff;
+  }
+  .avatar {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-weight: 800;
+    color: #3b2a4a;
+  }
+  .guess-text { flex: 1; min-width: 0; }
+  .who {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .what {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+  .remove {
+    border: 0;
+    background: transparent;
+    color: #c0b6d0;
+    font-size: 1.3rem;
+    line-height: 1;
+    padding: 4px 9px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .remove:hover { background: #ffe4e6; color: #e11d48; }
 
-    /* Cards */
-    .card {
-      background: var(--bat-card);
-      border: 1px solid var(--bat-border);
-      border-radius: 12px;
-      padding: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
+  .empty {
+    margin: 0;
+    padding: 26px 16px;
+    text-align: center;
+    color: var(--muted);
+    border: 2px dashed #ece3f8;
+    border-radius: 16px;
+  }
 
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: bold;
-      color: var(--bat-green);
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  .loading {
+    text-align: center;
+    padding: 24px;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
 
-    /* Battery Graphic Component */
-    .battery-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .battery-outer {
-      width: 100%;
-      max-width: 280px;
-      height: 80px;
-      border: 4px solid var(--bat-green);
-      border-radius: 12px;
-      padding: 4px;
-      position: relative;
-      background: #000;
-      box-shadow: 0 0 15px rgba(0,255,102,0.2);
-    }
-
-    .battery-nub {
-      position: absolute;
-      right: -12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 8px;
-      height: 30px;
-      background: var(--bat-green);
-      border-radius: 0 4px 4px 0;
-    }
-
-    .battery-fill {
-      width: 75%;
-      height: 100%;
-      background: linear-gradient(90deg, #00bb44, var(--bat-green));
-      border-radius: 6px;
-      position: relative;
-      transition: width 0.3s ease;
-      overflow: hidden;
-    }
-
-    .battery-fill::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      animation: shine 2s infinite;
-    }
-
-    @keyframes shine {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .battery-text-large {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0; left: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2rem;
-      font-weight: 900;
-      color: #fff;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-      z-index: 2;
-    }
-
-    /* Buttons */
-    .btn-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      width: 100%;
-    }
-
-    button {
-      background: #1e3328;
-      border: 1px solid var(--bat-green);
-      color: var(--bat-green);
-      padding: 12px 8px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 0.85rem;
-      cursor: pointer;
-      touch-action: manipulation;
-      transition: background 0.1s;
-    }
-
-    button:active {
-      background: var(--bat-green);
-      color: #000;
-    }
-
-    /* Stats Grid */
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .stat-box {
-      background: #0d1410;
-      padding: 10px;
-      border-radius: 8px;
-      border-left: 3px solid var(--bat-green);
-    }
-
-    .stat-label {
-      font-size: 0.7rem;
-      color: #7a998a;
-      text-transform: uppercase;
-    }
-
-    .stat-val {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #fff;
-      margin-top: 2px;
-    }
-
-    /* Scrollable Text Feeds */
-    .feed-box {
-      background: #000;
-      border: 1px solid #1a2e22;
-      border-radius: 8px;
-      padding: 10px;
-      font-family: monospace;
-      font-size: 0.8rem;
-      max-height: 120px;
-      overflow-y: auto;
-      color: #00ff66;
-    }
-
-    /* Fact Carousel */
-    .fact-card {
-      min-height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-style: italic;
-      font-size: 0.9rem;
-      color: #c2e0d1;
-    }
-
-    /* Range slider custom */
-    input[type=range] {
-      width: 100%;
-      accent-color: var(--bat-green);
-      margin: 10px 0;
-    }
-
-    /* Bottom Fixed Action Bar */
-    .bottom-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(10, 15, 13, 0.95);
-      border-top: 1px solid var(--bat-border);
-      padding: 8px 12px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      backdrop-filter: blur(8px);
-      z-index: 10;
-    }
-
-    .bottom-bar button {
-      flex: 1;
-      margin: 0 4px;
-      padding: 10px;
-      font-size: 0.75rem;
-    }
-
-    /* Toast notification */
-    .toast {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-100px);
-      background: var(--bat-green);
-      color: #000;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 0.85rem;
-      box-shadow: 0 4px 15px rgba(0,255,102,0.5);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 100;
-      pointer-events: none;
-    }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
-  </style>
+  .footer { text-align: center; margin-top: 10px; }
+  .link-btn {
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 0.82rem;
+    color: #a1a1aa;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 6px;
+  }
+  .link-btn:hover { color: #e11d48; }
+</style>
 </head>
 <body>
+<main>
+  <header>
+    <div class="emoji" aria-hidden="true">👶</div>
+    <h1>Guess the Baby Name</h1>
+    <p class="sub">Think you know what we're naming the little one? Add your guess below and see what everyone else thinks.</p>
+  </header>
 
-  <div class="bg-matrix" id="bgMatrix"></div>
-  <div id="toast" class="toast">75% LOCKED IN PERFECT HARMONY</div>
+  <section class="card">
+    <form id="guess-form" novalidate>
+      <label for="guesser">Your name</label>
+      <input id="guesser" type="text" placeholder="e.g. Auntie Rachel" maxlength="40" autocomplete="name" required>
 
-  <div class="container">
-    
-    <!-- HEADER -->
-    <header>
-      <h1>75% BATTERY SANCTUM</h1>
-      <p class="subtitle">Optimal State of Existing. Neither Low Nor Full.</p>
-    </header>
+      <label for="guess">Your baby-name guess</label>
+      <input id="guess" type="text" placeholder="e.g. Oliver" maxlength="40" required>
 
-    <!-- MAIN BATTERY DISPLAY -->
-    <div class="card">
-      <div class="battery-wrapper">
-        <div class="battery-outer">
-          <div class="battery-nub"></div>
-          <div class="battery-fill" id="mainFill"></div>
-          <div class="battery-text-large" id="mainPercent">75%</div>
-        </div>
-        
-        <div class="btn-grid">
-          <button onclick="enforce75()">FORCE 75%</button>
-          <button onclick="play75Sound()">EMIT 75Hz</button>
-        </div>
-      </div>
+      <button type="submit" id="submit-btn">Lock in my guess 🎉</button>
+      <p id="form-msg" class="msg" role="status" aria-live="polite" hidden></p>
+    </form>
+  </section>
+
+  <section class="card">
+    <div class="list-head">
+      <h2>Everyone's guesses</h2>
+      <span id="count" class="count"></span>
     </div>
+    <div id="list-loading" class="loading">Loading guesses…</div>
+    <ul id="guess-list" class="list"></ul>
+    <p id="empty" class="empty" hidden>No guesses yet — be the first!</p>
+  </section>
+</main>
 
-    <!-- LOCK SLIDER -->
-    <div class="card">
-      <div class="card-title">
-        <span>CHARGE CONTROL</span>
-        <span id="sliderVal">75%</span>
-      </div>
-      <input type="range" id="chargeSlider" min="0" max="100" value="75" oninput="handleSlider(this.value)">
-      <p style="font-size: 0.75rem; color: #7a998a; text-align: center;">*Slider is locked to return to 75% automatically.</p>
-    </div>
+<!-- ============================================================
+     Firebase SDK (modular v9+ via CDN)
+     ============================================================ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  updateDoc,
+  where,
+  getDocs,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
-    <!-- LIVE TELEMETRY -->
-    <div class="card">
-      <div class="card-title">LIVE TELEMETRY</div>
-      <div class="stat-grid">
-        <div class="stat-box">
-          <div class="stat-label">Voltage</div>
-          <div class="stat-val">3.75 V</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Optimal Charge</div>
-          <div class="stat-val">75.00%</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Anxiety Level</div>
-          <div class="stat-val">0.75%</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">3/4 Ratio</div>
-          <div class="stat-val">100%</div>
-        </div>
-      </div>
-    </div>
+/* ============================================================
+   🔥 REPLACE THIS WITH YOUR OWN FIREBASE CONFIG
+   ============================================================
+   Go to https://console.firebase.google.com
+   → Create a project → Add a web app → Copy the config object below.
+*/
+const firebaseConfig = {
+  apiKey: "AIzaSyCnsac8Ds7Ww6YcQZMCBmeBj-b8Ah_8SPk",
+  authDomain: "georgemango-s-site.firebaseapp.com",
+  databaseURL: "https://georgemango-s-site-default-rtdb.firebaseio.com",
+  projectId: "georgemango-s-site",
+  storageBucket: "georgemango-s-site.firebasestorage.app",
+  messagingSenderId: "882754733832",
+  appId: "1:882754733832:web:f02443448f636df5790ebd",
+  measurementId: "G-5NJP9XFCMF"
+};
 
-    <!-- 75 FACTS CAROUSEL -->
-    <div class="card">
-      <div class="card-title">
-        <span>75% TRUTHS</span>
-        <button style="padding: 2px 8px; font-size: 0.7rem;" onclick="nextFact()">NEXT</button>
-      </div>
-      <div class="fact-card" id="factDisplay">
-        Loading 75% hyper-fact...
-      </div>
-    </div>
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
 
-    <!-- DIAGNOSTIC FEED -->
-    <div class="card">
-      <div class="card-title">LOGS (ALWAYS 75%)</div>
-      <div class="feed-box" id="logFeed">
-        <div>[00:00:00] Initialized at 75%...</div>
-      </div>
-    </div>
+const GUESSES_COLLECTION = "guesses";
 
-    <!-- EMERGENCY COMPASS -->
-    <div class="card">
-      <div class="card-title">ORIENTATION TO 75%</div>
-      <div style="text-align: center; font-size: 2rem; font-weight: bold; color: var(--bat-green);">
-        75° NE
-      </div>
-      <p style="font-size: 0.75rem; color: #7a998a; text-align: center;">Pointing towards maximum three-quarter efficiency.</p>
-    </div>
+/* ============================================================
+   UI references
+   ============================================================ */
+const form       = document.getElementById("guess-form");
+const nameInput  = document.getElementById("guesser");
+const guessInput = document.getElementById("guess");
+const submitBtn  = document.getElementById("submit-btn");
+const msgEl      = document.getElementById("form-msg");
+const listEl     = document.getElementById("guess-list");
+const emptyEl    = document.getElementById("empty");
+const countEl    = document.getElementById("count");
+const loadingEl  = document.getElementById("list-loading");
 
-  </div>
+let guesses = [];       // local mirror of Firestore data
+let msgTimer = null;
+let unsubscribe = null; // onSnapshot unsubscribe
 
-  <!-- FIXED BOTTOM NAVIGATION BAR FOR MOBILE -->
-  <div class="bottom-bar">
-    <button onclick="triggerToast('STUCK AT 75% FOREVER')">STATUS: 75%</button>
-    <button onclick="triggerToast('3/4 POWER ENGAGED')">BOOST 75%</button>
-    <button onclick="vibrate75()">VIBRATE (75ms)</button>
-  </div>
+/* ============================================================
+   Utilities
+   ============================================================ */
+function colorFor(str) {
+  const palette = ["#f9a8d4", "#a5b4fc", "#93c5fd", "#6ee7b7",
+                   "#fcd34d", "#fca5a5", "#c4b5fd", "#5eead4"];
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) % 100000;
+  }
+  return palette[hash % palette.length];
+}
 
-  <script>
-    // Matrix BG Fill
-    const bg = id('bgMatrix');
-    bg.innerText = '75% '.repeat(400);
+function tidy(str) {
+  return str.replace(/\s+/g, " ").trim();
+}
 
-    // Helper
-    function id(str) { return document.getElementById(str); }
+function showMessage(text, isError) {
+  msgEl.textContent = text;
+  msgEl.hidden = false;
+  msgEl.classList.toggle("error", !!isError);
+  msgEl.classList.toggle("ok", !isError);
+  clearTimeout(msgTimer);
+  if (!isError) {
+    msgTimer = setTimeout(() => { msgEl.hidden = true; }, 6000);
+  }
+}
 
-    // Toast
-    function triggerToast(msg) {
-      const t = id('toast');
-      t.innerText = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2000);
+/* ============================================================
+   Rendering
+   ============================================================ */
+function render() {
+  listEl.textContent = "";
+
+  countEl.textContent = guesses.length ? `(${guesses.length})` : "";
+  emptyEl.hidden = guesses.length > 0;
+  loadingEl.hidden = true;
+
+  guesses.forEach(g => {
+    const li = document.createElement("li");
+    li.className = "guess";
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.style.background = colorFor(g.name);
+    avatar.textContent = (g.name.charAt(0) || "?").toUpperCase();
+    avatar.setAttribute("aria-hidden", "true");
+
+    const text = document.createElement("div");
+    text.className = "guess-text";
+
+    const who = document.createElement("span");
+    who.className = "who";
+    who.textContent = g.name;
+
+    const what = document.createElement("span");
+    what.className = "what";
+    what.textContent = g.guess;
+
+    text.appendChild(who);
+    text.appendChild(what);
+
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "remove";
+    del.textContent = "×";
+    del.title = `Remove ${g.name}'s guess`;
+    del.setAttribute("aria-label", `Remove ${g.name}'s guess`);
+    del.addEventListener("click", () => removeGuess(g.id, g.name));
+
+    li.appendChild(avatar);
+    li.appendChild(text);
+    li.appendChild(del);
+    listEl.appendChild(li);
+  });
+}
+
+/* ============================================================
+   Firestore: listen for real-time updates
+   ============================================================ */
+function startListener() {
+  loadingEl.hidden = false;
+  emptyEl.hidden = true;
+
+  const q = query(
+    collection(db, GUESSES_COLLECTION),
+    orderBy("createdAt", "asc")
+  );
+
+  unsubscribe = onSnapshot(q,
+    snapshot => {
+      guesses = snapshot.docs.map(d => ({
+        id: d.id,
+        ...d.data()
+      }));
+      render();
+    },
+    error => {
+      console.error("Firestore listen error:", error);
+      loadingEl.hidden = true;
+      showMessage("Could not load guesses. Check your Firebase config & rules.", true);
+    }
+  );
+}
+
+/* ============================================================
+   Add / update a guess
+   ============================================================ */
+async function saveGuess(name, guess) {
+  const nameLower = name.toLowerCase();
+
+  // Look for an existing entry with the same name (case-insensitive)
+  const existingQuery = query(
+    collection(db, GUESSES_COLLECTION),
+    where("nameLower", "==", nameLower)
+  );
+  const existingSnap = await getDocs(existingQuery);
+
+  if (!existingSnap.empty) {
+    // Update the first matching document
+    const docRef = doc(db, GUESSES_COLLECTION, existingSnap.docs[0].id);
+    await updateDoc(docRef, {
+      name,
+      guess,
+      updatedAt: serverTimestamp()
+    });
+    return { updated: true, name };
+  } else {
+    // Create a new document
+    await addDoc(collection(db, GUESSES_COLLECTION), {
+      name,
+      nameLower,
+      guess,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+    return { updated: false, name };
+  }
+}
+
+/* ============================================================
+   Remove a guess
+   ============================================================ */
+async function removeGuess(id, name) {
+  if (!window.confirm(`Remove ${name}'s guess?`)) return;
+
+  try {
+    await deleteDoc(doc(db, GUESSES_COLLECTION, id));
+    // onSnapshot will refresh the list automatically
+  } catch (err) {
+    console.error("Delete failed:", err);
+    showMessage("Could not remove that guess. Please try again.", true);
+  }
+}
+
+/* ============================================================
+   Form submit
+   ============================================================ */
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const name  = tidy(nameInput.value);
+  const guess = tidy(guessInput.value);
+
+  if (!name) {
+    showMessage("Please enter your name.", true);
+    nameInput.focus();
+    return;
+  }
+  if (!guess) {
+    showMessage("Please enter your baby-name guess.", true);
+    guessInput.focus();
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Saving…";
+
+  try {
+    const result = await saveGuess(name, guess);
+
+    if (result.updated) {
+      showMessage(`Updated ${name}'s guess to “${guess}”.`);
+    } else {
+      showMessage(`Thanks, ${name}! Your guess “${guess}” is in. 🎉`);
     }
 
-    // Force 75 Rule
-    function enforce75() {
-      id('mainFill').style.width = '75%';
-      id('mainPercent').innerText = '75%';
-      id('chargeSlider').value = 75;
-      id('sliderVal').innerText = '75%';
-      triggerToast('OVERRIDDEN TO PERFECT 75%');
-      addLog('User attempted change. Overridden to 75%.');
-    }
+    form.reset();
+    nameInput.focus();
+  } catch (err) {
+    console.error("Save failed:", err);
+    showMessage("Could not save your guess. Check your Firebase rules & try again.", true);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Lock in my guess 🎉";
+  }
+});
 
-    // Slider behavior: snaps back to 75%
-    let slideTimer;
-    function handleSlider(val) {
-      id('sliderVal').innerText = val + '%';
-      id('mainFill').style.width = val + '%';
-      id('mainPercent').innerText = val + '%';
-      
-      clearTimeout(slideTimer);
-      slideTimer = setTimeout(() => {
-        enforce75();
-      }, 600);
-    }
+/* ============================================================
+   Boot
+   ============================================================ */
+startListener();
 
-    // Sound Synthesis (75Hz Sine Wave)
-    function play75Sound() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(75, ctx.currentTime); // 75 Hz!
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.75); // 0.75 seconds!
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.75);
-        triggerToast('EMITTING 75Hz FREQUENCY FOR 0.75s');
-      } catch(e) {
-        triggerToast('AUDIO BLOCKED BY BROWSER');
-      }
-    }
-
-    // Vibrate
-    function vibrate75() {
-      if ('vibrate' in navigator) {
-        navigator.vibrate([75, 75, 75]);
-        triggerToast('VIBRATED 75ms');
-      } else {
-        triggerToast('VIBRATION NOT SUPPORTED');
-      }
-    }
-
-    // Facts
-    const facts = [
-      "75% is exactly three-quarters, the most stable fraction in battery geometry.",
-      "Lithium-ion batteries stored at 75% charge retain optimal shelf longevity.",
-      "75% charged is neither too high to stress the anode, nor too low to cause panic.",
-      "Scientists agree: 75% is the ultimate perfection of battery states.",
-      "If you cut 100% into 4 parts, 75% gets 3 of them. Unbeatable value.",
-      "75% battery remaining gives you enough time to think about 75% battery.",
-      "In a 75% state, world stability increases exponentially."
-    ];
-    let factIdx = 0;
-    function nextFact() {
-      factIdx = (factIdx + 1) % facts.length;
-      id('factDisplay').innerText = `"${facts[factIdx]}"`;
-    }
-    nextFact();
-
-    // Log Feed
-    function addLog(msg) {
-      const feed = id('logFeed');
-      const time = new Date().toLocaleTimeString();
-      const div = document.createElement('div');
-      div.innerText = `[${time}] ${msg}`;
-      feed.appendChild(div);
-      feed.scrollTop = feed.scrollHeight;
-    }
-
-    // Auto-generate logs keep 75% alive
-    setInterval(() => {
-      const msgs = [
-        "System check: 75% state confirmed.",
-        "Voltage steady at 3.75V.",
-        "Scanning nearby power sources... all calibrated to 75%.",
-        "Battery health: 75/75.",
-        "75% harmony maintained."
-      ];
-      const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
-      addLog(randomMsg);
-    }, 4000);
-
-    // Attempt real battery lock if browser supports it
-    if ('getBattery' in navigator) {
-      navigator.getBattery().then(function(battery) {
-        addLog(`Real Battery Detected: ${Math.round(battery.level * 100)}% (Virtual Override to 75%)`);
-      });
-    }
-  </script>
+// Clean up listener on page hide (not strictly necessary, but tidy)
+window.addEventListener("pagehide", () => {
+  if (unsubscribe) unsubscribe();
+});
+</script>
 </body>
 </html>
