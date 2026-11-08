@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Guess the Baby Name</title>
-<meta name="description" content="Add your guess for the baby's name!">
+<meta name="description" content="Add your guesses for the baby's name!">
 <style>
   :root {
     --pink: #ec4899;
@@ -179,19 +179,6 @@
     color: var(--muted);
     font-size: 0.95rem;
   }
-
-  .footer { text-align: center; margin-top: 10px; }
-  .link-btn {
-    border: 0;
-    background: none;
-    font: inherit;
-    font-size: 0.82rem;
-    color: #a1a1aa;
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 6px;
-  }
-  .link-btn:hover { color: #e11d48; }
 </style>
 </head>
 <body>
@@ -199,16 +186,16 @@
   <header>
     <div class="emoji" aria-hidden="true">👶</div>
     <h1>Guess the Baby Name</h1>
-    <p class="sub">Think you know the name of the little one? Add your guess below and maybe it'll be right.</p>
+    <p class="sub">Think you know what we're naming the little one? Add a guess — and come back to add as many as you like.</p>
   </header>
 
   <section class="card">
     <form id="guess-form" novalidate>
       <label for="guesser">Your name</label>
-      <input id="guesser" type="text" placeholder="e.g. Jimmy John" maxlength="40" autocomplete="name" required>
+      <input id="guesser" type="text" placeholder="e.g. Auntie Rachel" maxlength="40" autocomplete="name" required>
 
       <label for="guess">Your baby-name guess</label>
-      <input id="guess" type="text" placeholder="e.g. Elbow" maxlength="40" required>
+      <input id="guess" type="text" placeholder="e.g. Oliver" maxlength="40" required>
 
       <button type="submit" id="submit-btn">Lock in my guess 🎉</button>
       <p id="form-msg" class="msg" role="status" aria-live="polite" hidden></p>
@@ -240,18 +227,13 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
-  updateDoc,
-  where,
-  getDocs,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 /* ============================================================
    🔥 REPLACE THIS WITH YOUR OWN FIREBASE CONFIG
-   ============================================================
-   Go to https://console.firebase.google.com
-   → Create a project → Add a web app → Copy the config object below.
-*/
+   Firebase Console → Project settings → Your apps → Web app
+   ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyAhzYCKr8EtEZ_p6EkANp36l_G1Nc3WbIc",
   authDomain: "guess-the-baby-name.firebaseapp.com",
@@ -350,9 +332,9 @@ function render() {
     del.type = "button";
     del.className = "remove";
     del.textContent = "×";
-    del.title = `Remove ${g.name}'s guess`;
-    del.setAttribute("aria-label", `Remove ${g.name}'s guess`);
-    del.addEventListener("click", () => removeGuess(g.id, g.name));
+    del.title = `Remove ${g.name}'s guess "${g.guess}"`;
+    del.setAttribute("aria-label", `Remove ${g.name}'s guess "${g.guess}"`);
+    del.addEventListener("click", () => removeGuess(g.id, g.name, g.guess));
 
     li.appendChild(avatar);
     li.appendChild(text);
@@ -390,45 +372,23 @@ function startListener() {
 }
 
 /* ============================================================
-   Add / update a guess
+   Add a guess (always creates a new entry — multiple allowed)
    ============================================================ */
-async function saveGuess(name, guess) {
-  const nameLower = name.toLowerCase();
-
-  // Look for an existing entry with the same name (case-insensitive)
-  const existingQuery = query(
-    collection(db, GUESSES_COLLECTION),
-    where("nameLower", "==", nameLower)
-  );
-  const existingSnap = await getDocs(existingQuery);
-
-  if (!existingSnap.empty) {
-    // Update the first matching document
-    const docRef = doc(db, GUESSES_COLLECTION, existingSnap.docs[0].id);
-    await updateDoc(docRef, {
-      name,
-      guess,
-      updatedAt: serverTimestamp()
-    });
-    return { updated: true, name };
-  } else {
-    // Create a new document
-    await addDoc(collection(db, GUESSES_COLLECTION), {
-      name,
-      nameLower,
-      guess,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-    return { updated: false, name };
-  }
+async function addGuess(name, guess) {
+  await addDoc(collection(db, GUESSES_COLLECTION), {
+    name,
+    nameLower: name.toLowerCase(),
+    guess,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  });
 }
 
 /* ============================================================
    Remove a guess
    ============================================================ */
-async function removeGuess(id, name) {
-  if (!window.confirm(`Remove ${name}'s guess?`)) return;
+async function removeGuess(id, name, guess) {
+  if (!window.confirm(`Remove ${name}'s guess "${guess}"?`)) return;
 
   try {
     await deleteDoc(doc(db, GUESSES_COLLECTION, id));
@@ -459,20 +419,26 @@ form.addEventListener("submit", async e => {
     return;
   }
 
+  // Soft guard: stop accidental exact duplicates (same person, same name)
+  const duplicate = guesses.some(g =>
+    g.name.toLowerCase() === name.toLowerCase() &&
+    g.guess.toLowerCase() === guess.toLowerCase()
+  );
+  if (duplicate) {
+    showMessage(`${name}, you've already guessed “${guess}”. Try another name!`, true);
+    guessInput.focus();
+    guessInput.select();
+    return;
+  }
+
   submitBtn.disabled = true;
   submitBtn.textContent = "Saving…";
 
   try {
-    const result = await saveGuess(name, guess);
-
-    if (result.updated) {
-      showMessage(`Updated ${name}'s guess to “${guess}”.`);
-    } else {
-      showMessage(`Thanks, ${name}! Your guess “${guess}” is in. 🎉`);
-    }
-
-    form.reset();
-    nameInput.focus();
+    await addGuess(name, guess);
+    showMessage(`Thanks, ${name}! “${guess}” is in. Add another anytime. 🎉`);
+    guessInput.value = "";   // keep the name, clear the guess
+    guessInput.focus();
   } catch (err) {
     console.error("Save failed:", err);
     showMessage("Could not save your guess. Check your Firebase rules & try again.", true);
@@ -487,7 +453,6 @@ form.addEventListener("submit", async e => {
    ============================================================ */
 startListener();
 
-// Clean up listener on page hide (not strictly necessary, but tidy)
 window.addEventListener("pagehide", () => {
   if (unsubscribe) unsubscribe();
 });
