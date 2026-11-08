@@ -11,6 +11,7 @@
     --purple: #8b5cf6;
     --ink: #1f2937;
     --muted: #6b7280;
+    --green: #059669;
   }
   * { box-sizing: border-box; }
   body {
@@ -35,7 +36,7 @@
     margin: 10px 0 8px;
     letter-spacing: -0.02em;
   }
-  .sub { color: var(--muted); margin: 0 auto; max-width: 44ch; line-height: 1.55; }
+  .sub { color: var(--muted); margin: 0 auto; max-width: 46ch; line-height: 1.55; }
 
   .card {
     background: #fff;
@@ -98,7 +99,7 @@
   }
 
   .msg { margin: 14px 0 0; font-size: 0.9rem; text-align: center; }
-  .msg.ok { color: #059669; }
+  .msg.ok { color: var(--green); }
   .msg.error { color: #dc2626; }
 
   .list-head {
@@ -110,6 +111,7 @@
   .list-head h2 { font-size: 1.15rem; margin: 0; }
   .count { color: var(--muted); font-size: 0.95rem; font-weight: 600; }
 
+  /* ---------- people (grouped guesses) ---------- */
   .list {
     list-style: none;
     margin: 0;
@@ -118,11 +120,11 @@
     flex-direction: column;
     gap: 10px;
   }
-  .guess {
+  .person {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
-    padding: 10px 12px;
+    padding: 12px;
     border: 1px solid #f0e9ff;
     border-radius: 16px;
     background: #faf7ff;
@@ -137,28 +139,69 @@
     font-weight: 800;
     color: #3b2a4a;
   }
-  .guess-text { flex: 1; min-width: 0; }
-  .who {
-    display: block;
-    font-size: 0.72rem;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--muted);
+  .person-body { flex: 1; min-width: 0; }
+  .person-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
   }
-  .what {
-    display: block;
-    font-size: 1.05rem;
+  .person-name {
+    font-weight: 700;
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+  }
+  .person-total {
+    margin-left: auto;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--green);
+    background: #ecfdf5;
+    border: 1px solid #d1fae5;
+    padding: 1px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  /* ---------- name chips (name + $5 on the right) ---------- */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 3px 3px 12px;
+    background: #fff;
+    border: 1px solid #ece3f8;
+    border-radius: 999px;
+    max-width: 100%;
+  }
+  .chip-name {
+    font-size: 0.95rem;
     font-weight: 700;
     overflow-wrap: anywhere;
+  }
+  .chip-amount {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--green);
+    background: #ecfdf5;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
   }
   .remove {
     border: 0;
     background: transparent;
     color: #c0b6d0;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     line-height: 1;
-    padding: 4px 9px;
-    border-radius: 9px;
+    padding: 2px 7px;
+    border-radius: 999px;
     cursor: pointer;
     transition: background .15s, color .15s;
   }
@@ -172,12 +215,16 @@
     border: 2px dashed #ece3f8;
     border-radius: 16px;
   }
-
   .loading {
     text-align: center;
     padding: 24px;
     color: var(--muted);
     font-size: 0.95rem;
+  }
+
+  @media (max-width: 420px) {
+    .person { padding: 10px; gap: 10px; }
+    .avatar { flex-basis: 32px; width: 32px; height: 32px; font-size: 0.9rem; }
   }
 </style>
 </head>
@@ -197,7 +244,7 @@
       <label for="guess">Your baby-name guess</label>
       <input id="guess" type="text" placeholder="e.g. Elbow" maxlength="40" required>
 
-      <button type="submit" id="submit-btn">Lock in my guess 🎉</button>
+      <button type="submit" id="submit-btn">Add my guess 🎉</button>
       <p id="form-msg" class="msg" role="status" aria-live="polite" hidden></p>
     </form>
   </section>
@@ -248,6 +295,7 @@ const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
 const GUESSES_COLLECTION = "guesses";
+const PRICE_PER_NAME = 5;   // dollars per guessed name
 
 /* ============================================================
    UI references
@@ -283,6 +331,10 @@ function tidy(str) {
   return str.replace(/\s+/g, " ").trim();
 }
 
+function money(n) {
+  return "$" + n;
+}
+
 function showMessage(text, isError) {
   msgEl.textContent = text;
   msgEl.hidden = false;
@@ -295,50 +347,104 @@ function showMessage(text, isError) {
 }
 
 /* ============================================================
+   Grouping: one row per person, their guesses kept together
+   ============================================================ */
+function groupGuesses(list) {
+  const map = new Map();   // key: lowercase name
+  const order = [];        // preserves first-seen order
+
+  list.forEach(g => {
+    const key = g.name.toLowerCase();
+    if (!map.has(key)) {
+      map.set(key, { name: g.name, guesses: [] });
+      order.push(key);
+    }
+    map.get(key).guesses.push(g);
+  });
+
+  return order.map(k => map.get(k));
+}
+
+/* ============================================================
    Rendering
    ============================================================ */
 function render() {
   listEl.textContent = "";
 
-  countEl.textContent = guesses.length ? `(${guesses.length})` : "";
-  emptyEl.hidden = guesses.length > 0;
+  const total = guesses.length;
+  countEl.textContent = total
+    ? `(${total} ${total === 1 ? "name" : "names"} · ${money(total * PRICE_PER_NAME)})`
+    : "";
+  emptyEl.hidden = total > 0;
   loadingEl.hidden = true;
 
-  guesses.forEach(g => {
+  groupGuesses(guesses).forEach(group => {
     const li = document.createElement("li");
-    li.className = "guess";
+    li.className = "person";
 
+    /* avatar */
     const avatar = document.createElement("div");
     avatar.className = "avatar";
-    avatar.style.background = colorFor(g.name);
-    avatar.textContent = (g.name.charAt(0) || "?").toUpperCase();
+    avatar.style.background = colorFor(group.name);
+    avatar.textContent = (group.name.charAt(0) || "?").toUpperCase();
     avatar.setAttribute("aria-hidden", "true");
 
-    const text = document.createElement("div");
-    text.className = "guess-text";
+    /* body */
+    const body = document.createElement("div");
+    body.className = "person-body";
 
-    const who = document.createElement("span");
-    who.className = "who";
-    who.textContent = g.name;
+    /* name + running total for this person */
+    const head = document.createElement("div");
+    head.className = "person-head";
 
-    const what = document.createElement("span");
-    what.className = "what";
-    what.textContent = g.guess;
+    const nameEl = document.createElement("span");
+    nameEl.className = "person-name";
+    nameEl.textContent = group.name;
 
-    text.appendChild(who);
-    text.appendChild(what);
+    const personTotal = document.createElement("span");
+    personTotal.className = "person-total";
+    personTotal.textContent = money(group.guesses.length * PRICE_PER_NAME);
+    personTotal.title =
+      `${group.guesses.length} ${group.guesses.length === 1 ? "guess" : "guesses"} × $${PRICE_PER_NAME}`;
 
-    const del = document.createElement("button");
-    del.type = "button";
-    del.className = "remove";
-    del.textContent = "×";
-    del.title = `Remove ${g.name}'s guess "${g.guess}"`;
-    del.setAttribute("aria-label", `Remove ${g.name}'s guess "${g.guess}"`);
-    del.addEventListener("click", () => removeGuess(g.id, g.name, g.guess));
+    head.appendChild(nameEl);
+    head.appendChild(personTotal);
+
+    /* chips: one per guessed name, $5 on the right of each */
+    const chips = document.createElement("div");
+    chips.className = "chips";
+
+    group.guesses.forEach(g => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+
+      const chipName = document.createElement("span");
+      chipName.className = "chip-name";
+      chipName.textContent = g.guess;
+
+      const chipAmount = document.createElement("span");
+      chipAmount.className = "chip-amount";
+      chipAmount.textContent = money(PRICE_PER_NAME);
+
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "remove";
+      del.textContent = "×";
+      del.title = `Remove ${group.name}'s guess "${g.guess}"`;
+      del.setAttribute("aria-label", `Remove ${group.name}'s guess "${g.guess}"`);
+      del.addEventListener("click", () => removeGuess(g.id, group.name, g.guess));
+
+      chip.appendChild(chipName);
+      chip.appendChild(chipAmount);
+      chip.appendChild(del);
+      chips.appendChild(chip);
+    });
+
+    body.appendChild(head);
+    body.appendChild(chips);
 
     li.appendChild(avatar);
-    li.appendChild(text);
-    li.appendChild(del);
+    li.appendChild(body);
     listEl.appendChild(li);
   });
 }
@@ -419,7 +525,7 @@ form.addEventListener("submit", async e => {
     return;
   }
 
-  // Soft guard: stop accidental exact duplicates (same person, same name)
+  // Soft guard: same person can't submit the exact same name twice
   const duplicate = guesses.some(g =>
     g.name.toLowerCase() === name.toLowerCase() &&
     g.guess.toLowerCase() === guess.toLowerCase()
@@ -436,7 +542,7 @@ form.addEventListener("submit", async e => {
 
   try {
     await addGuess(name, guess);
-    showMessage(`Thanks, ${name}! “${guess}” is in. Add another anytime. 🎉`);
+    showMessage(`Thanks, ${name}! “${guess}” is in (+$${PRICE_PER_NAME}). Add another anytime. 🎉`);
     guessInput.value = "";   // keep the name, clear the guess
     guessInput.focus();
   } catch (err) {
