@@ -9,10 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* Backgrounds */
     --bg-deep: #061510;
     --bg: #0c1e16;
-    --bg-hi: #142c20;
     --surface: #132419;
     --surface-hi: #1c3226;
     --surface-glow: #24402f;
@@ -20,23 +18,16 @@
     --border-hi: rgba(255,255,255,0.14);
     --felt-top: #1e5a3c;
     --felt-bottom: #0d2e1d;
-
-    /* Text */
     --text: #eef6f0;
     --text-dim: #b3c4b8;
     --muted: #7a9484;
-
-    /* Accents */
     --accent: #6ee7a7;
     --accent-dim: #4ade80;
     --accent-bg: #15803d;
     --accent-glow: rgba(110,231,167,0.35);
     --gold: #f0b429;
-    --gold-soft: rgba(240,180,41,0.15);
     --danger: #f87171;
     --danger-bg: #991b1b;
-
-    /* Cards */
     --card-w: clamp(2.7rem, 10vw, 3.6rem);
     --card-h: calc(var(--card-w) * 1.4);
     --card-radius: 0.5rem;
@@ -44,25 +35,12 @@
     --card-cream-2: #f1ead9;
     --card-red: #cf2430;
     --card-black: #1c1c20;
-
-    /* UNO colors */
-    --uno-red: #e4222e;
-    --uno-yellow: #f5c518;
-    --uno-green: #2da54a;
-    --uno-blue: #0d6efd;
-
-    /* Easing */
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-
-  * {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
-    margin: 0;
-    padding: 0;
+    margin: 0; padding: 0;
     background:
       radial-gradient(ellipse 100% 60% at 50% 0%, rgba(30,90,60,0.55) 0%, transparent 60%),
       radial-gradient(ellipse 80% 50% at 50% 100%, rgba(20,60,40,0.3) 0%, transparent 70%),
@@ -70,1120 +48,453 @@
     color: var(--text);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     font-feature-settings: 'ss01', 'cv11';
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: 100vh; min-height: 100dvh;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
   }
   #app { min-height: 100dvh; }
 
-  /* ===== Base elements ===== */
   button {
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
+    font-family: inherit; cursor: pointer; border: none;
     background: linear-gradient(180deg, var(--surface-glow), var(--surface-hi));
-    color: var(--text);
-    padding: 0.7rem 1.1rem;
-    border-radius: 0.6rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: -0.005em;
+    color: var(--text); padding: 0.7rem 1.1rem; border-radius: 0.6rem;
+    font-size: 0.95rem; font-weight: 600; letter-spacing: -0.005em;
     transition: transform 0.12s var(--ease-spring), background 0.15s, box-shadow 0.15s, opacity 0.15s;
     min-height: 2.6rem;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.06) inset,
-      0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 2px 6px rgba(0,0,0,0.2);
   }
   button:hover {
     background: linear-gradient(180deg, var(--surface-glow), var(--surface-glow));
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.08) inset,
-      0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 4px 12px rgba(0,0,0,0.3);
   }
   button:active { transform: scale(0.96); }
   button:disabled { opacity: 0.4; cursor: not-allowed; }
-  button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   button.primary {
     background: linear-gradient(180deg, #22c55e, #15803d);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.25) inset,
-      0 2px 8px rgba(34,197,94,0.35);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 2px 8px rgba(34,197,94,0.35);
     color: #052e16;
   }
   button.primary:hover {
     background: linear-gradient(180deg, #34d56e, #15803d);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.3) inset,
-      0 4px 16px rgba(34,197,94,0.5);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 4px 16px rgba(34,197,94,0.5);
   }
-  button.ghost {
-    background: transparent;
-    border: 1px solid var(--border-hi);
-    box-shadow: none;
-  }
-  button.ghost:hover {
-    background: rgba(255,255,255,0.04);
-    border-color: var(--border-hi);
-  }
-  button.danger {
-    background: linear-gradient(180deg, #b91c1c, #7f1d1d);
-    color: white;
-  }
+  button.ghost { background: transparent; border: 1px solid var(--border-hi); box-shadow: none; }
+  button.ghost:hover { background: rgba(255,255,255,0.04); }
+  button.danger { background: linear-gradient(180deg, #b91c1c, #7f1d1d); color: white; }
   button.danger:hover { background: linear-gradient(180deg, #dc2626, #991b1b); }
+  button.tiny { padding: 0.4rem 0.7rem; font-size: 0.78rem; min-height: auto; }
 
   input, select, textarea {
-    font-family: inherit;
-    padding: 0.65rem 0.85rem;
-    border-radius: 0.55rem;
-    border: 1px solid var(--border-hi);
-    background: rgba(0,0,0,0.25);
-    color: var(--text);
-    font-size: 0.95rem;
-    width: 100%;
+    font-family: inherit; padding: 0.65rem 0.85rem; border-radius: 0.55rem;
+    border: 1px solid var(--border-hi); background: rgba(0,0,0,0.25);
+    color: var(--text); font-size: 0.95rem; width: 100%;
     transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
   }
   input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent-dim);
-    background: rgba(0,0,0,0.35);
-    box-shadow: 0 0 0 3px var(--accent-glow);
+    outline: none; border-color: var(--accent-dim);
+    background: rgba(0,0,0,0.35); box-shadow: 0 0 0 3px var(--accent-glow);
   }
 
   /* ===== Cards ===== */
   .card {
-    width: var(--card-w);
-    height: var(--card-h);
-    border-radius: var(--card-radius);
-    position: relative;
-    flex-shrink: 0;
-    user-select: none;
-    overflow: hidden;
+    width: var(--card-w); height: var(--card-h);
+    border-radius: var(--card-radius); position: relative;
+    flex-shrink: 0; user-select: none; overflow: hidden;
     transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), filter 0.2s;
-    box-shadow:
-      0 1px 3px rgba(0,0,0,0.4),
-      0 4px 12px rgba(0,0,0,0.25);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.25);
     font-weight: 700;
   }
-
-  /* --- Standard playing card --- */
   .card--std {
-    background:
-      radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.4), transparent 60%),
+    background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.4), transparent 60%),
       linear-gradient(135deg, var(--card-cream) 0%, var(--card-cream-2) 100%);
     border: 1px solid rgba(0,0,0,0.1);
     color: var(--card-black);
   }
   .card--std.card--red { color: var(--card-red); }
-
   .card__corner {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    line-height: 0.85;
-    font-size: calc(var(--card-w) * 0.18);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    z-index: 2;
+    position: absolute; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    line-height: 0.85; font-size: calc(var(--card-w) * 0.18);
+    font-weight: 700; letter-spacing: -0.02em; z-index: 2;
   }
   .card__corner--tl { top: 0.22rem; left: 0.22rem; }
-  .card__corner--br {
-    bottom: 0.22rem; right: 0.22rem;
-    transform: rotate(180deg);
-  }
+  .card__corner--br { bottom: 0.22rem; right: 0.22rem; transform: rotate(180deg); }
   .card__rank { font-size: 1em; }
-  .card__suit {
-    font-size: 0.85em;
-    margin-top: 0.1em;
-    line-height: 1;
-  }
-
-  .card__center {
-    position: absolute;
-    inset: 1.15rem 0.55rem;
-    z-index: 1;
-  }
+  .card__suit { font-size: 0.85em; margin-top: 0.1em; line-height: 1; }
+  .card__center { position: absolute; inset: 1.15rem 0.55rem; z-index: 1; }
   .card__pip {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    font-size: calc(var(--card-w) * 0.38);
-    line-height: 1;
-    font-weight: 400;
+    position: absolute; transform: translate(-50%, -50%);
+    font-size: calc(var(--card-w) * 0.38); line-height: 1; font-weight: 400;
   }
   .card__pip--flipped { transform: translate(-50%, -50%) rotate(180deg); }
-
-  .card__center--ace {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .card__ace {
-    font-size: calc(var(--card-w) * 0.9);
-    line-height: 1;
-  }
-
+  .card__center--ace { display: flex; align-items: center; justify-content: center; }
+  .card__ace { font-size: calc(var(--card-w) * 0.9); line-height: 1; }
   .card__center--face {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.08em;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 0.08em;
   }
   .card__face-badge {
-    width: calc(var(--card-w) * 0.55);
-    height: calc(var(--card-w) * 0.55);
-    border-radius: 50%;
-    border: 1.5px solid currentColor;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: calc(var(--card-w) * 0.55); height: calc(var(--card-w) * 0.55);
+    border-radius: 50%; border: 1.5px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
     font-family: 'Fraunces', Georgia, serif;
-    font-size: calc(var(--card-w) * 0.32);
-    font-weight: 900;
-    line-height: 1;
-    opacity: 0.9;
+    font-size: calc(var(--card-w) * 0.32); font-weight: 900; line-height: 1; opacity: 0.9;
   }
-  .card__face-suit {
-    font-size: calc(var(--card-w) * 0.22);
-    opacity: 0.85;
-  }
+  .card__face-suit { font-size: calc(var(--card-w) * 0.22); opacity: 0.85; }
 
-  /* --- UNO card --- */
-  .card--uno {
-    color: white;
-    overflow: hidden;
-  }
+  .card--uno { color: white; overflow: hidden; }
   .card--uno .card__uno-corner {
-    position: absolute;
-    font-size: calc(var(--card-w) * 0.22);
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-    z-index: 2;
-    line-height: 1;
+    position: absolute; font-size: calc(var(--card-w) * 0.22);
+    font-weight: 900; letter-spacing: -0.03em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4); z-index: 2; line-height: 1;
   }
   .card--uno .card__uno-corner--tl { top: 0.24rem; left: 0.32rem; }
-  .card--uno .card__uno-corner--br {
-    bottom: 0.24rem; right: 0.32rem;
-    transform: rotate(180deg);
-  }
-
+  .card--uno .card__uno-corner--br { bottom: 0.24rem; right: 0.32rem; transform: rotate(180deg); }
   .card__uno-oval {
-    position: absolute;
-    inset: 12% 8%;
-    background: rgba(255,255,255,0.96);
-    border-radius: 50%;
-    transform: rotate(-22deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute; inset: 12% 8%; background: rgba(255,255,255,0.96);
+    border-radius: 50%; transform: rotate(-22deg);
+    display: flex; align-items: center; justify-content: center;
     box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
   }
   .card__uno-val {
-    transform: rotate(22deg);
-    font-size: calc(var(--card-w) * 0.5);
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    line-height: 1;
-    display: inline-block;
+    transform: rotate(22deg); font-size: calc(var(--card-w) * 0.5);
+    font-weight: 900; letter-spacing: -0.04em; line-height: 1;
+    display: inline-block; text-align: center; padding: 0 0.15rem;
   }
-  .card__uno-val--wild {
-    font-size: calc(var(--card-w) * 0.28);
-    letter-spacing: 0.02em;
-    color: #111;
-    font-weight: 800;
-  }
-  .card__uno-val--wild4 {
-    font-size: calc(var(--card-w) * 0.55);
-    color: #111;
-  }
-
+  .card__uno-val--wild { font-size: calc(var(--card-w) * 0.24); letter-spacing: 0.02em; color: #111; font-weight: 800; }
   .card--wild {
-    background: conic-gradient(from 45deg,
-      var(--uno-red) 0deg 90deg,
-      var(--uno-yellow) 90deg 180deg,
-      var(--uno-green) 180deg 270deg,
-      var(--uno-blue) 270deg 360deg);
+    background: conic-gradient(from 45deg, #e4222e 0deg 90deg, #f5c518 90deg 180deg, #2da54a 180deg 270deg, #0d6efd 270deg 360deg);
   }
 
-  /* --- Custom card --- */
-  .card--custom {
-    color: white;
-    overflow: hidden;
-  }
+  .card--custom { color: white; overflow: hidden; }
   .card--custom .card__corner {
-    font-size: calc(var(--card-w) * 0.2);
-    font-weight: 800;
-    color: inherit;
-    opacity: 0.9;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.25);
+    font-size: calc(var(--card-w) * 0.18); font-weight: 800;
+    color: inherit; opacity: 0.9; text-shadow: 0 1px 1px rgba(0,0,0,0.25);
   }
   .card__custom-center {
-    position: absolute;
-    inset: 22% 12%;
-    background: rgba(255,255,255,0.94);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.15rem 0.4rem;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+    position: absolute; inset: 22% 12%;
+    background: rgba(255,255,255,0.94); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0.15rem 0.4rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
   }
   .card__custom-val {
-    font-size: calc(var(--card-w) * 0.24);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    text-align: center;
-    word-break: break-word;
+    font-size: calc(var(--card-w) * 0.26); font-weight: 800;
+    letter-spacing: -0.02em; line-height: 1; text-align: center;
+    word-break: break-word; color: #111;
   }
-  .card__custom-val--wild { color: #111; }
 
-  /* --- Card back --- */
   .card--back {
-    background:
-      repeating-linear-gradient(45deg,
-        #2d4a7a 0 5px,
-        #1c2d52 5px 10px);
+    background: repeating-linear-gradient(45deg, #2d4a7a 0 5px, #1c2d52 5px 10px);
     border: 1.5px solid #e5e7eb;
   }
   .card--back::before {
-    content: '';
-    position: absolute;
-    inset: 18%;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 0.25rem;
+    content: ''; position: absolute; inset: 18%;
+    border: 2px solid rgba(255,255,255,0.3); border-radius: 0.25rem;
   }
-  .card--back::after {
-    content: '';
-    position: absolute;
-    inset: 22%;
-    background: repeating-linear-gradient(45deg,
-      transparent 0 4px,
-      rgba(255,255,255,0.15) 4px 8px);
-    border-radius: 0.2rem;
-  }
-
-  /* --- Playable / dimmed --- */
   .hand .card--playable {
-    cursor: pointer;
-    transform: translateY(-0.5rem);
-    box-shadow:
-      0 0 0 2px var(--accent),
-      0 0 20px var(--accent-glow),
-      0 6px 16px rgba(0,0,0,0.4);
+    cursor: pointer; transform: translateY(-0.5rem);
+    box-shadow: 0 0 0 2px var(--accent), 0 0 20px var(--accent-glow), 0 6px 16px rgba(0,0,0,0.4);
   }
-  .hand .card--playable:hover {
-    transform: translateY(-0.85rem) scale(1.03);
-  }
-  .hand .card--playable:active {
-    transform: translateY(-0.6rem) scale(0.98);
-  }
-  .hand .card--dimmed {
-    opacity: 0.4;
-    filter: saturate(0.4);
-  }
+  .hand .card--playable:hover { transform: translateY(-0.85rem) scale(1.03); }
+  .hand .card--playable:active { transform: translateY(-0.6rem) scale(0.98); }
+  .hand .card--dimmed { opacity: 0.4; filter: saturate(0.4); }
 
   /* ===== Menu ===== */
-  .menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100dvh;
-    padding: 2rem 1.25rem;
-    gap: 1.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .menu__hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-    text-align: center;
-  }
-
-  .menu__cards {
-    position: relative;
-    width: 8rem;
-    height: 6rem;
-    margin-bottom: 0.75rem;
-  }
-  .menu__cards .card {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform-origin: center 110%;
-  }
-  .menu__cards .card:nth-child(1) {
-    transform: translateX(-85%) rotate(-16deg);
-    z-index: 1;
-  }
-  .menu__cards .card:nth-child(2) {
-    transform: translateX(-50%) rotate(0deg) translateY(-4px);
-    z-index: 3;
-    box-shadow:
-      0 1px 3px rgba(0,0,0,0.4),
-      0 8px 24px rgba(0,0,0,0.5),
-      0 0 30px rgba(110,231,167,0.15);
-  }
-  .menu__cards .card:nth-child(3) {
-    transform: translateX(-15%) rotate(16deg);
-    z-index: 2;
-  }
-
-  .menu h1 {
-    margin: 0;
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(2.4rem, 7vw, 3.6rem);
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    line-height: 0.95;
-    font-variation-settings: 'SOFT' 40, 'WONK' 1;
-  }
-  .menu h1 em {
-    font-style: italic;
-    color: var(--accent);
-    font-weight: 600;
-  }
-  .menu__tagline {
-    color: var(--muted);
-    margin: 0;
-    font-size: 0.95rem;
-    letter-spacing: 0.01em;
-  }
-
+  .menu { display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100dvh; padding: 2rem 1.25rem; gap: 1.5rem; }
+  .menu__hero { display: flex; flex-direction: column; align-items: center;
+    gap: 0.4rem; text-align: center; }
+  .menu__cards { position: relative; width: 8rem; height: 6rem; margin-bottom: 0.75rem; }
+  .menu__cards .card { position: absolute; top: 0; left: 50%; transform-origin: center 110%; }
+  .menu__cards .card:nth-child(1) { transform: translateX(-85%) rotate(-16deg); z-index: 1; }
+  .menu__cards .card:nth-child(2) { transform: translateX(-50%) rotate(0deg) translateY(-4px); z-index: 3;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.5), 0 0 30px rgba(110,231,167,0.15); }
+  .menu__cards .card:nth-child(3) { transform: translateX(-15%) rotate(16deg); z-index: 2; }
+  .menu h1 { margin: 0; font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(2.4rem, 7vw, 3.6rem); font-weight: 900;
+    letter-spacing: -0.04em; line-height: 0.95; font-variation-settings: 'SOFT' 40, 'WONK' 1; }
+  .menu h1 em { font-style: italic; color: var(--accent); font-weight: 600; }
+  .menu__tagline { color: var(--muted); margin: 0; font-size: 0.95rem; letter-spacing: 0.01em; }
   .menu__panel {
-    background: linear-gradient(180deg,
-      rgba(28,50,38,0.8) 0%,
-      rgba(19,36,25,0.9) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-hi);
-    border-radius: 1.1rem;
-    padding: 1.35rem;
-    width: 100%;
-    max-width: 26rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.06) inset,
-      0 20px 50px rgba(0,0,0,0.5);
+    background: linear-gradient(180deg, rgba(28,50,38,0.8) 0%, rgba(19,36,25,0.9) 100%);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-hi); border-radius: 1.1rem;
+    padding: 1.35rem; width: 100%; max-width: 26rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 20px 50px rgba(0,0,0,0.5);
   }
-
   .field { display: flex; flex-direction: column; gap: 0.4rem; }
-  .field label {
-    font-size: 0.72rem;
-    color: var(--muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .rules-box {
-    font-size: 0.82rem;
-    color: var(--text-dim);
-    line-height: 1.55;
-    background: rgba(0,0,0,0.2);
-    padding: 0.75rem 0.9rem;
-    border-radius: 0.6rem;
-    border-left: 2px solid var(--accent);
-  }
-
-  .preset-row {
-    display: flex;
-    gap: 0.35rem;
-    flex-wrap: wrap;
-  }
-  .preset-row button {
-    padding: 0.45rem 0.8rem;
-    font-size: 0.82rem;
-    min-height: auto;
-  }
-
-  .section-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.72rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 700;
-    margin-top: 0.3rem;
-  }
-  .section-label::before,
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  .field label { font-size: 0.72rem; color: var(--muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em; }
+  .rules-box { font-size: 0.82rem; color: var(--text-dim); line-height: 1.55;
+    background: rgba(0,0,0,0.2); padding: 0.75rem 0.9rem;
+    border-radius: 0.6rem; border-left: 2px solid var(--accent); }
+  .section-label { display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.72rem; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em; font-weight: 700; margin-top: 0.3rem; }
+  .section-label::before, .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border); }
 
   /* ===== Pass screen ===== */
-  .pass {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100dvh;
-    padding: 2rem 1.5rem;
-    gap: 1.5rem;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-  }
+  .pass { display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100dvh; padding: 2rem 1.5rem; gap: 1.5rem;
+    text-align: center; cursor: pointer; user-select: none; }
   .pass__avatar {
-    width: 6rem;
-    height: 6rem;
-    border-radius: 50%;
+    width: 6rem; height: 6rem; border-radius: 50%;
     background: linear-gradient(135deg, var(--accent-dim), var(--accent-bg));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 2.4rem;
-    font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', Georgia, serif; font-size: 2.4rem; font-weight: 900;
     color: #052e16;
-    box-shadow:
-      0 0 0 6px rgba(110,231,167,0.12),
-      0 0 40px rgba(110,231,167,0.35),
-      0 10px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 0 0 6px rgba(110,231,167,0.12), 0 0 40px rgba(110,231,167,0.35), 0 10px 30px rgba(0,0,0,0.4);
     animation: floatAvatar 3s ease-in-out infinite;
   }
-  @keyframes floatAvatar {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-  }
-  .pass__label {
-    font-size: 0.75rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 700;
-  }
-  .pass h2 {
-    margin: 0;
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(1.8rem, 5vw, 2.4rem);
-    font-weight: 900;
-    letter-spacing: -0.02em;
-  }
-  .pass__hint {
-    color: var(--muted);
-    margin: 0;
-    font-size: 0.9rem;
-    animation: pulseHint 2s ease-in-out infinite;
-  }
-  @keyframes pulseHint {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
-  }
-  .pass__undo {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--muted);
-    font-size: 0.8rem;
-    background: none;
-    border: none;
-    padding: 0.5rem 1rem;
-    text-decoration: underline;
-    cursor: pointer;
-    box-shadow: none;
-  }
-  .pass__undo:hover { color: var(--text); background: none; }
+  @keyframes floatAvatar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  .pass__label { font-size: 0.75rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
+  .pass h2 { margin: 0; font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 900; letter-spacing: -0.02em; }
+  .pass__hint { color: var(--muted); margin: 0; font-size: 0.9rem;
+    animation: pulseHint 2s ease-in-out infinite; }
+  @keyframes pulseHint { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  .pass__undo { position: absolute; bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%); color: var(--muted); font-size: 0.8rem;
+    background: none; border: none; padding: 0.5rem 1rem;
+    text-decoration: underline; cursor: pointer; box-shadow: none; }
 
-  /* ===== Game screen ===== */
-  .game {
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-    padding: 0.6rem;
-    gap: 0.5rem;
-    max-width: 56rem;
-    margin: 0 auto;
-  }
-
-  .game__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.7rem 0.9rem;
-    background: rgba(20,44,32,0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    font-size: 0.82rem;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
-  }
-  .game__header-title {
-    font-family: 'Fraunces', Georgia, serif;
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-  }
-  .game__header-info {
-    color: var(--muted);
-    font-size: 0.78rem;
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
+  /* ===== Game ===== */
+  .game { display: flex; flex-direction: column; min-height: 100dvh;
+    padding: 0.6rem; gap: 0.5rem; max-width: 56rem; margin: 0 auto; }
+  .game__header { display: flex; align-items: center; justify-content: space-between;
+    gap: 0.5rem; padding: 0.7rem 0.9rem;
+    background: rgba(20,44,32,0.7); backdrop-filter: blur(20px);
+    border: 1px solid var(--border); border-radius: 0.75rem;
+    font-size: 0.82rem; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset; }
+  .game__header-title { font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700; font-size: 1rem; color: var(--accent); letter-spacing: -0.02em; }
+  .game__header-info { color: var(--muted); font-size: 0.78rem;
+    display: flex; gap: 0.5rem; align-items: center; }
   .game__header-info strong { color: var(--text); font-weight: 600; }
-  .game__header-btn {
-    padding: 0.4rem 0.75rem;
-    font-size: 0.78rem;
-    min-height: auto;
-  }
-
-  .opponents {
-    display: flex;
-    gap: 0.4rem;
-    overflow-x: auto;
-    padding-bottom: 0.15rem;
-    scrollbar-width: none;
-  }
+  .game__header-btn { padding: 0.4rem 0.75rem; font-size: 0.78rem; min-height: auto; }
+  .opponents { display: flex; gap: 0.4rem; overflow-x: auto;
+    padding-bottom: 0.15rem; scrollbar-width: none; }
   .opponents::-webkit-scrollbar { display: none; }
-
-  .opponent {
-    display: flex;
-    flex-direction: column;
-    padding: 0.6rem 0.85rem;
-    background: rgba(20,44,32,0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border);
-    border-radius: 0.7rem;
-    font-size: 0.78rem;
-    min-width: 6rem;
-    flex-shrink: 0;
-    gap: 0.15rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .opponent.current {
-    border-color: var(--accent-dim);
-    box-shadow:
-      0 0 0 1px var(--accent-dim),
-      0 0 20px rgba(110,231,167,0.15);
-  }
-  .opponent strong {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: -0.01em;
-  }
+  .opponent { display: flex; flex-direction: column; padding: 0.6rem 0.85rem;
+    background: rgba(20,44,32,0.7); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 0.7rem;
+    font-size: 0.78rem; min-width: 6rem; flex-shrink: 0; gap: 0.15rem;
+    transition: border-color 0.2s, box-shadow 0.2s; }
+  .opponent.current { border-color: var(--accent-dim);
+    box-shadow: 0 0 0 1px var(--accent-dim), 0 0 20px rgba(110,231,167,0.15); }
+  .opponent strong { font-size: 0.85rem; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
   .opponent .meta { color: var(--muted); font-size: 0.72rem; }
 
-  /* --- Felt table --- */
-  .felt {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.9rem;
-    padding: 1.2rem 0.75rem;
-    margin: 0.25rem 0;
+  .felt { flex: 1; display: flex; align-items: center; justify-content: center;
+    gap: 0.9rem; padding: 1.2rem 0.75rem; margin: 0.25rem 0;
     border-radius: 1rem;
-    background:
-      radial-gradient(ellipse 70% 50% at 50% 45%, rgba(255,255,255,0.05), transparent 65%),
+    background: radial-gradient(ellipse 70% 50% at 50% 45%, rgba(255,255,255,0.05), transparent 65%),
       radial-gradient(ellipse 100% 90% at 50% 40%, var(--felt-top) 0%, var(--felt-bottom) 100%);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.06) inset,
-      0 0 0 1px rgba(0,0,0,0.3),
-      0 20px 50px rgba(0,0,0,0.4) inset;
-    position: relative;
-    overflow: hidden;
-    min-height: 9rem;
-    flex-wrap: wrap;
-  }
-  .felt::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.03) 3px 4px),
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 0 0 1px rgba(0,0,0,0.3), 0 20px 50px rgba(0,0,0,0.4) inset;
+    position: relative; overflow: hidden; min-height: 9rem; flex-wrap: wrap; }
+  .felt::before { content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.03) 3px 4px),
       repeating-linear-gradient(90deg, transparent 0 3px, rgba(0,0,0,0.03) 3px 4px);
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  .pile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.45rem;
-    position: relative;
-    z-index: 1;
-  }
-  .pile__label {
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.55);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 700;
-  }
-  .pile__empty {
-    width: var(--card-w);
-    height: var(--card-h);
-    border: 2px dashed rgba(255,255,255,0.15);
-    border-radius: var(--card-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255,255,255,0.25);
-    font-size: 0.7rem;
-    font-weight: 500;
-  }
-
-  .deck {
-    position: relative;
-    width: var(--card-w);
-    height: var(--card-h);
-  }
-  .deck .card {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
+    opacity: 0.6; pointer-events: none; }
+  .pile { display: flex; flex-direction: column; align-items: center;
+    gap: 0.45rem; position: relative; z-index: 1; }
+  .pile__label { font-size: 0.65rem; color: rgba(255,255,255,0.55);
+    text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
+  .pile__empty { width: var(--card-w); height: var(--card-h);
+    border: 2px dashed rgba(255,255,255,0.15); border-radius: var(--card-radius);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.25); font-size: 0.7rem; font-weight: 500; }
+  .deck { position: relative; width: var(--card-w); height: var(--card-h); }
+  .deck .card { position: absolute; top: 0; left: 0; }
   .deck .card:nth-child(1) { transform: translate(2px, -2px) rotate(2deg); }
   .deck .card:nth-child(2) { transform: translate(1px, -1px) rotate(1deg); }
-  .deck .card:nth-child(3) { transform: translate(0, 0); }
-  .deck__count {
-    position: absolute;
-    bottom: -0.5rem;
-    right: -0.5rem;
-    background: var(--accent-bg);
-    color: white;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 0.2rem 0.45rem;
-    border-radius: 99px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    z-index: 5;
-    min-width: 1.4rem;
-    text-align: center;
-    line-height: 1.2;
-  }
+  .deck__count { position: absolute; bottom: -0.5rem; right: -0.5rem;
+    background: var(--accent-bg); color: white; font-size: 0.7rem; font-weight: 700;
+    padding: 0.2rem 0.45rem; border-radius: 99px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4); z-index: 5;
+    min-width: 1.4rem; text-align: center; line-height: 1.2; }
+  .color-badge { display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.3rem 0.75rem; border-radius: 99px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 2px 6px rgba(0,0,0,0.25); min-width: 3rem; }
 
-  .color-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.3rem 0.75rem;
-    border-radius: 99px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: white;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.3) inset,
-      0 2px 6px rgba(0,0,0,0.25);
-    min-width: 3rem;
-  }
-
-  /* --- Actions bar --- */
-  .actions-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    align-items: center;
-    padding: 0.55rem 0.7rem;
-    background: rgba(20,44,32,0.7);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-    border-radius: 0.7rem;
-    min-height: 3.5rem;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
-  }
-  .actions-bar__label {
-    font-size: 0.72rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 600;
-    margin-right: 0.15rem;
-  }
-
-  .chip {
-    padding: 0.5rem 0.9rem;
-    border-radius: 0.5rem;
-    background: var(--surface-hi);
-    border: 1px solid var(--border-hi);
-    color: var(--text);
-    font-weight: 600;
-    font-family: inherit;
-    font-size: 0.9rem;
-    cursor: pointer;
-    min-height: 2.4rem;
+  .actions-bar { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
+    padding: 0.55rem 0.7rem; background: rgba(20,44,32,0.7); backdrop-filter: blur(20px);
+    border: 1px solid var(--border); border-radius: 0.7rem;
+    min-height: 3.5rem; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset; }
+  .actions-bar__label { font-size: 0.72rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-right: 0.15rem; }
+  .chip { padding: 0.5rem 0.9rem; border-radius: 0.5rem; background: var(--surface-hi);
+    border: 1px solid var(--border-hi); color: var(--text); font-weight: 600;
+    font-family: inherit; font-size: 0.9rem; cursor: pointer; min-height: 2.4rem;
     transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset;
-  }
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset; }
   .chip:hover { background: var(--surface-glow); }
   .chip:active { transform: scale(0.96); }
-
-  /* --- Log --- */
-  .log {
-    font-size: 0.72rem;
-    max-height: 4.2rem;
-    overflow-y: auto;
-    padding: 0.5rem 0.75rem;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid var(--border);
-    border-radius: 0.6rem;
-    color: var(--muted);
-    line-height: 1.55;
-    flex-shrink: 0;
-    scrollbar-width: thin;
-  }
+  .log { font-size: 0.72rem; max-height: 4.2rem; overflow-y: auto;
+    padding: 0.5rem 0.75rem; background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border); border-radius: 0.6rem;
+    color: var(--muted); line-height: 1.55; flex-shrink: 0; }
   .log > div { padding: 0.08rem 0; }
   .log > div:last-child { color: var(--text-dim); }
-
-  /* --- Hand --- */
-  .hand-wrap {
-    margin-top: auto;
-    padding: 0.5rem 0.15rem 0;
-  }
-  .hand {
-    display: flex;
-    gap: 0.3rem;
-    overflow-x: auto;
-    padding: 0.85rem 0.15rem 0.5rem;
-    scrollbar-width: none;
-    align-items: flex-end;
-    min-height: calc(var(--card-h) + 1.35rem);
-  }
+  .hand-wrap { margin-top: auto; padding: 0.5rem 0.15rem 0; }
+  .hand { display: flex; gap: 0.3rem; overflow-x: auto;
+    padding: 0.85rem 0.15rem 0.5rem; scrollbar-width: none; align-items: flex-end;
+    min-height: calc(var(--card-h) + 1.35rem); }
   .hand::-webkit-scrollbar { display: none; }
 
   /* ===== Modals ===== */
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(6,21,16,0.8);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem;
-    z-index: 100;
-    animation: fadeIn 0.22s var(--ease-out);
-  }
+  .overlay { position: fixed; inset: 0; background: rgba(6,21,16,0.8);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.25rem; z-index: 100; animation: fadeIn 0.22s var(--ease-out); }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .modal {
-    background: linear-gradient(180deg,
-      rgba(28,50,38,0.98),
-      rgba(19,36,25,0.98));
-    border: 1px solid var(--border-hi);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    width: 100%;
-    max-width: 24rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.06) inset,
-      0 30px 60px rgba(0,0,0,0.6);
-    animation: modalIn 0.3s var(--ease-spring);
-  }
-  @keyframes modalIn {
-    from { transform: scale(0.92); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-  .modal h3 {
-    margin: 0;
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.3rem;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-  }
+  .modal { background: linear-gradient(180deg, rgba(28,50,38,0.98), rgba(19,36,25,0.98));
+    border: 1px solid var(--border-hi); border-radius: 1rem; padding: 1.5rem;
+    width: 100%; max-width: 24rem; display: flex; flex-direction: column;
+    gap: 1rem; text-align: center;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 30px 60px rgba(0,0,0,0.6);
+    animation: modalIn 0.3s var(--ease-spring); }
+  @keyframes modalIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal--wide { max-width: 30rem; }
+  .modal h3 { margin: 0; font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.3rem; font-weight: 900; letter-spacing: -0.02em; }
   .modal p { margin: 0; color: var(--muted); font-size: 0.9rem; }
-
-  .color-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-  }
-  .color-btn {
-    padding: 1.15rem;
-    border-radius: 0.7rem;
-    font-weight: 800;
-    font-size: 1rem;
-    letter-spacing: 0.02em;
-    color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-    min-height: 4rem;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.25) inset,
-      0 4px 12px rgba(0,0,0,0.3);
-    transition: transform 0.15s var(--ease-spring), box-shadow 0.15s;
-  }
+  .modal__actions { display: flex; gap: 0.5rem; margin-top: 0.25rem; }
+  .modal__actions button { flex: 1; }
+  .modal--scroll { max-height: 90vh; overflow-y: auto; text-align: left; }
+  .modal--scroll h3, .modal--scroll p { text-align: left; }
+  .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .color-btn { padding: 1.15rem; border-radius: 0.7rem; font-weight: 800;
+    font-size: 1rem; letter-spacing: 0.02em; color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4); min-height: 4rem;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 4px 12px rgba(0,0,0,0.3);
+    transition: transform 0.15s var(--ease-spring); }
   .color-btn:hover { filter: brightness(1.1); }
   .color-btn:active { transform: scale(0.94); }
-
   .game-over { text-align: center; }
-  .game-over .trophy {
-    font-size: 3rem;
-    margin: 0;
-    filter: drop-shadow(0 4px 20px rgba(240,180,41,0.6));
-  }
-  .game-over h2 {
-    margin: 0;
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.8rem;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    color: var(--gold);
-    text-shadow: 0 2px 20px rgba(240,180,41,0.4);
-  }
-  .game-over .winners {
-    font-size: 1rem;
-    color: var(--text);
-    font-weight: 500;
-    margin: 0.35rem 0;
-  }
+  .game-over .trophy { font-size: 3rem; margin: 0;
+    filter: drop-shadow(0 4px 20px rgba(240,180,41,0.6)); }
+  .game-over h2 { margin: 0; font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.8rem; font-weight: 900; letter-spacing: -0.02em; color: var(--gold);
+    text-shadow: 0 2px 20px rgba(240,180,41,0.4); }
+  .game-over .winners { font-size: 1rem; color: var(--text); font-weight: 500; margin: 0.35rem 0; }
 
   /* ===== Editor ===== */
-  .editor {
-    min-height: 100dvh;
-    max-width: 60rem;
-    margin: 0 auto;
-    padding: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  .editor__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.75rem 0.9rem;
-    background: rgba(20,44,32,0.7);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
-  }
-  .editor__header h2 {
-    margin: 0;
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.15rem;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-  }
-  .editor__actions {
-    display: flex;
-    gap: 0.4rem;
-  }
-  .editor__actions button {
-    padding: 0.45rem 0.85rem;
-    font-size: 0.85rem;
-    min-height: auto;
-  }
+  .editor { min-height: 100dvh; max-width: 64rem; margin: 0 auto;
+    padding: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .editor__header { display: flex; align-items: center; justify-content: space-between;
+    gap: 0.5rem; padding: 0.75rem 0.9rem;
+    background: rgba(20,44,32,0.7); backdrop-filter: blur(20px);
+    border: 1px solid var(--border); border-radius: 0.75rem; }
+  .editor__header h2 { margin: 0; font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.15rem; font-weight: 900; letter-spacing: -0.02em; }
+  .editor__header-actions { display: flex; gap: 0.4rem; }
+  .editor__header-actions button { padding: 0.45rem 0.85rem; font-size: 0.85rem; min-height: auto; }
 
-  .tabs {
-    display: flex;
-    gap: 0.15rem;
-    padding: 0.25rem;
-    background: rgba(0,0,0,0.25);
-    border-radius: 0.6rem;
-    border: 1px solid var(--border);
-  }
-  .tab {
-    flex: 1;
-    padding: 0.55rem 0.9rem;
-    background: transparent;
-    border: none;
-    border-radius: 0.4rem;
-    color: var(--muted);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    min-height: auto;
-    box-shadow: none;
-    transition: background 0.15s, color 0.15s;
-  }
+  .tabs { display: flex; gap: 0.15rem; padding: 0.25rem;
+    background: rgba(0,0,0,0.25); border-radius: 0.6rem; border: 1px solid var(--border); }
+  .tab { flex: 1; padding: 0.55rem 0.9rem; background: transparent; border: none;
+    border-radius: 0.4rem; color: var(--muted); font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; min-height: auto; box-shadow: none;
+    transition: background 0.15s, color 0.15s; }
   .tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-  .tab.active {
-    background: var(--surface-glow);
-    color: var(--text);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.06) inset,
-      0 2px 6px rgba(0,0,0,0.2);
-  }
+  .tab.active { background: var(--surface-glow); color: var(--text);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 2px 6px rgba(0,0,0,0.2); }
+  .tab-content { flex: 1; display: flex; flex-direction: column; gap: 0.9rem; }
 
-  .tab-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-  }
+  .panel { background: rgba(20,44,32,0.7); border: 1px solid var(--border);
+    border-radius: 0.75rem; padding: 1rem; display: flex;
+    flex-direction: column; gap: 0.85rem; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset; }
+  .panel h3 { margin: 0; font-size: 0.72rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .panel h3 button { padding: 0.25rem 0.6rem; font-size: 0.7rem; min-height: auto; font-weight: 600; }
 
-  .panel {
-    background: rgba(20,44,32,0.7);
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
-  }
-  .panel h3 {
-    margin: 0;
-    font-size: 0.72rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 700;
-  }
-
-  .form-row {
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-  }
+  .form-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .form-row > * { flex: 1; min-width: 8rem; }
-  .form-row .field label { font-size: 0.7rem; }
+  .check-row { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+  .check-row label { display: flex; align-items: center; gap: 0.45rem;
+    font-size: 0.85rem; cursor: pointer; color: var(--text-dim); font-weight: 500; }
+  .check-row input[type="checkbox"] { width: 1.05rem; height: 1.05rem;
+    accent-color: var(--accent-dim); cursor: pointer; }
 
-  .check-row {
-    display: flex;
-    gap: 1.1rem;
-    flex-wrap: wrap;
-  }
-  .check-row label {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-size: 0.85rem;
-    cursor: pointer;
-    color: var(--text-dim);
-    font-weight: 500;
-  }
-  .check-row input[type="checkbox"] {
-    width: 1.05rem;
-    height: 1.05rem;
-    accent-color: var(--accent-dim);
-    cursor: pointer;
-  }
+  /* Card grid */
+  .card-grid { display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(var(--card-w) + 0.6rem), 1fr));
+    gap: 0.6rem; padding: 0.15rem; }
+  .card-grid__item { display: flex; flex-direction: column; align-items: center;
+    gap: 0.3rem; cursor: pointer; padding: 0.35rem; border-radius: 0.5rem;
+    transition: background 0.15s; position: relative; }
+  .card-grid__item:hover { background: rgba(255,255,255,0.04); }
+  .card-grid__item .card { transform: scale(0.9); transform-origin: center bottom; }
+  .card-grid__item .count-badge { position: absolute; top: 0.2rem; right: 0.2rem;
+    background: var(--accent-bg); color: white; font-size: 0.6rem; font-weight: 700;
+    padding: 0.05rem 0.3rem; border-radius: 99px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5); z-index: 10; }
+  .card-grid__item .card-name { font-size: 0.65rem; color: var(--muted);
+    text-align: center; max-width: 100%; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; }
+  .card-grid__add { display: flex; align-items: center; justify-content: center;
+    min-height: var(--card-h); border: 2px dashed var(--border-hi);
+    border-radius: 0.5rem; color: var(--muted); font-size: 1.4rem;
+    cursor: pointer; transition: border-color 0.15s, color 0.15s;
+    min-width: calc(var(--card-w) * 0.9); }
+  .card-grid__add:hover { border-color: var(--accent-dim); color: var(--accent); }
 
-  .cards-table-scroll {
-    overflow-x: auto;
-    background: rgba(0,0,0,0.15);
-    border-radius: 0.6rem;
-    border: 1px solid var(--border);
-  }
-  .cards-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.8rem;
-    min-width: 44rem;
-  }
-  .cards-table th {
-    text-align: left;
-    padding: 0.65rem 0.55rem;
-    background: rgba(0,0,0,0.3);
-    color: var(--muted);
-    font-weight: 700;
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-  }
-  .cards-table td {
-    padding: 0.35rem 0.55rem;
-    border-top: 1px solid var(--border);
-  }
-  .cards-table input, .cards-table select {
-    padding: 0.35rem 0.5rem;
-    border-radius: 0.35rem;
-    border: 1px solid transparent;
-    background: transparent;
-    color: var(--text);
-    font-size: 0.82rem;
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .cards-table input:hover, .cards-table select:hover {
-    background: rgba(255,255,255,0.04);
-  }
-  .cards-table input:focus, .cards-table select:focus {
-    border-color: var(--accent-dim);
-    background: rgba(0,0,0,0.3);
-    box-shadow: none;
-  }
-  .cards-table input[type="number"] { width: 4rem; }
-  .cards-table input[type="checkbox"] { width: 1.05rem; height: 1.05rem; accent-color: var(--accent-dim); }
-  .cards-table .del-card {
-    padding: 0.35rem 0.6rem;
-    min-height: auto;
-    background: transparent;
-    color: var(--danger);
-    font-size: 1.05rem;
-    box-shadow: none;
-    font-weight: 400;
-  }
-  .cards-table .del-card:hover { background: var(--danger-bg); color: white; }
+  /* Property chips */
+  .prop-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .prop-chip { display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.35rem 0.65rem; background: var(--surface-hi);
+    border: 1px solid var(--border-hi); border-radius: 99px;
+    font-size: 0.8rem; font-weight: 600; color: var(--text); }
+  .prop-chip .prop-type { color: var(--muted); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+  .prop-chip button { padding: 0; background: transparent; border: none;
+    color: var(--muted); font-size: 0.9rem; min-height: auto; box-shadow: none;
+    line-height: 1; }
+  .prop-chip button:hover { color: var(--danger); background: none; }
 
-  .stat {
-    color: var(--muted);
-    font-size: 0.78rem;
-    padding: 0.2rem 0;
-  }
+  /* Effects */
+  .effects-list { display: flex; flex-direction: column; gap: 0.4rem; }
+  .effect-item { display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.6rem; background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.82rem; }
+  .effect-item select, .effect-item input { padding: 0.3rem 0.5rem;
+    font-size: 0.82rem; min-height: auto; }
+  .effect-item input[type="number"] { width: 4rem; flex-shrink: 0; }
+  .effect-item .eff-label { font-weight: 600; flex: 1; }
+  .effect-item .eff-label small { color: var(--muted); font-weight: 400; }
+  .effect-item button { padding: 0.25rem 0.5rem; min-height: auto;
+    background: transparent; color: var(--danger); box-shadow: none; font-size: 1rem; }
+  .effect-item button:hover { background: var(--danger-bg); color: white; }
 
-  .preview-deck {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    padding: 0.9rem;
-    background:
-      radial-gradient(ellipse at 50% 40%, var(--felt-top), var(--felt-bottom));
-    border-radius: 0.7rem;
-    min-height: 5rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3) inset;
-  }
-
-  .json-view {
-    background: rgba(0,0,0,0.35);
-    color: #8fe5b1;
-    padding: 0.9rem;
-    border-radius: 0.6rem;
+  .preview-deck { display: flex; flex-wrap: wrap; gap: 0.4rem;
+    padding: 0.9rem; background: radial-gradient(ellipse at 50% 40%, var(--felt-top), var(--felt-bottom));
+    border-radius: 0.7rem; min-height: 5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3) inset; }
+  .stat { color: var(--muted); font-size: 0.78rem; padding: 0.2rem 0; }
+  .json-view { background: rgba(0,0,0,0.35); color: #8fe5b1;
+    padding: 0.9rem; border-radius: 0.6rem;
     font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-    font-size: 0.72rem;
-    overflow-x: auto;
-    max-height: 24rem;
-    line-height: 1.5;
-    border: 1px solid var(--border);
-  }
-
-  .editor-footer {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    padding-top: 0.3rem;
-  }
+    font-size: 0.72rem; overflow-x: auto; max-height: 24rem;
+    line-height: 1.5; border: 1px solid var(--border); }
+  .editor-footer { display: flex; gap: 0.5rem; flex-wrap: wrap; padding-top: 0.3rem; }
   .editor-footer button { flex: 1; min-width: 8rem; }
 
-  /* ===== Responsive ===== */
+  .preset-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+  .modal-card-preview { display: flex; justify-content: center; padding: 0.5rem 0; }
+  .modal-card-preview .card { --card-w: 5rem; }
+
+  .divider { height: 1px; background: var(--border); margin: 0.35rem 0; }
+
+  .hint { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+
   @media (max-width: 560px) {
     .menu { padding: 1.5rem 1rem; }
     .menu__cards { width: 6.5rem; height: 5rem; }
@@ -1194,8 +505,8 @@
     .log { max-height: 3.5rem; }
     .editor__header h2 { font-size: 1rem; }
     .modal { padding: 1.25rem; }
+    .modal--wide { max-width: 100%; }
   }
-
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -1250,7 +561,7 @@ function shuffle(arr) {
 }
 
 // ============================================================
-// Colors and constants
+// Constants
 // ============================================================
 
 const COLOR_HEX = {
@@ -1260,19 +571,12 @@ const COLOR_HEX = {
   gray: '#6b7280', black: '#1c1c20', white: '#f3f4f6',
 };
 const LIGHT_COLORS = new Set(['yellow', 'white']);
-const COLOR_ORDER = Object.fromEntries(Object.keys(COLOR_HEX).map((c, i) => [c, i]));
-
-const STD_SUITS = ['♠', '♥', '♦', '♣'];
-const STD_RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+const SUITS = ['♠', '♥', '♦', '♣'];
 const SUIT_ORDER = { '♠': 0, '♥': 1, '♦': 2, '♣': 3 };
+const STD_SUITS = SUITS;
+const STD_RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
 const RANK_ORDER = Object.fromEntries(STD_RANKS.map((r, i) => [r, i]));
-const UNO_COLOR_ORDER = { red: 0, yellow: 1, green: 2, blue: 3, wild: 4 };
-const UNO_VALUE_ORDER = {
-  '0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
-  skip: 10, reverse: 11, draw2: 12, wild: 13, wild4: 14,
-};
 
-// Pip layouts as [x%, y%] of the inner card area
 const PIP_LAYOUTS = {
   '2': [[50, 22], [50, 78]],
   '3': [[50, 22], [50, 50], [50, 78]],
@@ -1286,10 +590,10 @@ const PIP_LAYOUTS = {
 };
 
 // ============================================================
-// Deck builders
+// Built-in games (UNO, Crazy Eights) — hardcoded for polish
 // ============================================================
 
-function buildStd() {
+function buildStdDeck() {
   const defs = {}; const cards = [];
   for (const suit of STD_SUITS) for (const rank of STD_RANKS) {
     const id = 'std:' + suit + rank;
@@ -1300,10 +604,9 @@ function buildStd() {
   return { defs, cards };
 }
 
-function buildUno() {
+function buildUnoDeck() {
   const defs = {}; const cards = [];
-  const colors = ['red', 'yellow', 'green', 'blue'];
-  for (const color of colors) {
+  for (const color of ['red', 'yellow', 'green', 'blue']) {
     const zid = `uno:${color}:0`;
     defs[zid] = { id: zid, kind: 'uno', color, value: '0' };
     cards.push({ id: zid + ':0', defId: zid });
@@ -1328,14 +631,15 @@ function buildUno() {
   return { defs, cards };
 }
 
-const STD_DECK = buildStd();
-const UNO_DECK = buildUno();
+const STD_DECK = buildStdDeck();
+const UNO_DECK = buildUnoDeck();
 
 // ============================================================
-// State helpers
+// Shared helpers
 // ============================================================
 
-function makeState(scriptId, names) {
+function topOf(zone) { return zone.cards[zone.cards.length - 1]; }
+function makeBaseState(scriptId, names) {
   return {
     scriptId,
     players: names.map((name, id) => ({ id, name })),
@@ -1345,9 +649,6 @@ function makeState(scriptId, names) {
     log: [], ended: false, winners: [],
   };
 }
-
-function topOf(zone) { return zone.cards[zone.cards.length - 1]; }
-
 function advanceTurn(s) {
   const n = s.players.length;
   const dir = s.flags.direction ?? 1;
@@ -1356,7 +657,6 @@ function advanceTurn(s) {
   s.flags.drewThisTurn = false;
   s.flags.drawnCardId = undefined;
 }
-
 function drawTo(s, playerId) {
   if (s.zones.draw.cards.length === 0) reshuffleDiscard(s);
   if (s.zones.draw.cards.length === 0) return null;
@@ -1364,7 +664,6 @@ function drawTo(s, playerId) {
   s.zones['hand:' + playerId].cards.push(c);
   return c;
 }
-
 function reshuffleDiscard(s) {
   const discard = s.zones.discard;
   if (!discard || discard.cards.length <= 1) return;
@@ -1375,11 +674,121 @@ function reshuffleDiscard(s) {
 }
 
 // ============================================================
-// Game: Crazy Eights
+// Built-in: UNO
+// ============================================================
+
+function createUno(names) {
+  const s = makeBaseState('uno', names);
+  s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
+  for (const p of s.players) s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
+  const cards = UNO_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
+  s.zones.draw.cards = shuffle(cards);
+  for (const p of s.players) for (let i = 0; i < 7; i++)
+    s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
+  let top = s.zones.draw.cards.pop();
+  while (UNO_DECK.defs[top.defId].color === 'wild') {
+    s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
+  }
+  top.faceUp = true; s.zones.discard.cards.push(top);
+  s.flags.activeColor = UNO_DECK.defs[top.defId].color;
+  s.log.push('Top card: ' + unoLabel(UNO_DECK.defs[top.defId]) + '. ' + names[0] + ' starts.');
+  return s;
+}
+function unoLabel(def) {
+  const names = { skip: 'Skip', reverse: 'Reverse', draw2: 'Draw Two', wild: 'Wild', wild4: 'Wild Draw Four' };
+  if (def.color === 'wild') return names[def.value] || def.value;
+  return def.color + ' ' + (names[def.value] || def.value);
+}
+function isPlayableUno(s, def) {
+  if (def.color === 'wild') return true;
+  const top = topOf(s.zones.discard);
+  if (!top) return true;
+  const topDef = UNO_DECK.defs[top.defId];
+  return def.color === s.flags.activeColor || def.value === topDef.value;
+}
+function legalUno(s, player) {
+  if (s.ended || player !== s.current) return [];
+  if (s.phase === 'chooseColor') return ['red','yellow','green','blue'].map(c => ({
+    id: 'color-' + c, cmd: { type: 'CHOOSE_COLOR', color: c },
+  }));
+  const hand = s.zones['hand:' + player]; const out = [];
+  if (s.flags.drewThisTurn) {
+    const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
+    if (drawn && isPlayableUno(s, UNO_DECK.defs[drawn.defId]))
+      out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
+    out.push({ id: 'pass', cmd: { type: 'PASS' } }); return out;
+  }
+  for (const c of hand.cards) if (isPlayableUno(s, UNO_DECK.defs[c.defId]))
+    out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
+  if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
+  return out;
+}
+function applyUno(state, cmd) {
+  const s = structuredClone(state); const actor = s.current;
+  const n = s.players.length;
+  if (cmd.type === 'PLAY_CARD') {
+    const hand = s.zones['hand:' + actor];
+    const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
+    if (idx < 0) throw new Error('Card not in hand');
+    const card = hand.cards[idx]; const def = UNO_DECK.defs[card.defId];
+    if (!isPlayableUno(s, def)) throw new Error('Not playable');
+    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId)
+      throw new Error('You can only play the card you drew');
+    hand.cards.splice(idx, 1); card.faceUp = true;
+    s.zones.discard.cards.push(card);
+    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' played ' + unoLabel(def));
+    if (hand.cards.length === 0) {
+      s.ended = true; s.winners = [actor];
+      s.log.push(s.players[actor].name + ' wins!'); return s;
+    }
+    if (def.color === 'wild') {
+      s.phase = 'chooseColor';
+      s.flags.pendingWild4 = def.value === 'wild4'; return s;
+    }
+    s.flags.activeColor = def.color;
+    if (def.value === 'skip') { advanceTurn(s); advanceTurn(s); }
+    else if (def.value === 'reverse') {
+      s.flags.direction *= -1; advanceTurn(s);
+      if (n === 2) advanceTurn(s);
+    } else if (def.value === 'draw2') {
+      advanceTurn(s); const target = s.current;
+      for (let i = 0; i < 2; i++) drawTo(s, target);
+      s.log.push(s.players[target].name + ' draws 2 and is skipped'); advanceTurn(s);
+    } else advanceTurn(s);
+    return s;
+  }
+  if (cmd.type === 'CHOOSE_COLOR') {
+    s.flags.activeColor = cmd.color; s.phase = 'play';
+    const wasWild4 = s.flags.pendingWild4; s.flags.pendingWild4 = false;
+    s.log.push(s.players[actor].name + ' chose ' + cmd.color);
+    if (wasWild4) {
+      advanceTurn(s); const t = s.current;
+      for (let i = 0; i < 4; i++) drawTo(s, t);
+      s.log.push(s.players[t].name + ' draws 4 and is skipped'); advanceTurn(s);
+    } else advanceTurn(s);
+    return s;
+  }
+  if (cmd.type === 'DRAW') {
+    if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
+    const c = drawTo(s, actor);
+    if (!c) { s.log.push('No cards left to draw'); advanceTurn(s); return s; }
+    s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
+    s.log.push(s.players[actor].name + ' drew a card'); return s;
+  }
+  if (cmd.type === 'PASS') {
+    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' passed'); advanceTurn(s); return s;
+  }
+  throw new Error('Unknown command: ' + cmd.type);
+}
+
+// ============================================================
+// Built-in: Crazy Eights
 // ============================================================
 
 function createCE(names) {
-  const s = makeState('crazy-eights', names);
+  const s = makeBaseState('crazy-eights', names);
   s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
   for (const p of s.players) s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
   const cards = STD_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
@@ -1390,23 +799,18 @@ function createCE(names) {
   while (STD_DECK.defs[top.defId].rank === '8') {
     s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
   }
-  top.faceUp = true;
-  s.zones.discard.cards.push(top);
+  top.faceUp = true; s.zones.discard.cards.push(top);
   s.flags.activeColor = STD_DECK.defs[top.defId].suit;
   s.log.push('Top card: ' + STD_DECK.defs[top.defId].name + '. ' + names[0] + ' starts.');
   return s;
 }
-
 function isPlayableCE(s, def) {
   const top = topOf(s.zones.discard);
   if (!top) return true;
   const topDef = STD_DECK.defs[top.defId];
   if (def.rank === '8') return true;
-  if (def.suit === s.flags.activeColor) return true;
-  if (def.rank === topDef.rank) return true;
-  return false;
+  return def.suit === s.flags.activeColor || def.rank === topDef.rank;
 }
-
 function legalCE(s, player) {
   if (s.ended || player !== s.current) return [];
   if (s.phase === 'chooseColor') return STD_SUITS.map(suit => ({
@@ -1424,7 +828,6 @@ function legalCE(s, player) {
   if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
   return out;
 }
-
 function applyCE(state, cmd) {
   const s = structuredClone(state); const actor = s.current;
   if (cmd.type === 'PLAY_CARD') {
@@ -1467,124 +870,6 @@ function applyCE(state, cmd) {
 }
 
 // ============================================================
-// Game: UNO
-// ============================================================
-
-function createUno(names) {
-  const s = makeState('uno', names);
-  s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
-  for (const p of s.players) s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-  const cards = UNO_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
-  s.zones.draw.cards = shuffle(cards);
-  for (const p of s.players) for (let i = 0; i < 7; i++)
-    s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
-  let top = s.zones.draw.cards.pop();
-  while (UNO_DECK.defs[top.defId].color === 'wild') {
-    s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
-  }
-  top.faceUp = true; s.zones.discard.cards.push(top);
-  s.flags.activeColor = UNO_DECK.defs[top.defId].color;
-  s.log.push('Top card: ' + cardLabelUno(UNO_DECK.defs[top.defId]) + '. ' + names[0] + ' starts.');
-  return s;
-}
-
-function cardLabelUno(def) {
-  const names = { skip: 'Skip', reverse: 'Reverse', draw2: 'Draw Two', wild: 'Wild', wild4: 'Wild Draw Four' };
-  if (def.color === 'wild') return names[def.value] || def.value;
-  return def.color + ' ' + (names[def.value] || def.value);
-}
-
-function isPlayableUno(s, def) {
-  if (def.color === 'wild') return true;
-  const top = topOf(s.zones.discard);
-  if (!top) return true;
-  const topDef = UNO_DECK.defs[top.defId];
-  if (def.color === s.flags.activeColor) return true;
-  if (def.value === topDef.value) return true;
-  return false;
-}
-
-function legalUno(s, player) {
-  if (s.ended || player !== s.current) return [];
-  if (s.phase === 'chooseColor') return ['red', 'yellow', 'green', 'blue'].map(c => ({
-    id: 'color-' + c, cmd: { type: 'CHOOSE_COLOR', color: c },
-  }));
-  const hand = s.zones['hand:' + player]; const out = [];
-  if (s.flags.drewThisTurn) {
-    const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
-    if (drawn && isPlayableUno(s, UNO_DECK.defs[drawn.defId]))
-      out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
-    out.push({ id: 'pass', cmd: { type: 'PASS' } }); return out;
-  }
-  for (const c of hand.cards) if (isPlayableUno(s, UNO_DECK.defs[c.defId]))
-    out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
-  if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
-  return out;
-}
-
-function applyUno(state, cmd) {
-  const s = structuredClone(state); const actor = s.current;
-  const n = s.players.length;
-  if (cmd.type === 'PLAY_CARD') {
-    const hand = s.zones['hand:' + actor];
-    const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
-    if (idx < 0) throw new Error('Card not in hand');
-    const card = hand.cards[idx]; const def = UNO_DECK.defs[card.defId];
-    if (!isPlayableUno(s, def)) throw new Error('Not playable');
-    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId)
-      throw new Error('You can only play the card you drew');
-    hand.cards.splice(idx, 1); card.faceUp = true;
-    s.zones.discard.cards.push(card);
-    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' played ' + cardLabelUno(def));
-    if (hand.cards.length === 0) {
-      s.ended = true; s.winners = [actor];
-      s.log.push(s.players[actor].name + ' wins!'); return s;
-    }
-    if (def.color === 'wild') {
-      s.phase = 'chooseColor';
-      s.flags.pendingWild4 = def.value === 'wild4'; return s;
-    }
-    s.flags.activeColor = def.color;
-    if (def.value === 'skip') { advanceTurn(s); advanceTurn(s); }
-    else if (def.value === 'reverse') {
-      s.flags.direction *= -1; advanceTurn(s);
-      if (n === 2) advanceTurn(s);
-    } else if (def.value === 'draw2') {
-      advanceTurn(s); const target = s.current;
-      for (let i = 0; i < 2; i++) drawTo(s, target);
-      s.log.push(s.players[target].name + ' draws 2 and is skipped');
-      advanceTurn(s);
-    } else advanceTurn(s);
-    return s;
-  }
-  if (cmd.type === 'CHOOSE_COLOR') {
-    s.flags.activeColor = cmd.color; s.phase = 'play';
-    const wasWild4 = s.flags.pendingWild4; s.flags.pendingWild4 = false;
-    s.log.push(s.players[actor].name + ' chose ' + cmd.color);
-    if (wasWild4) {
-      advanceTurn(s); const target = s.current;
-      for (let i = 0; i < 4; i++) drawTo(s, target);
-      s.log.push(s.players[target].name + ' draws 4 and is skipped');
-      advanceTurn(s);
-    } else advanceTurn(s);
-    return s;
-  }
-  if (cmd.type === 'DRAW') {
-    if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
-    const c = drawTo(s, actor);
-    if (!c) { s.log.push('No cards left to draw'); advanceTurn(s); return s; }
-    s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
-    s.log.push(s.players[actor].name + ' drew a card'); return s;
-  }
-  if (cmd.type === 'PASS') {
-    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' passed'); advanceTurn(s); return s;
-  }
-  throw new Error('Unknown command: ' + cmd.type);
-}
-
-// ============================================================
 // Custom game engine
 // ============================================================
 
@@ -1595,21 +880,24 @@ function finalizeCustomGame(def) {
   const defs = {};
   for (const c of def.cards) defs[c.id] = { ...c, kind: 'custom' };
   const instances = [];
-  for (const c of def.cards) for (let i = 0; i < c.count; i++)
+  for (const c of def.cards) for (let i = 0; i < (c.count || 1); i++)
     instances.push({ id: c.id + '_' + i, defId: c.id });
   return { ...def, _defs: defs, _instances: instances };
 }
 
 function createCustomState(def, names) {
-  const s = makeState(def.id, names);
-  s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
+  const s = makeBaseState(def.id, names);
+  s.flags.activeProps = {};
+  s.flags.scores = {};
+  for (const p of s.players) s.flags.scores[p.id] = 0;
+  s.zones.draw = { cards: [] };
+  s.zones.discard = { cards: [] };
   for (const p of s.players) {
     s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
     if (def.winCondition === 'mostSets')
       s.zones['sets:' + p.id] = { owner: p.id, cards: [] };
   }
-  const allCards = def._instances.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
-  s.zones.draw.cards = shuffle(allCards);
+  s.zones.draw.cards = shuffle(def._instances.map(c => ({ id: c.id, defId: c.defId, faceUp: false })));
   for (const p of s.players) {
     for (let i = 0; i < def.deal; i++) {
       const c = s.zones.draw.cards.pop();
@@ -1621,10 +909,7 @@ function createCustomState(def, names) {
     while (top && def._defs[top.defId]?.isWild && tries++ < 30) {
       s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
     }
-    if (top) {
-      top.faceUp = true; s.zones.discard.cards.push(top);
-      s.flags.activeGroup = def._defs[top.defId]?.group || def._defs[top.defId]?.color;
-    }
+    if (top) { top.faceUp = true; s.zones.discard.cards.push(top); }
   }
   if (def.winCondition === 'mostSets')
     for (const p of s.players) collectSetsCustom(def, s, p.id);
@@ -1636,21 +921,23 @@ function collectSetsCustom(def, s, playerId) {
   if (def.winCondition !== 'mostSets') return;
   const hand = s.zones['hand:' + playerId];
   if (!hand) return;
-  const byRank = {};
+  const rankProp = def.setProp || 'rank';
+  const byKey = {};
   for (const c of hand.cards) {
-    const r = def._defs[c.defId]?.rank;
-    if (r == null) continue;
-    (byRank[r] = byRank[r] || []).push(c);
+    const key = def._defs[c.defId]?.props?.[rankProp];
+    if (key == null) continue;
+    (byKey[key] = byKey[key] || []).push(c);
   }
-  for (const [rank, cards] of Object.entries(byRank)) {
+  for (const [key, cards] of Object.entries(byKey)) {
     if (cards.length >= def.setSize) {
       const take = cards.slice(0, def.setSize);
       for (const c of take) {
         hand.cards.splice(hand.cards.indexOf(c), 1);
         c.faceUp = true;
         s.zones['sets:' + playerId].cards.push(c);
+        s.flags.scores[playerId] = (s.flags.scores[playerId] || 0) + (def._defs[c.defId]?.value || 0);
       }
-      s.log.push(s.players[playerId].name + ' made a set of ' + rank + 's');
+      s.log.push(s.players[playerId].name + ' made a set of ' + key + 's');
     }
   }
 }
@@ -1659,48 +946,141 @@ function isPlayableCustom(def, s, card) {
   const d = def._defs[card.defId];
   if (!d) return false;
   if (d.isWild) return true;
+  if (def.gameMode === 'ask') return false; // ask mode uses different actions
   const top = topOf(s.zones.discard);
   if (!top) return true;
   const topDef = def._defs[top.defId];
   if (!topDef) return true;
-  const checks = [];
-  if (def.matchBy.includes('color')) checks.push(d.color === topDef.color);
-  if (def.matchBy.includes('group')) {
-    const active = s.flags.activeGroup;
-    checks.push(active != null ? d.group === active : d.group === topDef.group);
+  for (const prop of def.matchProps) {
+    const myVal = d.props?.[prop];
+    if (myVal == null) continue;
+    const activeVal = s.flags.activeProps?.[prop];
+    const topVal = activeVal != null ? activeVal : topDef.props?.[prop];
+    if (myVal === topVal) return true;
   }
-  if (def.matchBy.includes('rank')) checks.push(d.rank === topDef.rank);
-  return checks.some(x => x);
+  return false;
 }
 
 function legalCustom(def, s, player) {
   if (s.ended || player !== s.current) return [];
-  if (s.phase === 'chooseGroup') {
-    const groups = [...new Set(def.cards.filter(c => !c.isWild).map(c => c.group).filter(Boolean))];
-    return groups.map(g => ({ id: 'group-' + g, cmd: { type: 'CHOOSE_GROUP', group: g } }));
+  if (s.phase === 'chooseProp') {
+    const prop = s.flags.choosePropProp;
+    const propDef = def.properties.find(p => p.name === prop);
+    let values = [];
+    if (propDef?.type === 'color') values = Object.keys(COLOR_HEX);
+    else if (propDef?.type === 'suit') values = SUITS;
+    else {
+      // derive from existing cards
+      const seen = new Set();
+      for (const c of def.cards) {
+        const v = c.props?.[prop];
+        if (v != null && v !== 'wild') seen.add(v);
+      }
+      values = [...seen];
+    }
+    return values.map(v => ({
+      id: 'choose-' + v,
+      cmd: { type: 'CHOOSE_PROP', prop, value: v },
+    }));
   }
-  if (s.phase === 'chooseColor') {
-    const colors = [...new Set(def.cards.filter(c => !c.isWild).map(c => c.color).filter(Boolean))];
-    return colors.map(c => ({ id: 'color-' + c, cmd: { type: 'CHOOSE_GROUP', group: c } }));
+
+  const hand = s.zones['hand:' + player];
+
+  if (def.gameMode === 'ask') {
+    const out = [];
+    const prop = def.setProp || 'rank';
+    const myValues = new Set(hand.cards.map(c => def._defs[c.defId]?.props?.[prop]).filter(Boolean));
+    for (const v of myValues) {
+      for (const p of s.players) {
+        if (p.id === player) continue;
+        out.push({
+          id: `ask-${p.id}-${v}`, value: v, target: p.id,
+          cmd: { type: 'ASK', target: p.id, value: v },
+        });
+      }
+    }
+    if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
+    return out;
   }
-  const hand = s.zones['hand:' + player]; const out = [];
+
+  // Shed mode
+  const out = [];
   if (s.flags.drewThisTurn) {
     const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
     if (drawn && isPlayableCustom(def, s, drawn))
       out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
-    out.push({ id: 'pass', cmd: { type: 'PASS' } }); return out;
+    out.push({ id: 'pass', cmd: { type: 'PASS' } });
+    return out;
   }
   for (const c of hand.cards) if (isPlayableCustom(def, s, c))
     out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
   if (def.turnMode !== 'playOnly' && out.length === 0)
     out.push({ id: 'draw', cmd: { type: 'DRAW' } });
-  if (def.turnMode === 'drawFirst')
-    return [{ id: 'draw', cmd: { type: 'DRAW' } }].concat(out.filter(a => a.cmd.type !== 'DRAW'));
   return out;
+}
+
+// Effect helpers
+function applyEffect(def, s, actor, eff, tracker) {
+  switch (eff.type) {
+    case 'skip':
+      tracker.advanced = true;
+      advanceTurn(s); advanceTurn(s);
+      s.log.push(s.players[s.current].name + ' is skipped');
+      break;
+    case 'reverse':
+      tracker.advanced = true;
+      s.flags.direction *= -1;
+      advanceTurn(s);
+      if (s.players.length === 2) advanceTurn(s);
+      break;
+    case 'drawAndSkip': {
+      tracker.advanced = true;
+      advanceTurn(s);
+      const target = s.current;
+      for (let i = 0; i < eff.n; i++) drawTo(s, target);
+      s.log.push(s.players[target].name + ' draws ' + eff.n + ' and is skipped');
+      advanceTurn(s);
+      break;
+    }
+    case 'drawSelf':
+      for (let i = 0; i < eff.n; i++) drawTo(s, actor);
+      s.log.push(s.players[actor].name + ' draws ' + eff.n);
+      break;
+    case 'discardSelf': {
+      const hand = s.zones['hand:' + actor];
+      for (let i = 0; i < eff.n && hand.cards.length > 0; i++) {
+        const c = hand.cards.pop();
+        c.faceUp = true;
+        s.zones.discard.cards.push(c);
+      }
+      s.log.push(s.players[actor].name + ' discards ' + eff.n);
+      break;
+    }
+    case 'score':
+      s.flags.scores[actor] = (s.flags.scores[actor] || 0) + eff.n;
+      s.log.push(s.players[actor].name + ' gains ' + eff.n + ' points');
+      break;
+  }
+}
+
+function applyEffects(def, s, actor, effects, tracker) {
+  for (let i = 0; i < effects.length; i++) {
+    const eff = effects[i];
+    if (eff.type === 'chooseProp') {
+      s.flags.choosePropProp = eff.prop;
+      s.flags.pendingEffects = effects.slice(i + 1);
+      s.flags.pendingEffectOwner = actor;
+      s.phase = 'chooseProp';
+      return 'paused';
+    }
+    applyEffect(def, s, actor, eff, tracker);
+  }
+  return 'done';
 }
 
 function applyCustom(def, state, cmd) {
   const s = structuredClone(state); const actor = s.current;
+
   if (cmd.type === 'PLAY_CARD') {
     const hand = s.zones['hand:' + actor];
     const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
@@ -1713,102 +1093,230 @@ function applyCustom(def, state, cmd) {
     hand.cards.splice(idx, 1); card.faceUp = true;
     s.zones.discard.cards.push(card);
     s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-    const label = cardDef.label || cardDef.rank;
-    s.log.push(s.players[actor].name + ' played ' + label);
-    if (cardDef.isWild && def.wildChoosesGroup) {
-      s.phase = 'chooseGroup';
-      s.flags.pendingAction = cardDef.actionType || 'none';
+
+    // Set active props from played card
+    for (const prop of def.matchProps) {
+      const v = cardDef.props?.[prop];
+      if (v != null && v !== 'wild') s.flags.activeProps[prop] = v;
+    }
+
+    s.log.push(s.players[actor].name + ' played ' + (cardDef.name || 'a card'));
+
+    // Win check before effects
+    if (def.winCondition === 'emptyHand' && hand.cards.length === 0 && !hasForcedEffectAfterWin(cardDef.effects)) {
+      s.ended = true; s.winners = [actor];
+      s.log.push(s.players[actor].name + ' wins!');
       return s;
     }
-    if (cardDef.group) s.flags.activeGroup = cardDef.group;
-    if (cardDef.color && !cardDef.group) s.flags.activeGroup = cardDef.color;
-    if (def.winCondition === 'emptyHand' && hand.cards.length === 0) {
-      s.ended = true; s.winners = [actor];
-      s.log.push(s.players[actor].name + ' wins!'); return s;
-    }
-    applyCustomAction(def, s, cardDef, actor);
+
+    const tracker = { advanced: false };
+    const result = applyEffects(def, s, actor, cardDef.effects || [], tracker);
+    if (result === 'done' && !tracker.advanced && !s.ended) advanceTurn(s);
+    if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
     return s;
   }
-  if (cmd.type === 'CHOOSE_GROUP') {
-    s.flags.activeGroup = cmd.group;
+
+  if (cmd.type === 'CHOOSE_PROP') {
+    s.flags.activeProps[cmd.prop] = cmd.value;
     s.phase = 'play';
-    s.log.push(s.players[actor].name + ' chose ' + cmd.group);
-    const pendingAction = s.flags.pendingAction || 'none';
-    s.flags.pendingAction = undefined;
-    const hand = s.zones['hand:' + actor];
-    if (def.winCondition === 'emptyHand' && hand.cards.length === 0) {
-      s.ended = true; s.winners = [actor];
-      s.log.push(s.players[actor].name + ' wins!'); return s;
-    }
-    applyCustomAction(def, s, { actionType: pendingAction, isWild: false, group: cmd.group }, actor);
+    s.log.push(s.players[s.flags.pendingEffectOwner].name + ' chose ' + cmd.value);
+    const owner = s.flags.pendingEffectOwner;
+    const pending = s.flags.pendingEffects || [];
+    s.flags.pendingEffects = undefined;
+    s.flags.choosePropProp = undefined;
+    s.flags.pendingEffectOwner = undefined;
+    const tracker = { advanced: false };
+    const result = applyEffects(def, s, owner, pending, tracker);
+    if (result === 'done' && !tracker.advanced && !s.ended) advanceTurn(s);
+    if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
     return s;
   }
+
   if (cmd.type === 'DRAW') {
     if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
     const c = drawTo(s, actor);
     if (!c) { s.log.push('No cards left to draw'); advanceTurn(s); return s; }
     s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
-    s.log.push(s.players[actor].name + ' drew a card'); return s;
+    s.log.push(s.players[actor].name + ' drew a card');
+    if (def.turnMode === 'playOnly') advanceTurn(s);
+    return s;
   }
+
   if (cmd.type === 'PASS') {
     s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' passed'); advanceTurn(s);
+    s.log.push(s.players[actor].name + ' passed');
+    advanceTurn(s);
     if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
     return s;
   }
+
+  if (cmd.type === 'ASK') {
+    if (def.gameMode !== 'ask') throw new Error('Not in ask mode');
+    const target = cmd.target;
+    const value = cmd.value;
+    const prop = def.setProp || 'rank';
+    const actorHand = s.zones['hand:' + actor];
+    const targetHand = s.zones['hand:' + target];
+    if (!actorHand.cards.some(c => def._defs[c.defId]?.props?.[prop] === value))
+      throw new Error('You must hold that card');
+    const matching = targetHand.cards.filter(c => def._defs[c.defId]?.props?.[prop] === value);
+    let goAgain = false;
+    if (matching.length > 0) {
+      for (const c of matching) {
+        targetHand.cards.splice(targetHand.cards.indexOf(c), 1);
+        actorHand.cards.push(c);
+      }
+      s.log.push(`${s.players[actor].name} got ${matching.length}× ${value} from ${s.players[target].name}`);
+      goAgain = true;
+    } else {
+      const c = drawTo(s, actor);
+      if (c) {
+        const drawnVal = def._defs[c.defId]?.props?.[prop];
+        s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${value}, drew a card`);
+        goAgain = drawnVal === value;
+      } else {
+        s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${value}, got nothing`);
+      }
+    }
+    collectSetsCustom(def, s, actor);
+    checkCustomEnd(def, s);
+    if (!s.ended && !goAgain) advanceTurn(s);
+    return s;
+  }
+
   throw new Error('Unknown command: ' + cmd.type);
 }
 
-function applyCustomAction(def, s, cardDef, actor) {
-  const n = s.players.length;
-  const action = cardDef.actionType || 'none';
-  if (action === 'skip') { advanceTurn(s); advanceTurn(s); }
-  else if (action === 'reverse') {
-    s.flags.direction *= -1; advanceTurn(s);
-    if (n === 2) advanceTurn(s);
-  } else if (action === 'draw2') {
-    advanceTurn(s); const t = s.current;
-    for (let i = 0; i < 2; i++) drawTo(s, t);
-    s.log.push(s.players[t].name + ' draws 2 and is skipped'); advanceTurn(s);
-  } else if (action === 'draw4') {
-    advanceTurn(s); const t = s.current;
-    for (let i = 0; i < 4; i++) drawTo(s, t);
-    s.log.push(s.players[t].name + ' draws 4 and is skipped'); advanceTurn(s);
-  } else advanceTurn(s);
-  if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
+function hasForcedEffectAfterWin(effects) {
+  return effects && effects.some(e => e.type === 'chooseProp');
 }
 
 function checkCustomEnd(def, s) {
   if (def.winCondition !== 'mostSets') return;
   for (const p of s.players) collectSetsCustom(def, s, p.id);
-  let totalSets = 0;
-  for (const p of s.players) totalSets += s.zones['sets:' + p.id].cards.length / def.setSize;
   const allHandsEmpty = s.players.every(p => s.zones['hand:' + p.id].cards.length === 0);
   const drawEmpty = s.zones.draw.cards.length === 0;
-  if (totalSets < 13 && !(drawEmpty && allHandsEmpty)) return;
+  if (!allHandsEmpty && !drawEmpty) return;
+  if (drawEmpty && s.players.some(p => s.zones['hand:' + p.id].cards.length > 0)) {
+    // Keep playing until all sets collected
+  }
   s.ended = true;
   let best = -1; s.winners = [];
   for (const p of s.players) {
-    const cnt = s.zones['sets:' + p.id].cards.length / def.setSize;
+    const cnt = s.flags.scores[p.id] || 0;
     if (cnt > best) { best = cnt; s.winners = [p.id]; }
     else if (cnt === best) s.winners.push(p.id);
   }
   s.log.push('Game over. ' + s.winners.map(w => s.players[w].name).join(', ')
-    + ' win with ' + best + ' set' + (best === 1 ? '' : 's') + '.');
+    + ' win with ' + best + ' point' + (best === 1 ? '' : 's') + '.');
 }
 
 function makeCustomAdapter(def) {
   return {
     id: def.id, name: def.name,
     minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
-    defs: def._defs, uiMode: 'play',
+    defs: def._defs, uiMode: def.gameMode === 'ask' ? 'ask' : 'play',
     rules: def.description || ('Custom game: ' + def.name),
-    isCustom: true, _setSize: def.setSize,
+    isCustom: true, _def: def,
     create: names => createCustomState(def, names),
     legal: (s, p) => legalCustom(def, s, p),
     apply: (s, cmd) => applyCustom(def, s, cmd),
   };
 }
+
+// ============================================================
+// Presets
+// ============================================================
+
+function makeUnoPreset() {
+  const cards = [];
+  for (const color of ['red', 'yellow', 'green', 'blue']) {
+    cards.push({ id: newCardId(), name: 'Red 0'.replace('Red', color[0].toUpperCase() + color.slice(1)), count: 1, props: { color, rank: '0' }, value: 0, isWild: false, effects: [] });
+    for (let n = 1; n <= 9; n++) {
+      cards.push({ id: newCardId(), name: color[0].toUpperCase() + color.slice(1) + ' ' + n, count: 2, props: { color, rank: String(n) }, value: n, isWild: false, effects: [] });
+    }
+    cards.push({ id: newCardId(), name: color[0].toUpperCase() + color.slice(1) + ' Skip', count: 2, props: { color, rank: 'skip' }, value: 20, isWild: false, effects: [{ type: 'skip' }] });
+    cards.push({ id: newCardId(), name: color[0].toUpperCase() + color.slice(1) + ' Reverse', count: 2, props: { color, rank: 'reverse' }, value: 20, isWild: false, effects: [{ type: 'reverse' }] });
+    cards.push({ id: newCardId(), name: color[0].toUpperCase() + color.slice(1) + ' Draw Two', count: 2, props: { color, rank: 'draw2' }, value: 20, isWild: false, effects: [{ type: 'drawAndSkip', n: 2 }] });
+  }
+  cards.push({ id: newCardId(), name: 'Wild', count: 4, props: { color: 'wild', rank: 'wild' }, value: 50, isWild: true, effects: [{ type: 'chooseProp', prop: 'color' }] });
+  cards.push({ id: newCardId(), name: 'Wild Draw Four', count: 4, props: { color: 'wild', rank: 'wild4' }, value: 50, isWild: true, effects: [{ type: 'chooseProp', prop: 'color' }, { type: 'drawAndSkip', n: 4 }] });
+  return {
+    name: 'UNO-style',
+    gameMode: 'shed', minPlayers: 2, maxPlayers: 10,
+    deal: 7, flipStart: true, matchProps: ['color', 'rank'],
+    turnMode: 'drawIfStuck', winCondition: 'emptyHand',
+    properties: [{ name: 'color', type: 'color' }, { name: 'rank', type: 'text' }],
+    cards, description: '',
+  };
+}
+
+function makeStandard52Preset() {
+  const cards = [];
+  const suitGroups = { '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' };
+  for (const suit of SUITS) for (const rank of STD_RANKS) {
+    cards.push({
+      id: newCardId(),
+      name: rank + suit,
+      count: 1,
+      props: { suit, rank },
+      value: rank === 'A' ? 1 : rank === 'J' ? 11 : rank === 'Q' ? 12 : rank === 'K' ? 13 : parseInt(rank, 10),
+      isWild: false, effects: [],
+    });
+  }
+  return {
+    name: 'Standard 52',
+    gameMode: 'shed', minPlayers: 2, maxPlayers: 7,
+    deal: 5, flipStart: true, matchProps: ['suit', 'rank'],
+    turnMode: 'drawIfStuck', winCondition: 'emptyHand',
+    properties: [{ name: 'suit', type: 'suit' }, { name: 'rank', type: 'text' }],
+    cards, description: '',
+  };
+}
+
+function makeNumbersPreset() {
+  const cards = [];
+  for (let n = 1; n <= 10; n++) {
+    cards.push({
+      id: newCardId(),
+      name: String(n),
+      count: 4,
+      props: { number: String(n) },
+      value: n, isWild: false, effects: [],
+    });
+  }
+  return {
+    name: 'Number cards',
+    gameMode: 'shed', minPlayers: 2, maxPlayers: 4,
+    deal: 5, flipStart: true, matchProps: ['number'],
+    turnMode: 'drawIfStuck', winCondition: 'emptyHand',
+    properties: [{ name: 'number', type: 'text' }],
+    cards, description: '',
+  };
+}
+
+function makeGoFishPreset() {
+  const preset = makeStandard52Preset();
+  preset.name = 'Go Fish';
+  preset.gameMode = 'ask';
+  preset.deal = 5;
+  preset.winCondition = 'mostSets';
+  preset.setProp = 'rank';
+  preset.setSize = 4;
+  return preset;
+}
+
+const DECK_PRESETS = {
+  blank: () => ({ name: 'My game', gameMode: 'shed', minPlayers: 2, maxPlayers: 4,
+    deal: 5, flipStart: true, matchProps: ['color', 'rank'],
+    turnMode: 'drawIfStuck', winCondition: 'emptyHand',
+    properties: [{ name: 'color', type: 'color' }, { name: 'rank', type: 'text' }],
+    cards: [], description: '' }),
+  uno: makeUnoPreset,
+  standard52: makeStandard52Preset,
+  numbers: makeNumbersPreset,
+  gofish: makeGoFishPreset,
+};
 
 // ============================================================
 // Persistence
@@ -1837,11 +1345,12 @@ function persistCustomGames() {
     for (const id in CUSTOM_GAMES) {
       const d = CUSTOM_GAMES[id];
       raw[id] = {
-        id: d.id, name: d.name, minPlayers: d.minPlayers, maxPlayers: d.maxPlayers,
+        id: d.id, name: d.name, gameMode: d.gameMode,
+        minPlayers: d.minPlayers, maxPlayers: d.maxPlayers,
         cards: d.cards, deal: d.deal, flipStart: d.flipStart,
-        matchBy: d.matchBy, wildChoosesGroup: d.wildChoosesGroup,
-        turnMode: d.turnMode, winCondition: d.winCondition, setSize: d.setSize,
-        description: d.description,
+        matchProps: d.matchProps, turnMode: d.turnMode,
+        winCondition: d.winCondition, setProp: d.setProp, setSize: d.setSize,
+        properties: d.properties, description: d.description,
       };
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(raw));
@@ -1849,7 +1358,7 @@ function persistCustomGames() {
 }
 
 // ============================================================
-// Registry
+// Game registry
 // ============================================================
 
 const CUSTOM_GAMES = loadCustomGames();
@@ -1872,13 +1381,11 @@ function registerCustomGame(def) {
   CUSTOM_GAMES[def.id] = finalizeCustomGame(def);
   GAMES[def.id] = makeCustomAdapter(CUSTOM_GAMES[def.id]);
 }
-
 function unregisterCustomGame(id) {
   delete CUSTOM_GAMES[id];
   delete GAMES[id];
   persistCustomGames();
 }
-
 for (const id in CUSTOM_GAMES) GAMES[id] = makeCustomAdapter(CUSTOM_GAMES[id]);
 
 // ============================================================
@@ -1891,7 +1398,7 @@ let VIEWER = 0;
 let undoStack = [];
 const MENU = { scriptId: 'uno', namesInput: 'Alice, Bob' };
 let editingGame = null;
-let editorTab = 'cards';
+let editorTab = 'deck';
 
 // ============================================================
 // Card rendering
@@ -1910,17 +1417,13 @@ function renderCardEl(card) {
 
 function renderStdCard(def) {
   const isRed = def.color === 'red';
-  const card = el('div', {
-    class: 'card card--std' + (isRed ? ' card--red' : ''),
-  });
-
+  const card = el('div', { class: 'card card--std' + (isRed ? ' card--red' : '') });
   card.appendChild(el('div', { class: 'card__corner card__corner--tl' },
     el('span', { class: 'card__rank' }, def.rank),
     el('span', { class: 'card__suit' }, def.suit)));
   card.appendChild(el('div', { class: 'card__corner card__corner--br' },
     el('span', { class: 'card__rank' }, def.rank),
     el('span', { class: 'card__suit' }, def.suit)));
-
   if (def.rank === 'A') {
     card.appendChild(el('div', { class: 'card__center card__center--ace' },
       el('span', { class: 'card__ace' }, def.suit)));
@@ -1935,8 +1438,7 @@ function renderStdCard(def) {
       const pip = el('span', {
         class: 'card__pip' + (y > 50 ? ' card__pip--flipped' : ''),
       }, def.suit);
-      pip.style.left = x + '%';
-      pip.style.top = y + '%';
+      pip.style.left = x + '%'; pip.style.top = y + '%';
       center.appendChild(pip);
     }
     card.appendChild(center);
@@ -1953,7 +1455,7 @@ function renderUnoCard(def) {
       el('div', { class: 'card__uno-corner card__uno-corner--br' },
         el('span', null, isDraw4 ? '+4' : 'W')),
       el('div', { class: 'card__uno-oval' },
-        el('span', { class: 'card__uno-val ' + (isDraw4 ? 'card__uno-val--wild4' : 'card__uno-val--wild') },
+        el('span', { class: 'card__uno-val card__uno-val--wild' },
           isDraw4 ? '+4' : 'WILD')));
   }
   let pip;
@@ -1963,10 +1465,7 @@ function renderUnoCard(def) {
   else pip = def.value;
   const bg = COLOR_HEX[def.color];
   const fg = def.color === 'yellow' ? '#1a1a1a' : 'white';
-  return el('div', {
-    class: 'card card--uno',
-    style: { background: bg },
-  },
+  return el('div', { class: 'card card--uno', style: { background: bg } },
     el('div', { class: 'card__uno-corner card__uno-corner--tl', style: { color: fg } },
       el('span', null, pip)),
     el('div', { class: 'card__uno-corner card__uno-corner--br', style: { color: fg } },
@@ -1976,49 +1475,64 @@ function renderUnoCard(def) {
 }
 
 function renderCustomCard(def) {
+  const props = def.props || {};
   const isWild = def.isWild;
-  const bg = isWild ? null : (COLOR_HEX[def.color] || '#374151');
-  const fg = isWild ? 'white' : (LIGHT_COLORS.has(def.color) ? '#1a1a1a' : 'white');
-  const card = el('div', {
-    class: 'card card--custom' + (isWild ? ' card--wild' : ''),
-    style: isWild ? null : { background: bg, color: fg },
-  });
-  card.appendChild(el('div', { class: 'card__corner card__corner--tl' },
-    el('span', null, def.rank || '')));
-  card.appendChild(el('div', { class: 'card__corner card__corner--br' },
-    el('span', null, def.rank || '')));
-  card.appendChild(el('div', { class: 'card__custom-center' },
-    el('span', {
-      class: 'card__custom-val' + (isWild ? ' card__custom-val--wild' : ''),
-      style: isWild ? null : { color: bg },
-    }, def.label)));
-  return card;
+
+  if (isWild) {
+    return el('div', { class: 'card card--custom card--wild' },
+      el('div', { class: 'card__corner card__corner--tl' }, el('span', null, '★')),
+      el('div', { class: 'card__corner card__corner--br' }, el('span', null, '★')),
+      el('div', { class: 'card__custom-center' },
+        el('span', { class: 'card__custom-val' }, def.name || 'Wild')));
+  }
+
+  // Standard 52 look if suit prop present
+  if (props.suit && SUITS.includes(props.suit)) {
+    return renderStdCard({ rank: props.rank || '', suit: props.suit,
+      color: (props.suit === '♥' || props.suit === '♦') ? 'red' : 'black' });
+  }
+
+  const bg = COLOR_HEX[props.color] || '#4b5563';
+  const fg = LIGHT_COLORS.has(props.color) ? '#1a1a1a' : 'white';
+  const shortVal = shortLabel(def.name);
+  return el('div', { class: 'card card--custom', style: { background: bg, color: fg } },
+    el('div', { class: 'card__corner card__corner--tl' },
+      el('span', null, props.rank || '')),
+    el('div', { class: 'card__corner card__corner--br' },
+      el('span', null, props.rank || '')),
+    el('div', { class: 'card__custom-center' },
+      el('span', { class: 'card__custom-val', style: { color: bg } }, shortVal)));
+}
+
+function shortLabel(name) {
+  if (!name) return '?';
+  const map = { skip: '⊘', reverse: '⇄', draw2: '+2', draw4: '+4', wild: '★', wild4: '★+4' };
+  const last = name.split(' ').pop().toLowerCase();
+  if (map[last]) return map[last];
+  if (name.length <= 4) return name;
+  // Take last word
+  const parts = name.split(' ');
+  return parts[parts.length - 1];
 }
 
 function sortHand(cards, defs) {
   return [...cards].sort((a, b) => {
     const da = defs[a.defId], db = defs[b.defId];
     if (!da || !db) return 0;
-    if (da.kind === 'std') {
-      const sd = SUIT_ORDER[da.suit] - SUIT_ORDER[db.suit];
-      if (sd !== 0) return sd;
-      return RANK_ORDER[da.rank] - RANK_ORDER[db.rank];
-    }
-    if (da.kind === 'uno') {
-      const cd = UNO_COLOR_ORDER[da.color] - UNO_COLOR_ORDER[db.color];
-      if (cd !== 0) return cd;
-      return (UNO_VALUE_ORDER[da.value] ?? 99) - (UNO_VALUE_ORDER[db.value] ?? 99);
-    }
-    if (da.kind === 'custom') {
-      const cd = (COLOR_ORDER[da.color] ?? 99) - (COLOR_ORDER[db.color] ?? 99);
-      if (cd !== 0) return cd;
-      const gd = String(da.group || '').localeCompare(String(db.group || ''));
-      if (gd !== 0) return gd;
-      return String(da.rank || '').localeCompare(String(db.rank || ''));
-    }
-    return 0;
+    if (da.isWild && !db.isWild) return 1;
+    if (!da.isWild && db.isWild) return -1;
+    const pa = da.props || {}, pb = db.props || {};
+    const ca = COLOR_ORDER[pa.color] ?? 99, cb = COLOR_ORDER[pb.color] ?? 99;
+    if (ca !== cb) return ca - cb;
+    const sa = SUIT_ORDER[pa.suit] ?? 99, sb = SUIT_ORDER[pb.suit] ?? 99;
+    if (sa !== sb) return sa - sb;
+    const ra = RANK_ORDER[pa.rank] ?? 99, rb = RANK_ORDER[pb.rank] ?? 99;
+    if (ra !== rb) return ra - rb;
+    return String(pa.rank ?? '').localeCompare(String(pb.rank ?? ''));
   });
 }
+
+const COLOR_ORDER = Object.fromEntries(Object.keys(COLOR_HEX).map((c, i) => [c, i]));
 
 // ============================================================
 // Screen router
@@ -2038,30 +1552,25 @@ function render() {
 // ============================================================
 
 function renderMenu(root) {
-  // Hero cards decoration
   const heroCards = el('div', { class: 'menu__cards' });
-  const decoStd = renderStdCard({ rank: 'A', suit: '♠', color: 'black', kind: 'std' });
-  const decoUno = renderUnoCard({ color: 'red', value: '7', kind: 'uno' });
-  const decoCustom = renderCustomCard({
-    label: 'J', color: 'blue', group: 'blue', rank: 'J', isWild: false, kind: 'custom',
-  });
-  heroCards.appendChild(decoStd);
-  heroCards.appendChild(decoUno);
-  heroCards.appendChild(decoCustom);
+  heroCards.appendChild(renderStdCard({ rank: 'A', suit: '♠', color: 'black', kind: 'std' }));
+  heroCards.appendChild(renderUnoCard({ color: 'red', value: '7', kind: 'uno' }));
+  heroCards.appendChild(renderCustomCard({
+    name: 'Wild', isWild: true, props: {}, kind: 'custom',
+  }));
 
   const hero = el('div', { class: 'menu__hero' },
     heroCards,
     el('h1', null, 'Card ', el('em', null, 'Table')),
     el('p', { class: 'menu__tagline' }, 'Build card games. Play them anywhere.'));
 
-  // Game select
   const gameSelect = el('select', {
     onchange: e => { MENU.scriptId = e.target.value; render(); },
   });
   const customGames = Object.values(GAMES).filter(g => g.isCustom);
   const builtInGames = Object.values(GAMES).filter(g => !g.isCustom);
   if (builtInGames.length > 0) {
-    const grp = el('optgroup', { label: 'Examples' });
+    const grp = el('optgroup', { label: 'Ready to play' });
     for (const g of builtInGames) {
       const o = document.createElement('option');
       o.value = g.id; o.textContent = g.name; grp.appendChild(o);
@@ -2069,7 +1578,7 @@ function renderMenu(root) {
     gameSelect.appendChild(grp);
   }
   if (customGames.length > 0) {
-    const grp = el('optgroup', { label: 'My games' });
+    const grp = el('optgroup', { label: 'Your games' });
     for (const g of customGames) {
       const o = document.createElement('option');
       o.value = g.id; o.textContent = g.name; grp.appendChild(o);
@@ -2095,11 +1604,19 @@ function renderMenu(root) {
   if (currentGame?.isCustom) {
     panel.appendChild(el('div', { class: 'preset-row' },
       el('button', { class: 'ghost', onclick: () => editCustomGame(MENU.scriptId) }, 'Edit'),
+      el('button', { class: 'ghost', onclick: () => duplicateGame(MENU.scriptId) }, 'Duplicate'),
       el('button', { class: 'danger', onclick: () => deleteCustomGame(MENU.scriptId) }, 'Delete')));
   }
 
-  panel.appendChild(el('div', { class: 'section-label' }, 'Build your own'));
-  panel.appendChild(el('button', { class: 'ghost', onclick: newCustomGame }, '+ Create custom game'));
+  panel.appendChild(el('div', { class: 'section-label' }, 'Create'));
+  panel.appendChild(el('button', { class: 'ghost', onclick: () => newCustomGame('blank') }, '+ New game from scratch'));
+  const presetRow = el('div', { class: 'preset-row', style: { marginTop: '-0.4rem' } });
+  presetRow.appendChild(el('span', { class: 'hint', style: { alignSelf: 'center', flex: 'none' } }, 'Start from:'));
+  presetRow.appendChild(el('button', { class: 'ghost tiny', onclick: () => newCustomGame('uno') }, 'UNO-style'));
+  presetRow.appendChild(el('button', { class: 'ghost tiny', onclick: () => newCustomGame('standard52') }, 'Standard 52'));
+  presetRow.appendChild(el('button', { class: 'ghost tiny', onclick: () => newCustomGame('gofish') }, 'Go Fish'));
+  presetRow.appendChild(el('button', { class: 'ghost tiny', onclick: () => newCustomGame('numbers') }, 'Numbers'));
+  panel.appendChild(presetRow);
 
   root.appendChild(el('div', { class: 'menu' }, hero, panel));
 }
@@ -2108,69 +1625,26 @@ function renderMenu(root) {
 // Editor
 // ============================================================
 
-function defaultCustomGame() {
-  const cards = [
-    { id: newCardId(), label: 'Red 0', color: 'red', group: 'red', rank: '0', value: 0, count: 1, isWild: false, actionType: 'none' },
-    { id: newCardId(), label: 'Red 1', color: 'red', group: 'red', rank: '1', value: 1, count: 2, isWild: false, actionType: 'none' },
-    { id: newCardId(), label: 'Red Skip', color: 'red', group: 'red', rank: 'skip', value: 0, count: 2, isWild: false, actionType: 'skip' },
-    { id: newCardId(), label: 'Red +2', color: 'red', group: 'red', rank: 'draw2', value: 0, count: 2, isWild: false, actionType: 'draw2' },
-    { id: newCardId(), label: 'Blue 0', color: 'blue', group: 'blue', rank: '0', value: 0, count: 1, isWild: false, actionType: 'none' },
-    { id: newCardId(), label: 'Blue 1', color: 'blue', group: 'blue', rank: '1', value: 1, count: 2, isWild: false, actionType: 'none' },
-    { id: newCardId(), label: 'Blue Skip', color: 'blue', group: 'blue', rank: 'skip', value: 0, count: 2, isWild: false, actionType: 'skip' },
-    { id: newCardId(), label: 'Blue +2', color: 'blue', group: 'blue', rank: 'draw2', value: 0, count: 2, isWild: false, actionType: 'draw2' },
-    { id: newCardId(), label: 'Wild', color: 'wild', group: '', rank: 'wild', value: 0, count: 4, isWild: true, actionType: 'none' },
-  ];
-  return {
-    id: 'custom_' + Date.now(), name: 'My game',
-    minPlayers: 2, maxPlayers: 4, deal: 5, flipStart: true,
-    matchBy: ['group', 'rank'], wildChoosesGroup: true,
-    turnMode: 'standard', winCondition: 'emptyHand', setSize: 4,
-    cards, description: '',
+function newCustomGame(presetId) {
+  const preset = DECK_PRESETS[presetId]();
+  editingGame = {
+    id: 'custom_' + Date.now(),
+    name: preset.name,
+    gameMode: preset.gameMode,
+    minPlayers: preset.minPlayers,
+    maxPlayers: preset.maxPlayers,
+    deal: preset.deal,
+    flipStart: preset.flipStart,
+    matchProps: preset.matchProps || [],
+    turnMode: preset.turnMode || 'drawIfStuck',
+    winCondition: preset.winCondition || 'emptyHand',
+    setProp: preset.setProp || 'rank',
+    setSize: preset.setSize || 4,
+    properties: preset.properties.map(p => ({ ...p })),
+    cards: preset.cards.map(c => ({ ...c, props: { ...c.props }, effects: [...c.effects] })),
+    description: preset.description || '',
   };
-}
-
-const DECK_PRESETS = {
-  standard52: () => {
-    const cards = [];
-    for (const suit of STD_SUITS) {
-      const group = { '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' }[suit];
-      const color = (suit === '♥' || suit === '♦') ? 'red' : 'black';
-      for (const rank of STD_RANKS) {
-        cards.push({
-          id: newCardId(), label: rank + suit, color, group, rank,
-          value: rank === 'A' ? 1 : rank === 'J' ? 11 : rank === 'Q' ? 12 : rank === 'K' ? 13 : parseInt(rank, 10),
-          count: 1, isWild: false, actionType: 'none',
-        });
-      }
-    }
-    return cards;
-  },
-  uno: () => {
-    const cards = [];
-    for (const color of ['red', 'yellow', 'green', 'blue']) {
-      cards.push({ id: newCardId(), label: color[0].toUpperCase() + '0', color, group: color, rank: '0', value: 0, count: 1, isWild: false, actionType: 'none' });
-      for (let n = 1; n <= 9; n++)
-        cards.push({ id: newCardId(), label: color[0].toUpperCase() + n, color, group: color, rank: String(n), value: n, count: 2, isWild: false, actionType: 'none' });
-      cards.push({ id: newCardId(), label: color[0].toUpperCase() + ' Skip', color, group: color, rank: 'skip', value: 0, count: 2, isWild: false, actionType: 'skip' });
-      cards.push({ id: newCardId(), label: color[0].toUpperCase() + ' Rev', color, group: color, rank: 'reverse', value: 0, count: 2, isWild: false, actionType: 'reverse' });
-      cards.push({ id: newCardId(), label: color[0].toUpperCase() + ' +2', color, group: color, rank: 'draw2', value: 0, count: 2, isWild: false, actionType: 'draw2' });
-    }
-    cards.push({ id: newCardId(), label: 'Wild', color: 'wild', group: '', rank: 'wild', value: 0, count: 4, isWild: true, actionType: 'none' });
-    cards.push({ id: newCardId(), label: 'Wild +4', color: 'wild', group: '', rank: 'wild4', value: 0, count: 4, isWild: true, actionType: 'draw4' });
-    return cards;
-  },
-  numberCards: () => {
-    const cards = [];
-    for (let n = 1; n <= 10; n++)
-      cards.push({ id: newCardId(), label: 'N' + n, color: 'white', group: 'num', rank: String(n), value: n, count: 4, isWild: false, actionType: 'none' });
-    return cards;
-  },
-  empty: () => [],
-};
-
-function newCustomGame() {
-  editingGame = defaultCustomGame();
-  editorTab = 'cards';
+  editorTab = 'deck';
   SCREEN = 'editor';
   render();
 }
@@ -2179,14 +1653,35 @@ function editCustomGame(id) {
   const def = CUSTOM_GAMES[id];
   if (!def) return;
   editingGame = JSON.parse(JSON.stringify({
-    id: def.id, name: def.name, minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
+    id: def.id, name: def.name, gameMode: def.gameMode,
+    minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
     cards: def.cards, deal: def.deal, flipStart: def.flipStart,
-    matchBy: def.matchBy, wildChoosesGroup: def.wildChoosesGroup,
-    turnMode: def.turnMode, winCondition: def.winCondition, setSize: def.setSize,
-    description: def.description,
+    matchProps: def.matchProps, turnMode: def.turnMode,
+    winCondition: def.winCondition, setProp: def.setProp, setSize: def.setSize,
+    properties: def.properties, description: def.description,
   }));
-  editorTab = 'cards';
+  editorTab = 'deck';
   SCREEN = 'editor';
+  render();
+}
+
+function duplicateGame(id) {
+  const def = CUSTOM_GAMES[id];
+  if (!def) return;
+  const copy = JSON.parse(JSON.stringify({
+    id: 'custom_' + Date.now(),
+    name: def.name + ' copy',
+    gameMode: def.gameMode, minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
+    cards: def.cards, deal: def.deal, flipStart: def.flipStart,
+    matchProps: def.matchProps, turnMode: def.turnMode,
+    winCondition: def.winCondition, setProp: def.setProp, setSize: def.setSize,
+    properties: def.properties, description: def.description,
+  }));
+  // Regenerate card ids to avoid collisions
+  for (const c of copy.cards) c.id = newCardId();
+  registerCustomGame(copy);
+  persistCustomGames();
+  MENU.scriptId = copy.id;
   render();
 }
 
@@ -2200,261 +1695,535 @@ function deleteCustomGame(id) {
 function renderEditor(root) {
   const def = editingGame;
   const header = el('div', { class: 'editor__header' },
-    el('h2', null, def.name || 'Untitled game'),
-    el('div', { class: 'editor__actions' },
+    el('h2', null, def.name || 'Untitled'),
+    el('div', { class: 'editor__header-actions' },
       el('button', { class: 'ghost', onclick: () => { SCREEN = 'menu'; render(); } }, 'Cancel'),
       el('button', { class: 'primary', onclick: saveEditor }, 'Save')));
 
   const tabs = el('div', { class: 'tabs' },
-    el('button', { class: 'tab' + (editorTab === 'cards' ? ' active' : ''), onclick: () => { editorTab = 'cards'; render(); } }, 'Cards'),
+    el('button', { class: 'tab' + (editorTab === 'deck' ? ' active' : ''), onclick: () => { editorTab = 'deck'; render(); } }, 'Deck'),
     el('button', { class: 'tab' + (editorTab === 'rules' ? ' active' : ''), onclick: () => { editorTab = 'rules'; render(); } }, 'Rules'),
-    el('button', { class: 'tab' + (editorTab === 'preview' ? ' active' : ''), onclick: () => { editorTab = 'preview'; render(); } }, 'Preview'));
+    el('button', { class: 'tab' + (editorTab === 'win' ? ' active' : ''), onclick: () => { editorTab = 'win'; render(); } }, 'Winning'),
+    el('button', { class: 'tab' + (editorTab === 'test' ? ' active' : ''), onclick: () => { editorTab = 'test'; render(); } }, 'Test'));
 
   const content = el('div', { class: 'tab-content' });
-  if (editorTab === 'cards') renderCardsTab(content);
+  if (editorTab === 'deck') renderDeckTab(content);
   else if (editorTab === 'rules') renderRulesTab(content);
-  else if (editorTab === 'preview') renderPreviewTab(content);
+  else if (editorTab === 'win') renderWinTab(content);
+  else if (editorTab === 'test') renderTestTab(content);
 
   root.appendChild(el('div', { class: 'editor' }, header, tabs, content));
 }
 
-function renderCardsTab(container) {
+// --- Deck tab ---
+
+function renderDeckTab(container) {
   const def = editingGame;
 
-  const presetRow = el('div', { class: 'preset-row' },
-    el('span', { class: 'stat', style: { padding: '0.4rem 0.3rem', flex: 'none' } }, 'Load:'),
-    el('button', { class: 'ghost', onclick: () => loadPreset('uno') }, 'UNO'),
-    el('button', { class: 'ghost', onclick: () => loadPreset('standard52') }, 'Standard 52'),
-    el('button', { class: 'ghost', onclick: () => loadPreset('numberCards') }, 'Numbers'),
-    el('button', { class: 'ghost', onclick: () => loadPreset('empty') }, 'Clear'));
-
-  const tbody = el('tbody');
-  def.cards.forEach((c, i) => tbody.appendChild(buildCardRow(c, i)));
-
-  const table = el('table', { class: 'cards-table' },
-    el('thead', null, el('tr', null,
-      el('th', null, 'Label'), el('th', null, 'Color'), el('th', null, 'Group'),
-      el('th', null, 'Rank'), el('th', null, 'Val'), el('th', null, 'Count'),
-      el('th', null, 'Wild'), el('th', null, 'Action'), el('th', null, ''))),
-    tbody);
-
-  tbody.addEventListener('change', e => {
-    const t = e.target;
-    const idx = parseInt(t.dataset.idx, 10);
-    const field = t.dataset.field;
-    if (!field || isNaN(idx)) return;
-    const card = def.cards[idx];
-    if (!card) return;
-    let v = t.value;
-    if (t.type === 'checkbox') v = t.checked;
-    if (t.type === 'number') v = parseInt(v, 10) || 0;
-    if (field === 'count') v = Math.max(1, v);
-    if (field === 'value') v = Math.max(0, v);
-    card[field] = v;
-    if (field === 'count') repopulateTable();
-  });
-  tbody.addEventListener('click', e => {
-    const t = e.target;
-    if (!t.classList.contains('del-card')) return;
-    const idx = parseInt(t.dataset.idx, 10);
-    def.cards.splice(idx, 1);
-    repopulateTable();
-  });
-
-  function repopulateTable() {
-    tbody.innerHTML = '';
-    def.cards.forEach((c, i) => tbody.appendChild(buildCardRow(c, i)));
-  }
-
-  const addBtn = el('button', { class: 'ghost', onclick: () => {
-    def.cards.push({
-      id: newCardId(), label: 'New card', color: 'red', group: 'red', rank: '1',
-      value: 0, count: 1, isWild: false, actionType: 'none',
-    });
-    repopulateTable();
-  } }, '+ Add card');
-
-  const stats = el('div', { class: 'stat' },
-    def.cards.reduce((n, c) => n + c.count, 0) + ' total cards · '
-    + def.cards.length + ' types');
-
-  container.appendChild(el('div', { class: 'panel' },
-    presetRow,
-    el('div', { class: 'cards-table-scroll' }, table),
-    el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' } }, addBtn, stats)));
-}
-
-function buildCardRow(card, idx) {
-  const colorSelect = el('select', { 'data-idx': idx, 'data-field': 'color' });
-  for (const c of Object.keys(COLOR_HEX)) {
-    const opt = document.createElement('option');
-    opt.value = c; opt.textContent = c; colorSelect.appendChild(opt);
-  }
-  const wildOpt = document.createElement('option');
-  wildOpt.value = 'wild'; wildOpt.textContent = 'wild'; colorSelect.appendChild(wildOpt);
-  colorSelect.value = card.color || 'red';
-
-  const actionSelect = el('select', { 'data-idx': idx, 'data-field': 'actionType' });
-  for (const a of ['none', 'skip', 'reverse', 'draw2', 'draw4']) {
-    const opt = document.createElement('option');
-    opt.value = a; opt.textContent = a; actionSelect.appendChild(opt);
-  }
-  actionSelect.value = card.actionType || 'none';
-
-  return el('tr', null,
-    el('td', null, el('input', { type: 'text', value: card.label || '', 'data-idx': idx, 'data-field': 'label' })),
-    el('td', null, colorSelect),
-    el('td', null, el('input', { type: 'text', value: card.group || '', 'data-idx': idx, 'data-field': 'group' })),
-    el('td', null, el('input', { type: 'text', value: card.rank || '', 'data-idx': idx, 'data-field': 'rank' })),
-    el('td', null, el('input', { type: 'number', value: card.value ?? 0, min: 0, 'data-idx': idx, 'data-field': 'value' })),
-    el('td', null, el('input', { type: 'number', value: card.count ?? 1, min: 1, 'data-idx': idx, 'data-field': 'count' })),
-    el('td', null, el('input', { type: 'checkbox', checked: !!card.isWild, 'data-idx': idx, 'data-field': 'isWild' })),
-    el('td', null, actionSelect),
-    el('td', null, el('button', { class: 'del-card', 'data-idx': idx, title: 'Delete' }, '×')));
-}
-
-function loadPreset(name) {
-  if (!confirm('Replace the current card list?')) return;
-  editingGame.cards = DECK_PRESETS[name]();
-  render();
-}
-
-function renderRulesTab(container) {
-  const def = editingGame;
-
-  container.appendChild(el('div', { class: 'panel' },
-    el('h3', null, 'Basics'),
+  // Basic info
+  const basic = el('div', { class: 'panel' },
+    el('h3', null, 'Game'),
     el('div', { class: 'form-row' },
       el('div', { class: 'field' }, el('label', null, 'Name'),
-        el('input', { type: 'text', value: def.name, oninput: e => { def.name = e.target.value; } }))),
-    el('div', { class: 'form-row' },
+        el('input', { type: 'text', value: def.name, placeholder: 'My game',
+          oninput: e => { def.name = e.target.value; } })),
       el('div', { class: 'field' }, el('label', null, 'Min players'),
         el('input', { type: 'number', min: 2, max: 12, value: def.minPlayers,
           oninput: e => { def.minPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } })),
       el('div', { class: 'field' }, el('label', null, 'Max players'),
         el('input', { type: 'number', min: 2, max: 12, value: def.maxPlayers,
-          oninput: e => { def.maxPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } })),
-      el('div', { class: 'field' }, el('label', null, 'Deal'),
-        el('input', { type: 'number', min: 1, value: def.deal,
-          oninput: e => { def.deal = Math.max(1, parseInt(e.target.value, 10) || 1); } }))),
-    el('div', { class: 'check-row' },
-      el('label', null,
-        el('input', { type: 'checkbox', checked: def.flipStart,
-          onchange: e => { def.flipStart = e.target.checked; } }),
-        'Flip starting card'))));
+          oninput: e => { def.maxPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } }))));
 
-  container.appendChild(el('div', { class: 'panel' },
-    el('h3', null, 'Turn structure'),
-    el('div', { class: 'form-row' },
-      el('div', { class: 'field' }, el('label', null, 'Turn mode'),
-        (() => {
-          const sel = el('select', { onchange: e => { def.turnMode = e.target.value; } });
-          for (const [v, l] of [
-            ['standard', 'Draw when you cannot play'],
-            ['drawFirst', 'Always draw first'],
-            ['playOnly', 'No drawing allowed'],
-          ]) {
-            const opt = document.createElement('option');
-            opt.value = v; opt.textContent = l; sel.appendChild(opt);
-          }
-          sel.value = def.turnMode; return sel;
-        })()))));
+  // Properties
+  const propList = el('div', { class: 'prop-list' });
+  for (const p of def.properties) {
+    propList.appendChild(el('span', { class: 'prop-chip' },
+      el('span', { class: 'prop-type' }, p.type), p.name,
+      el('button', {
+        title: 'Remove', onclick: () => {
+          if (def.properties.length <= 1) { alert('Keep at least one property'); return; }
+          def.properties = def.properties.filter(x => x.name !== p.name);
+          def.matchProps = def.matchProps.filter(x => x !== p.name);
+          for (const c of def.cards) delete c.props[p.name];
+          render();
+        },
+      }, '×')));
+  }
+  const addPropBtn = el('button', { class: 'ghost tiny', onclick: () => {
+    showAddPropertyModal();
+  } }, '+ Add property');
 
-  container.appendChild(el('div', { class: 'panel' },
-    el('h3', null, 'Matching'),
-    el('div', { class: 'check-row' },
-      el('label', null,
-        el('input', { type: 'checkbox', checked: def.matchBy.includes('color'),
-          onchange: e => {
-            def.matchBy = e.target.checked
-              ? [...new Set([...def.matchBy, 'color'])]
-              : def.matchBy.filter(x => x !== 'color');
-          } }), 'Match by color'),
-      el('label', null,
-        el('input', { type: 'checkbox', checked: def.matchBy.includes('group'),
-          onchange: e => {
-            def.matchBy = e.target.checked
-              ? [...new Set([...def.matchBy, 'group'])]
-              : def.matchBy.filter(x => x !== 'group');
-          } }), 'Match by group'),
-      el('label', null,
-        el('input', { type: 'checkbox', checked: def.matchBy.includes('rank'),
-          onchange: e => {
-            def.matchBy = e.target.checked
-              ? [...new Set([...def.matchBy, 'rank'])]
-              : def.matchBy.filter(x => x !== 'rank');
-          } }), 'Match by rank')),
-    el('div', { class: 'stat' }, 'A card is playable if it matches ANY selected attribute.'),
-    el('div', { class: 'check-row' },
-      el('label', null,
-        el('input', { type: 'checkbox', checked: def.wildChoosesGroup,
-          onchange: e => { def.wildChoosesGroup = e.target.checked; } }),
-        'Wild lets player choose new group'))));
+  const propPanel = el('div', { class: 'panel' },
+    el('h3', null, 'Properties', el('span', { class: 'hint', style: { flex: 'none', textTransform: 'none', letterSpacing: 0 } }, 'What makes each card unique?')),
+    propList,
+    el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' } },
+      el('span', { class: 'hint' }, 'Cards can have a value for each property.'),
+      addPropBtn));
 
-  container.appendChild(el('div', { class: 'panel' },
-    el('h3', null, 'Win condition'),
-    el('div', { class: 'form-row' },
-      el('div', { class: 'field' }, el('label', null, 'Ends when'),
-        (() => {
-          const sel = el('select', { onchange: e => { def.winCondition = e.target.value; render(); } });
-          for (const [v, l] of [
-            ['emptyHand', 'First to empty their hand'],
-            ['mostSets', 'Most sets of matching rank'],
-          ]) {
-            const opt = document.createElement('option');
-            opt.value = v; opt.textContent = l; sel.appendChild(opt);
-          }
-          sel.value = def.winCondition; return sel;
-        })())),
-    def.winCondition === 'mostSets' ? el('div', { class: 'form-row' },
-      el('div', { class: 'field' }, el('label', null, 'Cards per set'),
-        el('input', { type: 'number', min: 2, max: 8, value: def.setSize,
-          oninput: e => { def.setSize = Math.max(2, parseInt(e.target.value, 10) || 4); } }))) : null));
+  // Card grid
+  const cardGrid = el('div', { class: 'card-grid' });
+  for (const c of def.cards) {
+    const item = el('div', { class: 'card-grid__item', onclick: () => openCardEditor(c) });
+    item.appendChild(renderCustomCard({ ...c, kind: 'custom' }));
+    item.appendChild(el('span', { class: 'card-name' }, c.name || 'Unnamed'));
+    if (c.count > 1) item.appendChild(el('span', { class: 'count-badge' }, '×' + c.count));
+    cardGrid.appendChild(item);
+  }
+  cardGrid.appendChild(el('div', {
+    class: 'card-grid__add',
+    onclick: () => addNewCard(),
+    title: 'Add card',
+  }, '+'));
+
+  const total = def.cards.reduce((n, c) => n + (c.count || 1), 0);
+  const cardsPanel = el('div', { class: 'panel' },
+    el('h3', null, 'Cards',
+      el('span', { class: 'hint', style: { flex: 'none', textTransform: 'none', letterSpacing: 0 } },
+        def.cards.length + ' types · ' + total + ' total')),
+    cardGrid,
+    el('div', { class: 'hint' }, 'Tap a card to edit it. The + adds a new card.'));
+
+  // Preset loader
+  const presetsPanel = el('div', { class: 'panel' },
+    el('h3', null, 'Load a preset'),
+    el('div', { class: 'preset-row' },
+      el('button', { class: 'ghost tiny', onclick: () => loadPreset('uno') }, 'UNO deck'),
+      el('button', { class: 'ghost tiny', onclick: () => loadPreset('standard52') }, 'Standard 52'),
+      el('button', { class: 'ghost tiny', onclick: () => loadPreset('numbers') }, 'Numbers 1–10'),
+      el('button', { class: 'ghost tiny', onclick: () => loadPreset('blank') }, 'Clear all')),
+    el('div', { class: 'hint' }, 'Replaces cards and properties. Rules are kept.'));
+
+  container.appendChild(basic);
+  container.appendChild(propPanel);
+  container.appendChild(cardsPanel);
+  container.appendChild(presetsPanel);
 }
 
-function renderPreviewTab(container) {
+function addNewCard() {
   const def = editingGame;
-  const jsonClean = {
-    id: def.id, name: def.name, minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
-    deal: def.deal, flipStart: def.flipStart,
-    matchBy: def.matchBy, wildChoosesGroup: def.wildChoosesGroup,
-    turnMode: def.turnMode, winCondition: def.winCondition, setSize: def.setSize,
-    cards: def.cards,
+  const props = {};
+  for (const p of def.properties) {
+    if (p.type === 'color') props[p.name] = 'red';
+    else if (p.type === 'suit') props[p.name] = '♠';
+    else if (p.type === 'number') props[p.name] = 1;
+    else props[p.name] = '1';
+  }
+  const card = {
+    id: newCardId(), name: 'New card', count: 1,
+    props, value: 0, isWild: false, effects: [],
   };
-  const total = def.cards.reduce((n, c) => n + c.count, 0);
-  const stats = el('div', { class: 'stat' },
-    `${def.cards.length} card types · ${total} total cards · `
-    + `deal ${def.deal} each to ${def.minPlayers}–${def.maxPlayers} players`);
+  def.cards.push(card);
+  openCardEditor(card);
+}
 
+function loadPreset(id) {
+  if (!confirm('Replace all current cards with this preset?')) return;
+  const preset = DECK_PRESETS[id]();
+  editingGame.properties = preset.properties.map(p => ({ ...p }));
+  editingGame.cards = preset.cards.map(c => ({
+    ...c, id: newCardId(),
+    props: { ...c.props },
+    effects: c.effects.map(e => ({ ...e })),
+  }));
+  editingGame.matchProps = preset.matchProps.filter(m => preset.properties.some(p => p.name === m));
+  render();
+}
+
+function showAddPropertyModal() {
+  let name = '';
+  let type = 'text';
+  const nameInput = el('input', { type: 'text', placeholder: 'e.g. color',
+    oninput: e => { name = e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''); } });
+  const typeSelect = el('select', { onchange: e => { type = e.target.value; } });
+  for (const [v, l] of [
+    ['text', 'Text (free value)'],
+    ['color', 'Color (palette)'],
+    ['suit', 'Suit (♠♥♦♣)'],
+    ['number', 'Number'],
+  ]) {
+    const o = document.createElement('option');
+    o.value = v; o.textContent = l; typeSelect.appendChild(o);
+  }
+
+  const okBtn = el('button', { class: 'primary', onclick: () => {
+    if (!name) { alert('Enter a name'); return; }
+    if (editingGame.properties.some(p => p.name === name)) {
+      alert('Property already exists'); return;
+    }
+    editingGame.properties.push({ name, type });
+    // Give each existing card a default for this prop
+    for (const c of editingGame.cards) {
+      if (!c.props) c.props = {};
+      if (c.props[name] == null) {
+        if (type === 'color') c.props[name] = 'red';
+        else if (type === 'suit') c.props[name] = '♠';
+        else if (type === 'number') c.props[name] = 1;
+        else c.props[name] = '?';
+      }
+    }
+    closeModal();
+    render();
+  } }, 'Add property');
+
+  showModal(el('div', { class: 'modal' },
+    el('h3', null, 'Add property'),
+    el('p', null, 'A property is something all cards share a value for — color, rank, suit, number, family, etc.'),
+    el('div', { class: 'field' }, el('label', null, 'Name'), nameInput),
+    el('div', { class: 'field' }, el('label', null, 'Type'), typeSelect),
+    el('div', { class: 'modal__actions' },
+      el('button', { class: 'ghost', onclick: closeModal }, 'Cancel'),
+      okBtn)));
+}
+
+function openCardEditor(card) {
+  const def = editingGame;
+  const draft = JSON.parse(JSON.stringify(card));
+
+  const preview = el('div', { class: 'modal-card-preview' });
+  function refreshPreview() {
+    preview.innerHTML = '';
+    preview.appendChild(renderCustomCard({ ...draft, kind: 'custom' }));
+  }
+  refreshPreview();
+
+  // Name, count
+  const nameInput = el('input', { type: 'text', value: draft.name,
+    oninput: e => { draft.name = e.target.value; refreshPreview(); } });
+  const countInput = el('input', { type: 'number', min: 1, value: draft.count,
+    oninput: e => { draft.count = Math.max(1, parseInt(e.target.value, 10) || 1); } });
+  const valueInput = el('input', { type: 'number', min: 0, value: draft.value || 0,
+    oninput: e => { draft.value = Math.max(0, parseInt(e.target.value, 10) || 0); } });
+  const wildCheck = el('input', { type: 'checkbox', checked: draft.isWild,
+    onchange: e => { draft.isWild = e.target.checked; refreshPreview(); } });
+
+  // Properties section
+  const propsSection = el('div', { class: 'effects-list' });
+  for (const p of def.properties) {
+    let input;
+    const curVal = draft.props?.[p.name] ?? '';
+    if (p.type === 'color') {
+      input = el('select', { onchange: e => { draft.props[p.name] = e.target.value; refreshPreview(); } });
+      for (const c of Object.keys(COLOR_HEX)) {
+        const o = document.createElement('option');
+        o.value = c; o.textContent = c; input.appendChild(o);
+      }
+      const wildOpt = document.createElement('option');
+      wildOpt.value = 'wild'; wildOpt.textContent = 'wild';
+      input.appendChild(wildOpt);
+      input.value = curVal || 'red';
+    } else if (p.type === 'suit') {
+      input = el('select', { onchange: e => { draft.props[p.name] = e.target.value; refreshPreview(); } });
+      for (const s of SUITS) {
+        const o = document.createElement('option');
+        o.value = s; o.textContent = s; input.appendChild(o);
+      }
+      input.value = curVal || '♠';
+    } else if (p.type === 'number') {
+      input = el('input', { type: 'number', value: curVal || 0,
+        oninput: e => { draft.props[p.name] = parseInt(e.target.value, 10) || 0; refreshPreview(); } });
+    } else {
+      input = el('input', { type: 'text', value: curVal,
+        oninput: e => { draft.props[p.name] = e.target.value; refreshPreview(); } });
+    }
+    propsSection.appendChild(el('div', { class: 'effect-item' },
+      el('span', { class: 'eff-label' }, p.name, ' ', el('small', null, '(' + p.type + ')')),
+      input));
+  }
+
+  // Effects section
+  const effectsSection = el('div', { class: 'effects-list' });
+  function renderEffects() {
+    effectsSection.innerHTML = '';
+    draft.effects.forEach((eff, idx) => {
+      let paramInput = null;
+      let label = effectLabel(eff);
+      if (['drawAndSkip','drawSelf','discardSelf','score'].includes(eff.type)) {
+        paramInput = el('input', { type: 'number', min: 1, value: eff.n || 1,
+          oninput: e => { eff.n = Math.max(1, parseInt(e.target.value, 10) || 1); renderEffects(); } });
+      } else if (eff.type === 'chooseProp') {
+        paramInput = el('select', { onchange: e => { eff.prop = e.target.value; renderEffects(); } });
+        for (const p of def.properties) {
+          const o = document.createElement('option');
+          o.value = p.name; o.textContent = p.name; paramInput.appendChild(o);
+        }
+        paramInput.value = eff.prop || def.properties[0]?.name;
+      }
+      effectsSection.appendChild(el('div', { class: 'effect-item' },
+        el('span', { class: 'eff-label' }, label),
+        paramInput,
+        el('button', { onclick: () => { draft.effects.splice(idx, 1); renderEffects(); } }, '×')));
+    });
+    if (draft.effects.length === 0) {
+      effectsSection.appendChild(el('div', { class: 'hint' }, 'No effects yet — a card that just plays normally.'));
+    }
+  }
+  renderEffects();
+
+  const addEffectBtn = el('button', { class: 'ghost tiny', onclick: () => {
+    showEffectPicker(eff => { draft.effects.push(eff); renderEffects(); });
+  } }, '+ Add effect');
+
+  const modal = el('div', { class: 'modal modal--wide modal--scroll' },
+    el('h3', null, 'Edit card'),
+    preview,
+    el('div', { class: 'form-row' },
+      el('div', { class: 'field' }, el('label', null, 'Name'), nameInput),
+      el('div', { class: 'field' }, el('label', null, 'Copies'), countInput),
+      el('div', { class: 'field' }, el('label', null, 'Value'), valueInput)),
+    el('div', { class: 'check-row' },
+      el('label', null, wildCheck, 'Wild — playable anytime')),
+    def.properties.length > 0 ? el('div', null,
+      el('h3', { style: { fontSize: '0.72rem', marginBottom: '0.5rem' } }, 'Properties'),
+      propsSection) : null,
+    el('div', null,
+      el('h3', { style: { fontSize: '0.72rem', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted)' } },
+        'Effects when played', addEffectBtn),
+      effectsSection),
+    el('div', { class: 'modal__actions', style: { marginTop: '0.5rem' } },
+      el('button', { class: 'danger', onclick: () => {
+        def.cards.splice(def.cards.indexOf(card), 1);
+        closeModal(); render();
+      } }, 'Delete'),
+      el('button', { class: 'ghost', onclick: closeModal }, 'Cancel'),
+      el('button', { class: 'primary', onclick: () => {
+        Object.assign(card, draft);
+        closeModal(); render();
+      } }, 'Save')));
+
+  showModal(modal);
+}
+
+function effectLabel(eff) {
+  const map = {
+    skip: 'Skip next player',
+    reverse: 'Reverse direction',
+    drawAndSkip: 'Next draws & skips',
+    drawSelf: 'Draw cards',
+    discardSelf: 'Discard cards',
+    chooseProp: 'Choose property value',
+    score: 'Gain points',
+  };
+  return map[eff.type] || eff.type;
+}
+
+function showEffectPicker(onPick) {
+  const options = [
+    { type: 'skip', label: 'Skip next player', desc: 'Next player loses their turn' },
+    { type: 'reverse', label: 'Reverse direction', desc: 'Flip play direction (2p = skip)' },
+    { type: 'drawAndSkip', label: 'Next draws & skips', desc: 'Next player draws N and is skipped', n: 2 },
+    { type: 'drawSelf', label: 'Draw cards', desc: 'You draw N cards', n: 1 },
+    { type: 'discardSelf', label: 'Discard cards', desc: 'You discard N cards', n: 1 },
+    { type: 'chooseProp', label: 'Choose property value', desc: 'Player picks next color/rank/etc.' },
+    { type: 'score', label: 'Gain points', desc: 'You score N points', n: 1 },
+  ];
+
+  const list = el('div', { class: 'effects-list' });
+  for (const opt of options) {
+    list.appendChild(el('div', {
+      class: 'effect-item',
+      style: { cursor: 'pointer' },
+      onclick: () => {
+        const eff = { type: opt.type };
+        if (opt.n != null) eff.n = opt.n;
+        if (opt.type === 'chooseProp') eff.prop = editingGame.properties[0]?.name;
+        closeModal();
+        onPick(eff);
+      },
+    },
+      el('div', { class: 'eff-label' }, opt.label,
+        el('small', { style: { display: 'block', marginTop: '0.15rem' } }, opt.desc)),
+      el('span', { style: { color: 'var(--accent)', fontSize: '1.1rem' } }, '›')));
+  }
+
+  showModal(el('div', { class: 'modal modal--wide' },
+    el('h3', null, 'Add effect'),
+    el('p', null, 'What happens when this card is played?'),
+    list,
+    el('div', { class: 'modal__actions' },
+      el('button', { class: 'ghost', onclick: closeModal }, 'Cancel'))));
+}
+
+// --- Rules tab ---
+
+function renderRulesTab(container) {
+  const def = editingGame;
+
+  // Game mode
+  const modeSelect = el('select', { onchange: e => { def.gameMode = e.target.value; render(); } });
+  for (const [v, l] of [
+    ['shed', 'Shed — play matching cards to empty hand (UNO, Crazy Eights)'],
+    ['ask', 'Ask — ask others for cards (Go Fish)'],
+  ]) {
+    const o = document.createElement('option');
+    o.value = v; o.textContent = l; modeSelect.appendChild(o);
+  }
+  modeSelect.value = def.gameMode;
+
+  const modePanel = el('div', { class: 'panel' },
+    el('h3', null, 'How do you play?'),
+    el('div', { class: 'field' }, modeSelect));
+
+  container.appendChild(modePanel);
+
+  if (def.gameMode === 'shed') {
+    // Matching
+    const matchSection = el('div', { class: 'check-row' });
+    for (const p of def.properties) {
+      matchSection.appendChild(el('label', null,
+        el('input', {
+          type: 'checkbox', checked: def.matchProps.includes(p.name),
+          onchange: e => {
+            def.matchProps = e.target.checked
+              ? [...new Set([...def.matchProps, p.name])]
+              : def.matchProps.filter(x => x !== p.name);
+          },
+        }),
+        'Match by ' + p.name));
+    }
+
+    const turnSelect = el('select', { onchange: e => { def.turnMode = e.target.value; } });
+    for (const [v, l] of [
+      ['drawIfStuck', 'Draw only when you cannot play'],
+      ['drawFirst', 'Always draw one card first'],
+      ['playOnly', 'No drawing (play-only game)'],
+    ]) {
+      const o = document.createElement('option');
+      o.value = v; o.textContent = l; turnSelect.appendChild(o);
+    }
+    turnSelect.value = def.turnMode;
+
+    container.appendChild(el('div', { class: 'panel' },
+      el('h3', null, 'Matching'),
+      el('p', { class: 'hint' }, 'A card is playable if it shares ANY selected property with the top card of the discard pile. Wild cards bypass this.'),
+      matchSection,
+      el('div', { class: 'divider' }),
+      el('h3', null, 'Turn structure'),
+      el('div', { class: 'field' }, turnSelect)));
+
+    container.appendChild(el('div', { class: 'panel' },
+      el('h3', null, 'Setup'),
+      el('div', { class: 'form-row' },
+        el('div', { class: 'field' }, el('label', null, 'Cards dealt'),
+          el('input', { type: 'number', min: 1, value: def.deal,
+            oninput: e => { def.deal = Math.max(1, parseInt(e.target.value, 10) || 1); } })),
+        el('div', { class: 'field', style: { justifyContent: 'flex-end' } },
+          el('label', null, 'Starting card'),
+          el('label', { style: { display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', textTransform: 'none', letterSpacing: 0, color: 'var(--text-dim)', fontWeight: 500, padding: '0.5rem 0' } },
+            el('input', { type: 'checkbox', checked: def.flipStart,
+              onchange: e => { def.flipStart = e.target.checked; } }),
+            'Flip one to start')))));
+  } else if (def.gameMode === 'ask') {
+    const propOptions = el('select', { onchange: e => { def.setProp = e.target.value; } });
+    for (const p of def.properties) {
+      const o = document.createElement('option');
+      o.value = p.name; o.textContent = p.name; propOptions.appendChild(o);
+    }
+    propOptions.value = def.setProp || def.properties[0]?.name;
+
+    container.appendChild(el('div', { class: 'panel' },
+      el('h3', null, 'Go Fish rules'),
+      el('p', { class: 'hint' }, 'Players ask others for a card by one property value. If the target has it, they hand all copies over — you go again. Otherwise you draw one and check if it matches what you asked.'),
+      el('div', { class: 'form-row' },
+        el('div', { class: 'field' }, el('label', null, 'Ask for'), propOptions),
+        el('div', { class: 'field' }, el('label', null, 'Cards dealt'),
+          el('input', { type: 'number', min: 1, value: def.deal,
+            oninput: e => { def.deal = Math.max(1, parseInt(e.target.value, 10) || 1); } }))),
+      el('p', { class: 'hint' }, 'Win condition is set to "Most sets" on the Winning tab.')));
+  }
+}
+
+// --- Win tab ---
+
+function renderWinTab(container) {
+  const def = editingGame;
+
+  const winSelect = el('select', { onchange: e => { def.winCondition = e.target.value; render(); } });
+  for (const [v, l] of [
+    ['emptyHand', 'First to empty their hand'],
+    ['mostSets', 'Most sets collected (points)'],
+  ]) {
+    const o = document.createElement('option');
+    o.value = v; o.textContent = l; winSelect.appendChild(o);
+  }
+  winSelect.value = def.winCondition;
+
+  const panel = el('div', { class: 'panel' },
+    el('h3', null, 'Win condition'),
+    el('div', { class: 'field' }, winSelect));
+
+  if (def.winCondition === 'mostSets') {
+    const propOptions = el('select', { onchange: e => { def.setProp = e.target.value; } });
+    for (const p of def.properties) {
+      const o = document.createElement('option');
+      o.value = p.name; o.textContent = p.name; propOptions.appendChild(o);
+    }
+    propOptions.value = def.setProp || def.properties[0]?.name;
+
+    panel.appendChild(el('div', { class: 'form-row' },
+      el('div', { class: 'field' }, el('label', null, 'Set is grouped by'), propOptions),
+      el('div', { class: 'field' }, el('label', null, 'Cards per set'),
+        el('input', { type: 'number', min: 2, max: 8, value: def.setSize,
+          oninput: e => { def.setSize = Math.max(2, parseInt(e.target.value, 10) || 4); } }))));
+    panel.appendChild(el('p', { class: 'hint' },
+      'Each card contributes its "Value" to your score when the set completes. Highest total wins.'));
+  }
+
+  container.appendChild(panel);
+}
+
+// --- Test tab ---
+
+function renderTestTab(container) {
+  const def = editingGame;
+  const total = def.cards.reduce((n, c) => n + (c.count || 1), 0);
+
+  // Preview
   const preview = el('div', { class: 'preview-deck' });
-  const defsForPreview = {};
-  for (const c of def.cards) defsForPreview[c.id] = { ...c, kind: 'custom' };
-  for (const c of def.cards.slice(0, 12))
-    preview.appendChild(renderCustomCard(defsForPreview[c.id]));
-  if (def.cards.length > 12)
-    preview.appendChild(el('span', { class: 'stat', style: { alignSelf: 'center', color: 'rgba(255,255,255,0.7)' } },
-      '+' + (def.cards.length - 12) + ' more'));
+  const sample = def.cards.slice(0, 15);
+  for (const c of sample) preview.appendChild(renderCustomCard({ ...c, kind: 'custom' }));
 
-  container.appendChild(stats);
-  container.appendChild(preview);
+  container.appendChild(el('div', { class: 'panel' },
+    el('h3', null, 'Summary'),
+    el('div', { class: 'stat' },
+      `${def.cards.length} card types · ${total} total cards · `
+      + `deal ${def.deal} each to ${def.minPlayers}–${def.maxPlayers} players`),
+    el('div', { class: 'stat' },
+      'Mode: ' + (def.gameMode === 'ask' ? 'Ask' : 'Shed') + ' · '
+      + 'Win: ' + (def.winCondition === 'emptyHand' ? 'Empty hand' : 'Most sets')),
+    preview));
+
   container.appendChild(el('div', { class: 'editor-footer' },
-    el('button', { class: 'primary', onclick: () => testCustomGame() }, 'Save & test'),
-    el('button', { class: 'ghost', onclick: saveEditor }, 'Save & close')));
-  container.appendChild(el('h3', { style: { margin: '0.5rem 0 0', fontSize: '0.72rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '700' } }, 'JSON definition'));
-  container.appendChild(el('pre', { class: 'json-view' }, JSON.stringify(jsonClean, null, 2)));
+    el('button', { class: 'primary', onclick: testCustomGame }, 'Save & play test'),
+    el('button', { class: 'ghost', onclick: saveEditor }, 'Save & back to menu')));
+
+  container.appendChild(el('h3', {
+    style: { margin: '0.5rem 0 0', fontSize: '0.72rem', color: 'var(--muted)',
+      textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '700' },
+  }, 'JSON definition'));
+  container.appendChild(el('pre', { class: 'json-view' },
+    JSON.stringify({
+      name: def.name, gameMode: def.gameMode,
+      minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
+      deal: def.deal, flipStart: def.flipStart,
+      matchProps: def.matchProps, turnMode: def.turnMode,
+      winCondition: def.winCondition, setProp: def.setProp, setSize: def.setSize,
+      properties: def.properties, cards: def.cards,
+    }, null, 2)));
 }
 
 function validateEditor() {
   const def = editingGame;
   if (!def.name || !def.name.trim()) { alert('Give your game a name'); return false; }
   if (def.cards.length === 0) { alert('Add at least one card'); return false; }
-  if (def.matchBy.length === 0) { alert('Pick at least one match attribute'); return false; }
-  if (def.minPlayers < 2) { alert('Need at least 2 players'); return false; }
-  if (def.maxPlayers < def.minPlayers) { alert('Max players cannot be less than min'); return false; }
-  const total = def.cards.reduce((n, c) => n + c.count, 0);
+  if (def.gameMode === 'shed' && def.matchProps.length === 0) {
+    alert('Pick at least one match property on the Rules tab'); return false;
+  }
+  if (def.maxPlayers < def.minPlayers) {
+    alert('Max players cannot be less than min'); return false;
+  }
+  const total = def.cards.reduce((n, c) => n + (c.count || 1), 0);
   if (total < def.deal * def.minPlayers) {
-    alert('Not enough cards: dealing ' + def.deal + ' to ' + def.minPlayers
-      + ' players needs at least ' + (def.deal * def.minPlayers));
+    alert(`Not enough cards: dealing ${def.deal} to ${def.minPlayers} players needs at least ${def.deal * def.minPlayers}`);
     return false;
   }
   if (!def.description) def.description = 'Custom game: ' + def.name;
@@ -2484,6 +2253,22 @@ function testCustomGame() {
 }
 
 // ============================================================
+// Modal helpers
+// ============================================================
+
+function showModal(content) {
+  const overlay = el('div', { class: 'overlay', onclick: e => {
+    if (e.target === overlay) closeModal();
+  } }, content);
+  document.body.appendChild(overlay);
+  overlay.id = 'modal-overlay';
+}
+function closeModal() {
+  const o = document.getElementById('modal-overlay');
+  if (o) o.remove();
+}
+
+// ============================================================
 // Pass screen
 // ============================================================
 
@@ -2491,17 +2276,15 @@ function renderPass(root) {
   const player = G.players[VIEWER];
   const initial = (player.name[0] || '?').toUpperCase();
   const onContinue = () => { SCREEN = 'game'; render(); };
-
   const content = el('div', { class: 'pass', onclick: onContinue },
     el('div', { class: 'pass__label' }, 'Pass to'),
     el('div', { class: 'pass__avatar' }, initial),
     el('h2', null, player.name),
     el('p', { class: 'pass__hint' }, 'Tap anywhere when ready'));
   root.appendChild(content);
-
   if (undoStack.length > 0) {
-    root.appendChild(el('button', { class: 'pass__undo', onclick: e => { e.stopPropagation(); undo(); } },
-      'Undo last move'));
+    root.appendChild(el('button', { class: 'pass__undo',
+      onclick: e => { e.stopPropagation(); undo(); } }, 'Undo last move'));
   }
 }
 
@@ -2513,9 +2296,8 @@ function renderGame(root) {
   const game = GAMES[G.scriptId];
   const isMyTurn = !G.ended && G.current === VIEWER;
   const actions = isMyTurn ? game.legal(G, VIEWER) : [];
-  const hasPendingChoice = G.phase === 'chooseColor' || G.phase === 'chooseGroup';
+  const hasPendingChoice = G.phase === 'chooseProp' || G.phase === 'chooseColor';
 
-  // Header
   const header = el('div', { class: 'game__header' },
     el('span', { class: 'game__header-title' }, game.name),
     el('span', { class: 'game__header-info' },
@@ -2524,23 +2306,20 @@ function renderGame(root) {
     el('div', { class: 'controls' },
       undoStack.length > 0 ? el('button', { class: 'ghost game__header-btn', onclick: undo }, 'Undo') : null));
 
-  // Opponents
   const opponents = el('div', { class: 'opponents' });
   for (const p of G.players) {
     if (p.id === VIEWER) continue;
     const hand = G.zones['hand:' + p.id];
     const sets = G.zones['sets:' + p.id];
+    const score = G.flags.scores?.[p.id];
     const item = el('div', { class: 'opponent' + (G.current === p.id && !G.ended ? ' current' : '') },
       el('strong', null, p.name),
       el('span', { class: 'meta' }, hand.cards.length + ' card' + (hand.cards.length === 1 ? '' : 's')));
-    if (sets) {
-      const size = game._setSize || 4;
-      item.appendChild(el('span', { class: 'meta' }, Math.floor(sets.cards.length / size) + ' sets'));
-    }
+    if (sets) item.appendChild(el('span', { class: 'meta' }, 'Sets: ' + Math.floor(sets.cards.length / (game._def?.setSize || 4))));
+    if (score != null) item.appendChild(el('span', { class: 'meta' }, score + ' pts'));
     opponents.appendChild(item);
   }
 
-  // Felt table
   const felt = el('div', { class: 'felt' });
 
   // Deck
@@ -2559,36 +2338,55 @@ function renderGame(root) {
   const discard = G.zones.discard;
   const discardPile = el('div', { class: 'pile' });
   discardPile.appendChild(el('span', { class: 'pile__label' }, 'Discard'));
-  if (discard && discard.cards.length > 0) {
-    discardPile.appendChild(renderCardEl(topOf(discard)));
-  } else {
-    discardPile.appendChild(el('div', { class: 'pile__empty' }, 'empty'));
-  }
+  if (discard && discard.cards.length > 0) discardPile.appendChild(renderCardEl(topOf(discard)));
+  else discardPile.appendChild(el('div', { class: 'pile__empty' }, 'empty'));
   felt.appendChild(discardPile);
 
-  // Active color badge
-  const activeKey = G.flags.activeColor || G.flags.activeGroup;
-  if (activeKey && !G.ended) {
-    let bg = COLOR_HEX[activeKey] || '#6b7280';
-    let fg = LIGHT_COLORS.has(activeKey) ? '#1a1a1a' : 'white';
-    let label = String(activeKey);
-    if (activeKey === '♥' || activeKey === '♦') bg = '#cf2430';
-    else if (activeKey === '♠' || activeKey === '♣') bg = '#1c1c20';
+  // Active color/suit
+  if (game._def && game._def.matchProps?.[0]) {
+    const propName = game._def.matchProps[0];
+    const activeVal = G.flags.activeProps?.[propName] || G.flags.activeColor;
+    if (activeVal) {
+      let bg = COLOR_HEX[activeVal] || '#6b7280';
+      let fg = LIGHT_COLORS.has(activeVal) ? '#1a1a1a' : 'white';
+      if (activeVal === '♥' || activeVal === '♦') bg = '#cf2430';
+      else if (activeVal === '♠' || activeVal === '♣') bg = '#1c1c20';
+      const badgePile = el('div', { class: 'pile' });
+      badgePile.appendChild(el('span', { class: 'pile__label' }, 'Active'));
+      badgePile.appendChild(el('span', { class: 'color-badge', style: { background: bg, color: fg } }, String(activeVal)));
+      felt.appendChild(badgePile);
+    }
+  } else if (G.flags.activeColor) {
+    // UNO/Crazy Eights
+    let bg = COLOR_HEX[G.flags.activeColor] || '#6b7280';
+    let fg = LIGHT_COLORS.has(G.flags.activeColor) ? '#1a1a1a' : 'white';
+    if (G.flags.activeColor === '♥' || G.flags.activeColor === '♦') bg = '#cf2430';
+    else if (G.flags.activeColor === '♠' || G.flags.activeColor === '♣') bg = '#1c1c20';
     const badgePile = el('div', { class: 'pile' });
     badgePile.appendChild(el('span', { class: 'pile__label' }, 'Active'));
-    badgePile.appendChild(el('span', { class: 'color-badge', style: { background: bg, color: fg } }, label));
+    badgePile.appendChild(el('span', { class: 'color-badge', style: { background: bg, color: fg } }, String(G.flags.activeColor)));
     felt.appendChild(badgePile);
   }
 
-  // My sets
+  // My sets/score
   if (G.zones['sets:' + VIEWER]) {
     const sets = G.zones['sets:' + VIEWER].cards.length;
-    const size = game._setSize || 4;
-    const setsPile = el('div', { class: 'pile' });
-    setsPile.appendChild(el('span', { class: 'pile__label' }, 'Your sets'));
-    setsPile.appendChild(el('span', { class: 'color-badge', style: { background: 'var(--surface-glow)', color: 'var(--text)' } },
-      String(Math.floor(sets / size))));
-    felt.appendChild(setsPile);
+    const size = game._def?.setSize || 4;
+    const score = G.flags.scores?.[VIEWER] || 0;
+    const pile = el('div', { class: 'pile' });
+    pile.appendChild(el('span', { class: 'pile__label' }, 'Your sets'));
+    pile.appendChild(el('span', { class: 'color-badge',
+      style: { background: 'var(--surface-glow)', color: 'var(--text)' } },
+      Math.floor(sets / size) + ' · ' + score + ' pts'));
+    felt.appendChild(pile);
+  } else if (G.flags.scores && game._def) {
+    const score = G.flags.scores[VIEWER] || 0;
+    const pile = el('div', { class: 'pile' });
+    pile.appendChild(el('span', { class: 'pile__label' }, 'Score'));
+    pile.appendChild(el('span', { class: 'color-badge',
+      style: { background: 'var(--surface-glow)', color: 'var(--text)' } },
+      score + ' pts'));
+    felt.appendChild(pile);
   }
 
   // Actions bar
@@ -2596,43 +2394,26 @@ function renderGame(root) {
   if (hasPendingChoice && isMyTurn) {
     actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Choose:'));
     for (const a of actions) {
-      if (a.cmd.type === 'CHOOSE_COLOR' || a.cmd.type === 'CHOOSE_GROUP') {
-        const v = a.cmd.color || a.cmd.group;
+      if (a.cmd.type === 'CHOOSE_PROP' || a.cmd.type === 'CHOOSE_COLOR') {
+        const v = a.cmd.value || a.cmd.color;
         const btn = el('button', { class: 'chip', onclick: () => takeAction(a.cmd) });
         const hex = COLOR_HEX[v];
-        if (hex) {
-          btn.style.background = hex;
-          btn.style.color = LIGHT_COLORS.has(v) ? '#111' : 'white';
-        } else if (v === '♠' || v === '♣') {
-          btn.style.background = '#1c1c20'; btn.style.color = 'white';
-        } else if (v === '♥' || v === '♦') {
-          btn.style.background = '#cf2430'; btn.style.color = 'white';
-        }
+        if (hex) { btn.style.background = hex; btn.style.color = LIGHT_COLORS.has(v) ? '#111' : 'white'; }
+        else if (v === '♠' || v === '♣') { btn.style.background = '#1c1c20'; btn.style.color = 'white'; }
+        else if (v === '♥' || v === '♦') { btn.style.background = '#cf2430'; btn.style.color = 'white'; }
         btn.textContent = v;
         actionsEl.appendChild(btn);
       }
     }
   } else if (isMyTurn) {
-    const drawAction = actions.find(a => a.cmd.type === 'DRAW');
-    const passAction = actions.find(a => a.cmd.type === 'PASS');
-    const playActions = actions.filter(a => a.cmd.type === 'PLAY_CARD');
-    if (playActions.length > 0)
-      actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Tap a card to play'));
-    if (drawAction) actionsEl.appendChild(el('button', {
-      class: 'primary', onclick: () => takeAction(drawAction.cmd),
-    }, 'Draw a card'));
-    if (passAction) actionsEl.appendChild(el('button', {
-      class: 'ghost', onclick: () => takeAction(passAction.cmd),
-    }, 'Pass'));
-    if (!drawAction && !passAction && playActions.length === 0)
-      actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'No moves available'));
+    if (game.uiMode === 'ask') renderAskActions(actionsEl, actions);
+    else renderPlayActions(actionsEl, actions, game);
   } else if (G.ended) {
     actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Game over'));
   } else {
     actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Waiting for ' + G.players[G.current].name));
   }
 
-  // Log
   const logEl = el('div', { class: 'log' });
   for (const line of G.log.slice(-5)) logEl.appendChild(el('div', null, line));
 
@@ -2656,12 +2437,54 @@ function renderGame(root) {
     }
     handEl.appendChild(cardEl);
   }
-  const handWrap = el('div', { class: 'hand-wrap' }, handEl);
 
   root.appendChild(el('div', { class: 'game' },
-    header, opponents, felt, actionsEl, logEl, handWrap));
+    header, opponents, felt, actionsEl, logEl, el('div', { class: 'hand-wrap' }, handEl)));
 
   if (G.ended) root.appendChild(renderGameOver());
+}
+
+function renderPlayActions(container, actions, game) {
+  const drawAction = actions.find(a => a.cmd.type === 'DRAW');
+  const passAction = actions.find(a => a.cmd.type === 'PASS');
+  const playActions = actions.filter(a => a.cmd.type === 'PLAY_CARD');
+  if (playActions.length > 0)
+    container.appendChild(el('span', { class: 'actions-bar__label' }, 'Tap a card to play'));
+  if (drawAction) container.appendChild(el('button', {
+    class: 'primary', onclick: () => takeAction(drawAction.cmd),
+  }, 'Draw a card'));
+  if (passAction) container.appendChild(el('button', {
+    class: 'ghost', onclick: () => takeAction(passAction.cmd),
+  }, 'Pass'));
+  if (!drawAction && !passAction && playActions.length === 0)
+    container.appendChild(el('span', { class: 'actions-bar__label' }, 'No moves available'));
+}
+
+let _pendingAskValue = null;
+function renderAskActions(container, actions) {
+  const values = [...new Set(actions.filter(a => a.cmd.type === 'ASK').map(a => a.value))];
+  if (_pendingAskValue === null) {
+    if (values.length === 0) {
+      container.appendChild(el('button', { class: 'primary',
+        onclick: () => takeAction({ type: 'DRAW' }) }, 'Draw a card'));
+      return;
+    }
+    container.appendChild(el('span', { class: 'actions-bar__label' }, 'Ask for:'));
+    for (const v of values) {
+      container.appendChild(el('button', { class: 'chip',
+        onclick: () => { _pendingAskValue = v; render(); } }, String(v)));
+    }
+    return;
+  }
+  container.appendChild(el('span', { class: 'actions-bar__label' }, `Ask for ${_pendingAskValue} from:`));
+  for (const a of actions) {
+    if (a.cmd.type !== 'ASK' || a.value !== _pendingAskValue) continue;
+    container.appendChild(el('button', { class: 'chip',
+      onclick: () => { const cmd = a.cmd; _pendingAskValue = null; takeAction(cmd); } },
+      G.players[a.target].name));
+  }
+  container.appendChild(el('button', { class: 'ghost',
+    onclick: () => { _pendingAskValue = null; render(); } }, 'Cancel'));
 }
 
 function renderGameOver() {
@@ -2685,7 +2508,7 @@ function startGame() {
   if (names.length > game.maxPlayers) { alert('At most ' + game.maxPlayers + ' players'); return; }
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = game.create(names);
-  VIEWER = 0; SCREEN = 'pass'; undoStack = [];
+  VIEWER = 0; SCREEN = 'pass'; undoStack = []; _pendingAskValue = null;
   render();
 }
 
@@ -2699,8 +2522,9 @@ function takeAction(cmd) {
   undoStack.push(prev);
   G = next;
   if (G.ended) SCREEN = 'game';
-  else if (G.current !== prevCurrent) { VIEWER = G.current; SCREEN = 'pass'; }
-  else SCREEN = 'game';
+  else if (G.current !== prevCurrent && G.phase !== 'chooseProp') {
+    VIEWER = G.current; SCREEN = 'pass';
+  } else SCREEN = 'game';
   render();
 }
 
@@ -2717,7 +2541,7 @@ function playAgain() {
   const game = GAMES[G.scriptId];
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = game.create(names);
-  VIEWER = 0; SCREEN = 'pass'; undoStack = [];
+  VIEWER = 0; SCREEN = 'pass'; undoStack = []; _pendingAskValue = null;
   render();
 }
 
