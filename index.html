@@ -2,91 +2,211 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Card Table</title>
 <style>
+  :root {
+    --bg: #0d1f16;
+    --panel: #142f20;
+    --panel-hi: #1f4530;
+    --border: #2a5a3a;
+    --text: #eaf3ec;
+    --muted: #7a9d87;
+    --accent: #4ade80;
+    --accent-bg: #166534;
+    --red: #dc2626;
+    --card-w: clamp(2.6rem, 9.5vw, 3.4rem);
+    --card-h: calc(var(--card-w) * 1.45);
+  }
+
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body {
+  html, body {
     margin: 0;
-    font-family: system-ui, -apple-system, sans-serif;
-    background: #17372a;
-    color: #eaeaea;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     min-height: 100vh;
+    min-height: 100dvh;
     overscroll-behavior: none;
   }
-  #app { min-height: 100vh; }
+  #app { min-height: 100dvh; }
 
-  .menu, .pass {
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: var(--panel-hi);
+    color: var(--text);
+    padding: 0.65rem 1rem;
+    border-radius: 0.55rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.15s, transform 0.1s, opacity 0.15s;
+    min-height: 2.6rem;
+  }
+  button:hover { background: var(--border); }
+  button:active { transform: scale(0.97); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.primary { background: var(--accent-bg); }
+  button.primary:hover { background: #1d7a3f; }
+  button.ghost { background: transparent; border: 1px solid var(--border); }
+  button.ghost:hover { background: var(--panel); }
+  button.danger { background: #7f1d1d; }
+  button.danger:hover { background: #991b1b; }
+
+  /* ===== Menu ===== */
+  .menu {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    padding: 1rem;
-    gap: 1rem;
+    min-height: 100dvh;
+    padding: 1.25rem;
+    gap: 1.1rem;
   }
-  .menu h1 { margin: 0 0 0.5rem; }
+  .menu h1 {
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+  }
+  .menu h1 span { color: var(--accent); }
+  .menu .tagline { color: var(--muted); margin: -0.5rem 0 0.5rem; font-size: 0.9rem; }
+  .menu-card {
+    background: var(--panel);
+    border-radius: 0.9rem;
+    padding: 1.1rem;
+    width: 100%;
+    max-width: 24rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
   .menu label {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    font-size: 0.9rem;
-    width: 100%;
-    max-width: 22rem;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
   .menu input, .menu select {
-    padding: 0.7rem;
-    border-radius: 8px;
-    border: 1px solid #2a5a3a;
-    background: #0f2419;
-    color: #eaeaea;
+    padding: 0.75rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
     font-size: 1rem;
+    font-family: inherit;
     width: 100%;
   }
-  .pass { cursor: pointer; text-align: center; user-select: none; }
-  .pass h2 { font-size: 1.6rem; margin: 0; }
+  .menu input:focus, .menu select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .rules {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+    background: var(--bg);
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.55rem;
+  }
 
+  /* ===== Pass screen ===== */
+  .pass {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    padding: 1.5rem;
+    gap: 1rem;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .pass .icon {
+    font-size: 3rem;
+    opacity: 0.7;
+  }
+  .pass h2 { margin: 0; font-size: 1.8rem; }
+  .pass .hint { color: var(--muted); margin: 0; }
+  .pass .undo-link {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+  }
+  .pass .undo-link:hover { color: var(--text); }
+
+  /* ===== Game ===== */
   .game {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100dvh;
     padding: 0.5rem;
-    gap: 0.5rem;
+    gap: 0.45rem;
+    max-width: 56rem;
+    margin: 0 auto;
   }
   header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 0.5rem;
-    padding: 0.6rem 0.75rem;
-    background: #0f2419;
-    border-radius: 8px;
-    font-size: 0.85rem;
+    padding: 0.55rem 0.75rem;
+    background: var(--panel);
+    border-radius: 0.6rem;
+    font-size: 0.82rem;
   }
-  header span:first-child { font-weight: 700; }
+  header .game-name { font-weight: 700; color: var(--accent); }
+  header .turn-info { color: var(--muted); }
+  header .turn-info strong { color: var(--text); }
+  header .controls { display: flex; gap: 0.35rem; }
+  header .controls button {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.78rem;
+    min-height: auto;
+  }
 
   .opponents {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.1rem;
   }
   .opponent {
     display: flex;
     flex-direction: column;
-    min-width: 6.5rem;
-    padding: 0.5rem 0.65rem;
-    background: #0f2419;
-    border-radius: 8px;
-    font-size: 0.8rem;
+    padding: 0.5rem 0.7rem;
+    background: var(--panel);
+    border-radius: 0.6rem;
+    font-size: 0.78rem;
+    min-width: 5.5rem;
     flex-shrink: 0;
+    gap: 0.1rem;
   }
-  .opponent strong { margin-bottom: 0.15rem; }
+  .opponent.current {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+  }
+  .opponent strong { font-size: 0.85rem; }
+  .opponent span { color: var(--muted); }
 
   .table {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.6rem;
     justify-content: center;
+    align-items: flex-start;
     padding: 0.5rem 0;
     flex-wrap: wrap;
   }
@@ -95,236 +215,471 @@
     flex-direction: column;
     align-items: center;
     gap: 0.3rem;
-    min-width: 5.5rem;
-    padding: 0.6rem;
-    background: #0f2419;
-    border-radius: 8px;
-    font-size: 0.8rem;
+    min-width: 4.5rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
-
-  .card {
-    padding: 0.55rem 0.8rem;
-    background: #fafafa;
-    color: #111;
-    border-radius: 8px;
+  .zone .card, .zone .empty {
+    margin: 0;
+  }
+  .empty {
+    width: var(--card-w);
+    height: var(--card-h);
+    border: 2px dashed var(--border);
+    border-radius: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--border);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .active-color {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem 0.7rem;
+    border-radius: 99px;
+    font-size: 0.78rem;
     font-weight: 700;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-    white-space: nowrap;
+    color: white;
+    min-width: 3rem;
   }
-  .card.red { color: #c00; }
-  .card.hidden { background: #333; color: #666; }
+  .active-color.red { background: #dc2626; }
+  .active-color.yellow { background: #eab308; color: #1f1f1f; }
+  .active-color.green { background: #16a34a; }
+  .active-color.blue { background: #2563eb; }
+  .active-color.suit-red { background: #fff; color: #dc2626; }
+  .active-color.suit-black { background: #fff; color: #111; }
 
   .actions {
     display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    max-height: 30vh;
-    overflow-y: auto;
-    padding: 0.5rem;
-    background: #0f2419;
-    border-radius: 8px;
-  }
-  .action-group {
-    display: flex;
     flex-wrap: wrap;
-    gap: 0.3rem;
+    gap: 0.4rem;
     align-items: center;
+    padding: 0.5rem;
+    background: var(--panel);
+    border-radius: 0.6rem;
+    min-height: 3.6rem;
   }
-  .group-label {
-    font-weight: 700;
-    margin-right: 0.25rem;
-    font-size: 0.8rem;
-    color: #9fdcb0;
-    flex-shrink: 0;
+  .actions .label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 0.2rem;
   }
-
-  button {
-    padding: 0.65rem 1rem;
-    background: #2a6a42;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
+  .rank-chip, .target-chip {
+    padding: 0.55rem 0.95rem;
+    border-radius: 0.55rem;
+    background: var(--panel-hi);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 600;
     cursor: pointer;
     font-family: inherit;
-    min-height: 2.5rem;
+    font-size: 0.95rem;
+    min-height: 2.4rem;
   }
-  button:hover { background: #3a8052; }
-  button:active { background: #1f5232; }
+  .rank-chip.selected { background: var(--accent-bg); border-color: var(--accent); }
+  .rank-chip:hover, .target-chip:hover { background: var(--border); }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
 
   .log {
     font-size: 0.72rem;
-    max-height: 5.5rem;
+    max-height: 4.5rem;
     overflow-y: auto;
     padding: 0.4rem 0.65rem;
-    background: #0a1a12;
-    border-radius: 8px;
-    color: #b9d9c3;
+    background: #081610;
+    border-radius: 0.55rem;
+    color: var(--muted);
     line-height: 1.5;
+    flex-shrink: 0;
   }
-  .log div { padding: 0.05rem 0; }
+  .log div:last-child { color: var(--text); }
 
   .hand {
     display: flex;
     gap: 0.35rem;
     overflow-x: auto;
-    padding: 0.5rem 0.1rem;
-    margin-top: auto;
     -webkit-overflow-scrolling: touch;
+    padding: 0.6rem 0.1rem 0.4rem;
+    margin-top: auto;
+    scrollbar-width: none;
   }
+  .hand::-webkit-scrollbar { display: none; }
 
-  .over {
-    position: fixed;
-    inset: 0;
+  /* ===== Cards ===== */
+  .card {
+    width: var(--card-w);
+    height: var(--card-h);
+    border-radius: 0.4rem;
+    background: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    user-select: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+    font-weight: 700;
+  }
+  .card .corner {
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,0.85);
-    gap: 0.5rem;
-    text-align: center;
-    padding: 1.5rem;
+    line-height: 1;
+    font-size: 0.58rem;
+    gap: 0.05rem;
+  }
+  .card .corner.tl { top: 0.22rem; left: 0.25rem; }
+  .card .corner.br { bottom: 0.22rem; right: 0.25rem; transform: rotate(180deg); }
+  .card .pip { font-size: 1.35rem; line-height: 1; }
+
+  /* Standard playing cards */
+  .card.std { color: #111; }
+  .card.std.red { color: #dc2626; }
+
+  /* UNO cards */
+  .card.uno { color: white; font-weight: 900; }
+  .card.uno.red { background: #dc2626; }
+  .card.uno.yellow { background: #eab308; color: #1f1f1f; }
+  .card.uno.green { background: #16a34a; }
+  .card.uno.blue { background: #2563eb; }
+  .card.uno.wild {
+    background: conic-gradient(from 45deg, #dc2626 0deg 90deg, #eab308 90deg 180deg, #16a34a 180deg 270deg, #2563eb 270deg 360deg);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  }
+  .card.uno .corner { font-size: 0.62rem; }
+  .card.uno .pip { font-size: 1.25rem; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+  .card.uno.wild .pip { font-size: 0.9rem; }
+
+  /* Card back */
+  .card.back {
+    background:
+      repeating-linear-gradient(45deg, #2d4a7a 0 6px, #1a2d4a 6px 12px);
+    border: 2px solid #e5e7eb;
+  }
+  .card.back::after {
+    content: '';
+    position: absolute;
+    inset: 20%;
+    border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 0.2rem;
+  }
+
+  /* Playable hand cards */
+  .hand .card.playable {
+    transform: translateY(-0.45rem);
+    box-shadow: 0 0 0 2px var(--accent), 0 6px 14px rgba(74,222,128,0.4);
     cursor: pointer;
   }
-  .over h2 { margin: 0 0 0.5rem; font-size: 1.6rem; }
+  .hand .card.playable:active { transform: translateY(-0.55rem) scale(0.96); }
+  .hand .card.dimmed { opacity: 0.55; }
 
-  @media (max-width: 600px) {
-    .card { padding: 0.45rem 0.65rem; font-size: 0.85rem; }
-    header { font-size: 0.78rem; }
-    .zone { min-width: 4.8rem; padding: 0.5rem; font-size: 0.75rem; }
-    button { padding: 0.6rem 0.85rem; font-size: 0.85rem; }
+  /* ===== Modals ===== */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.78);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    z-index: 100;
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    background: var(--panel);
+    border-radius: 0.9rem;
+    padding: 1.4rem;
+    width: 100%;
+    max-width: 22rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  .modal h3 { margin: 0; font-size: 1.1rem; }
+  .modal p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+  .color-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .color-btn {
+    padding: 1.1rem;
+    border-radius: 0.6rem;
+    font-weight: 800;
+    font-size: 1rem;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    min-height: 4rem;
+  }
+  .color-btn.red { background: #dc2626; }
+  .color-btn.yellow { background: #eab308; color: #1f1f1f; text-shadow: none; }
+  .color-btn.green { background: #16a34a; }
+  .color-btn.blue { background: #2563eb; }
+  .color-btn.suit { background: white; color: #111; text-shadow: none; }
+  .color-btn.suit.red { color: #dc2626; }
+  .color-btn:hover { filter: brightness(1.15); }
+
+  .game-over .modal h2 { margin: 0; font-size: 1.6rem; }
+  .game-over .winners {
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0.25rem 0;
+  }
+
+  @media (max-width: 480px) {
+    .menu h1 { font-size: 1.6rem; }
+    header { font-size: 0.76rem; padding: 0.5rem 0.65rem; }
+    .log { max-height: 3.5rem; }
+    .actions { min-height: 3.2rem; }
   }
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-// ============ Engine ============
+'use strict';
 
-const SUITS = ['♠', '♥', '♦', '♣'];
-const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+// ============================================================
+// Utilities
+// ============================================================
 
-const DECK = (() => {
+function el(tag, props, ...children) {
+  const n = document.createElement(tag);
+  if (props) for (const k in props) {
+    const v = props[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') n.className = v;
+    else if (k === 'style' && typeof v === 'object') Object.assign(n.style, v);
+    else if (k.startsWith('on') && typeof v === 'function') {
+      n.addEventListener(k.slice(2).toLowerCase(), v);
+    } else if (k in n) n[k] = v;
+    else n.setAttribute(k, v);
+  }
+  for (const c of children.flat()) {
+    if (c == null || c === false) continue;
+    n.appendChild(typeof c === 'string' || typeof c === 'number'
+      ? document.createTextNode(String(c)) : c);
+  }
+  return n;
+}
+
+// Deterministic RNG (LCG)
+let _rng = 1;
+function seedRng(seed) { _rng = (seed >>> 0) || 1; }
+function rand() {
+  _rng = (Math.imul(_rng, 1664525) + 1013904223) >>> 0;
+  return _rng / 4294967296;
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ============================================================
+// Deck builders
+// ============================================================
+
+const STD_SUITS = ['♠', '♥', '♦', '♣'];
+const STD_RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+const SUIT_ORDER = { '♠': 0, '♥': 1, '♦': 2, '♣': 3 };
+const RANK_ORDER = Object.fromEntries(STD_RANKS.map((r, i) => [r, i]));
+const UNO_COLOR_ORDER = { red: 0, yellow: 1, green: 2, blue: 3, wild: 4 };
+const UNO_VALUE_ORDER = {
+  '0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
+  skip: 10, reverse: 11, draw2: 12, wild: 13, wild4: 14,
+};
+
+function buildStd() {
   const defs = {};
   const cards = [];
-  for (const s of SUITS) for (const r of RANKS) {
-    const id = s + r;
-    defs[id] = {
-      id, name: r + s, suit: s, rank: r,
-      color: (s === '♥' || s === '♦') ? 'red' : 'black',
-    };
-    cards.push({ id, defId: id });
-  }
-  return { defs, cards };
-})();
-
-let rng = 1;
-function rand() {
-  rng = (Math.imul(rng, 1664525) + 1013904223) >>> 0;
-  return rng / 4294967296;
-}
-function shuffle(a) {
-  const arr = a.slice();
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-function newCard(id, defId, faceUp) { return { id, defId, faceUp: !!faceUp }; }
-function topCard(zone) { return zone.cards[zone.cards.length - 1]; }
-
-// ============ Crazy Eights ============
-
-function createCrazyEights(names) {
-  const state = {
-    scriptId: 'crazy-eights',
-    players: names.map((name, id) => ({ id, name })),
-    zones: { draw: { cards: [] }, discard: { cards: [] } },
-    current: 0, turn: 1, phase: 'play', flags: {},
-    log: [], ended: false, winners: [],
-  };
-  for (const p of state.players) {
-    state.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-  }
-  const cards = DECK.cards.map(c => newCard(c.id, c.defId, false));
-  state.zones.draw.cards = shuffle(cards);
-  for (const p of state.players) {
-    for (let i = 0; i < 5; i++) {
-      state.zones['hand:' + p.id].cards.push(state.zones.draw.cards.pop());
+  for (const suit of STD_SUITS) {
+    for (const rank of STD_RANKS) {
+      const id = 'std:' + suit + rank;
+      defs[id] = {
+        id, kind: 'std', suit, rank, name: rank + suit,
+        color: (suit === '♥' || suit === '♦') ? 'red' : 'black',
+      };
+      cards.push({ id: id + ':0', defId: id });
     }
   }
-  let top = state.zones.draw.cards.pop();
-  while (DECK.defs[top.defId].rank === '8') {
-    state.zones.draw.cards.unshift(top);
-    top = state.zones.draw.cards.pop();
-  }
-  top.faceUp = true;
-  state.zones.discard.cards.push(top);
-  state.flags.currentSuit = DECK.defs[top.defId].suit;
-  state.log.push('Top card: ' + DECK.defs[top.defId].name + '. ' + names[0] + ' starts.');
-  return state;
+  return { defs, cards };
 }
 
-function isPlayableCE(state, def) {
-  const top = topCard(state.zones.discard);
+function buildUno() {
+  const defs = {};
+  const cards = [];
+  const colors = ['red', 'yellow', 'green', 'blue'];
+  for (const color of colors) {
+    // 0 (one copy)
+    const zid = `uno:${color}:0`;
+    defs[zid] = { id: zid, kind: 'uno', color, value: '0' };
+    cards.push({ id: zid + ':0', defId: zid });
+    // 1-9 (two copies each)
+    for (let n = 1; n <= 9; n++) {
+      const nid = `uno:${color}:${n}`;
+      defs[nid] = { id: nid, kind: 'uno', color, value: String(n) };
+      cards.push({ id: nid + ':0', defId: nid });
+      cards.push({ id: nid + ':1', defId: nid });
+    }
+    // Actions (two copies each)
+    for (const v of ['skip', 'reverse', 'draw2']) {
+      const vid = `uno:${color}:${v}`;
+      defs[vid] = { id: vid, kind: 'uno', color, value: v };
+      cards.push({ id: vid + ':0', defId: vid });
+      cards.push({ id: vid + ':1', defId: vid });
+    }
+  }
+  // Wilds
+  for (const v of ['wild', 'wild4']) {
+    const wid = `uno:wild:${v}`;
+    defs[wid] = { id: wid, kind: 'uno', color: 'wild', value: v };
+    for (let i = 0; i < 4; i++) cards.push({ id: wid + ':' + i, defId: wid });
+  }
+  return { defs, cards };
+}
+
+const STD_DECK = buildStd();
+const UNO_DECK = buildUno();
+
+// ============================================================
+// Shared state helpers
+// ============================================================
+
+function makeState(scriptId, names) {
+  return {
+    scriptId,
+    players: names.map((name, id) => ({ id, name })),
+    zones: {},
+    current: 0,
+    turn: 1,
+    phase: 'play',
+    flags: { direction: 1 },
+    log: [],
+    ended: false,
+    winners: [],
+  };
+}
+
+function topOf(zone) { return zone.cards[zone.cards.length - 1]; }
+
+function advanceTurn(s) {
+  const n = s.players.length;
+  const dir = s.flags.direction ?? 1;
+  s.current = (s.current + dir + n) % n;
+  s.turn++;
+  s.flags.drewThisTurn = false;
+  s.flags.drawnCardId = undefined;
+}
+
+function drawTo(s, playerId) {
+  if (s.zones.draw.cards.length === 0) reshuffleDiscard(s);
+  if (s.zones.draw.cards.length === 0) return null;
+  const c = s.zones.draw.cards.pop();
+  s.zones['hand:' + playerId].cards.push(c);
+  return c;
+}
+
+function reshuffleDiscard(s) {
+  const discard = s.zones.discard;
+  if (!discard || discard.cards.length <= 1) return;
+  const top = discard.cards.pop();
+  s.zones.draw.cards = shuffle(discard.cards).map(c => ({ ...c, faceUp: false }));
+  discard.cards = [top];
+  s.log.push('Discard pile reshuffled into draw pile');
+}
+
+// ============================================================
+// Game: Crazy Eights
+// ============================================================
+
+function createCE(names) {
+  const s = makeState('crazy-eights', names);
+  s.zones.draw = { cards: [] };
+  s.zones.discard = { cards: [] };
+  for (const p of s.players) {
+    s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
+  }
+  const cards = STD_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
+  s.zones.draw.cards = shuffle(cards);
+  for (const p of s.players) {
+    for (let i = 0; i < 5; i++) s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
+  }
+  let top = s.zones.draw.cards.pop();
+  while (STD_DECK.defs[top.defId].rank === '8') {
+    s.zones.draw.cards.unshift(top);
+    top = s.zones.draw.cards.pop();
+  }
+  top.faceUp = true;
+  s.zones.discard.cards.push(top);
+  s.flags.activeColor = STD_DECK.defs[top.defId].suit;
+  s.log.push('Top card: ' + STD_DECK.defs[top.defId].name + '. ' + names[0] + ' starts.');
+  return s;
+}
+
+function isPlayableCE(s, def) {
+  const top = topOf(s.zones.discard);
   if (!top) return true;
-  const topDef = DECK.defs[top.defId];
-  const cur = state.flags.currentSuit || topDef.suit;
+  const topDef = STD_DECK.defs[top.defId];
   if (def.rank === '8') return true;
-  if (def.suit === cur) return true;
+  if (def.suit === s.flags.activeColor) return true;
   if (def.rank === topDef.rank) return true;
   return false;
 }
 
-function legalCrazyEights(state, player) {
-  if (state.ended || player !== state.current) return [];
-  if (state.phase === 'chooseSuit') {
-    return SUITS.map(s => ({
-      id: 'suit-' + s, label: 'Choose ' + s,
-      cmd: { type: 'CHOOSE_SUIT', suit: s },
+function legalCE(s, player) {
+  if (s.ended || player !== s.current) return [];
+  if (s.phase === 'chooseColor') {
+    return STD_SUITS.map(suit => ({
+      id: 'suit-' + suit,
+      cmd: { type: 'CHOOSE_COLOR', color: suit },
     }));
   }
-  const hand = state.zones['hand:' + player];
-  const actions = [];
-  if (state.flags.drewThisTurn) {
-    const drawn = hand.cards.find(c => c.id === state.flags.drawnCardId);
-    if (drawn && isPlayableCE(state, DECK.defs[drawn.defId])) {
-      actions.push({
-        id: 'play-' + drawn.id,
-        label: 'Play ' + DECK.defs[drawn.defId].name,
-        cmd: { type: 'PLAY_CARD', cardId: drawn.id },
-      });
+  const hand = s.zones['hand:' + player];
+  const out = [];
+  if (s.flags.drewThisTurn) {
+    const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
+    if (drawn && isPlayableCE(s, STD_DECK.defs[drawn.defId])) {
+      out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
     }
-    actions.push({ id: 'pass', label: 'Pass', cmd: { type: 'PASS' } });
-    return actions;
+    out.push({ id: 'pass', cmd: { type: 'PASS' } });
+    return out;
   }
-  for (const card of hand.cards) {
-    const def = DECK.defs[card.defId];
-    if (isPlayableCE(state, def)) {
-      actions.push({
-        id: 'play-' + card.id,
-        label: 'Play ' + def.name,
-        cmd: { type: 'PLAY_CARD', cardId: card.id },
-      });
+  for (const c of hand.cards) {
+    if (isPlayableCE(s, STD_DECK.defs[c.defId])) {
+      out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
     }
   }
-  actions.push({ id: 'draw', label: 'Draw a card', cmd: { type: 'DRAW' } });
-  return actions;
+  if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
+  return out;
 }
 
-function applyCrazyEights(state, cmd) {
+function applyCE(state, cmd) {
   const s = structuredClone(state);
   const actor = s.current;
-  const advance = () => { s.current = (s.current + 1) % s.players.length; s.turn++; };
 
   if (cmd.type === 'PLAY_CARD') {
     const hand = s.zones['hand:' + actor];
     const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
     if (idx < 0) throw new Error('Card not in hand');
     const card = hand.cards[idx];
-    const def = DECK.defs[card.defId];
+    const def = STD_DECK.defs[card.defId];
     if (!isPlayableCE(s, def)) throw new Error('Not playable');
     if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId) {
       throw new Error('You can only play the card you drew');
@@ -332,7 +687,7 @@ function applyCrazyEights(state, cmd) {
     hand.cards.splice(idx, 1);
     card.faceUp = true;
     s.zones.discard.cards.push(card);
-    s.flags.currentSuit = def.suit;
+    s.flags.activeColor = def.suit;
     s.flags.drewThisTurn = false;
     s.flags.drawnCardId = undefined;
     s.log.push(s.players[actor].name + ' played ' + def.name);
@@ -342,37 +697,29 @@ function applyCrazyEights(state, cmd) {
       s.log.push(s.players[actor].name + ' wins!');
       return s;
     }
-    if (def.rank === '8') { s.phase = 'chooseSuit'; return s; }
-    advance();
+    if (def.rank === '8') { s.phase = 'chooseColor'; return s; }
+    advanceTurn(s);
     return s;
   }
 
-  if (cmd.type === 'CHOOSE_SUIT') {
-    s.flags.currentSuit = cmd.suit;
+  if (cmd.type === 'CHOOSE_COLOR') {
+    s.flags.activeColor = cmd.color;
     s.phase = 'play';
-    s.log.push(s.players[actor].name + ' chose ' + cmd.suit);
-    advance();
+    s.log.push(s.players[actor].name + ' chose ' + cmd.color);
+    advanceTurn(s);
     return s;
   }
 
   if (cmd.type === 'DRAW') {
     if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
-    const draw = s.zones.draw;
-    if (draw.cards.length === 0) {
-      const discard = s.zones.discard;
-      const top = discard.cards.pop();
-      draw.cards = shuffle(discard.cards).map(c => ({ ...c, faceUp: false }));
-      discard.cards = [top];
-    }
-    if (draw.cards.length === 0) {
-      s.log.push('No cards to draw');
-      advance();
+    const c = drawTo(s, actor);
+    if (!c) {
+      s.log.push('No cards left to draw');
+      advanceTurn(s);
       return s;
     }
-    const card = draw.cards.pop();
-    s.zones['hand:' + actor].cards.push(card);
     s.flags.drewThisTurn = true;
-    s.flags.drawnCardId = card.id;
+    s.flags.drawnCardId = c.id;
     s.log.push(s.players[actor].name + ' drew a card');
     return s;
   }
@@ -381,20 +728,217 @@ function applyCrazyEights(state, cmd) {
     s.flags.drewThisTurn = false;
     s.flags.drawnCardId = undefined;
     s.log.push(s.players[actor].name + ' passed');
-    advance();
+    advanceTurn(s);
     return s;
   }
 
-  throw new Error('Unknown command');
+  throw new Error('Unknown command: ' + cmd.type);
 }
 
-// ============ Go Fish ============
+// ============================================================
+// Game: UNO
+// ============================================================
 
-function collectSetsGoFish(state, playerId) {
-  const hand = state.zones['hand:' + playerId];
+function createUno(names) {
+  const s = makeState('uno', names);
+  s.flags.direction = 1;
+  s.zones.draw = { cards: [] };
+  s.zones.discard = { cards: [] };
+  for (const p of s.players) {
+    s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
+  }
+  const cards = UNO_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
+  s.zones.draw.cards = shuffle(cards);
+  for (const p of s.players) {
+    for (let i = 0; i < 7; i++) s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
+  }
+  // Flip a starting card; if wild, reinsert and reflip
+  let top = s.zones.draw.cards.pop();
+  while (UNO_DECK.defs[top.defId].color === 'wild') {
+    s.zones.draw.cards.unshift(top);
+    top = s.zones.draw.cards.pop();
+  }
+  top.faceUp = true;
+  s.zones.discard.cards.push(top);
+  s.flags.activeColor = UNO_DECK.defs[top.defId].color;
+  s.log.push('Top card: ' + cardLabel(UNO_DECK.defs[top.defId]) + '. ' + names[0] + ' starts.');
+  // Note: we skip first-card action effects for simplicity
+  return s;
+}
+
+function cardLabel(def) {
+  if (def.kind !== 'uno') return def.name || def.id;
+  const names = { skip: 'Skip', reverse: 'Reverse', draw2: 'Draw Two', wild: 'Wild', wild4: 'Wild Draw Four' };
+  if (def.color === 'wild') return names[def.value] || def.value;
+  return def.color + ' ' + (names[def.value] || def.value);
+}
+
+function isPlayableUno(s, def) {
+  if (def.color === 'wild') return true;
+  const top = topOf(s.zones.discard);
+  if (!top) return true;
+  const topDef = UNO_DECK.defs[top.defId];
+  if (def.color === s.flags.activeColor) return true;
+  if (def.value === topDef.value) return true;
+  return false;
+}
+
+function legalUno(s, player) {
+  if (s.ended || player !== s.current) return [];
+  if (s.phase === 'chooseColor') {
+    return ['red', 'yellow', 'green', 'blue'].map(c => ({
+      id: 'color-' + c,
+      cmd: { type: 'CHOOSE_COLOR', color: c },
+    }));
+  }
+  const hand = s.zones['hand:' + player];
+  const out = [];
+  if (s.flags.drewThisTurn) {
+    const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
+    if (drawn && isPlayableUno(s, UNO_DECK.defs[drawn.defId])) {
+      out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
+    }
+    out.push({ id: 'pass', cmd: { type: 'PASS' } });
+    return out;
+  }
+  for (const c of hand.cards) {
+    if (isPlayableUno(s, UNO_DECK.defs[c.defId])) {
+      out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
+    }
+  }
+  if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
+  return out;
+}
+
+function applyUno(state, cmd) {
+  const s = structuredClone(state);
+  const actor = s.current;
+  const n = s.players.length;
+
+  if (cmd.type === 'PLAY_CARD') {
+    const hand = s.zones['hand:' + actor];
+    const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
+    if (idx < 0) throw new Error('Card not in hand');
+    const card = hand.cards[idx];
+    const def = UNO_DECK.defs[card.defId];
+    if (!isPlayableUno(s, def)) throw new Error('Not playable');
+    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId) {
+      throw new Error('You can only play the card you drew');
+    }
+    hand.cards.splice(idx, 1);
+    card.faceUp = true;
+    s.zones.discard.cards.push(card);
+    s.flags.drewThisTurn = false;
+    s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' played ' + cardLabel(def));
+
+    if (hand.cards.length === 0) {
+      s.ended = true;
+      s.winners = [actor];
+      s.log.push(s.players[actor].name + ' wins!');
+      return s;
+    }
+
+    // Apply effect
+    if (def.color === 'wild') {
+      s.phase = 'chooseColor';
+      s.flags.pendingWild4 = def.value === 'wild4';
+      return s;
+    }
+    s.flags.activeColor = def.color;
+
+    if (def.value === 'skip') {
+      advanceTurn(s);
+      s.log.push(s.players[s.current].name + ' is skipped');
+      advanceTurn(s);
+    } else if (def.value === 'reverse') {
+      s.flags.direction *= -1;
+      advanceTurn(s);
+      if (n === 2) {
+        s.log.push('Reverse acts as Skip with 2 players');
+        advanceTurn(s);
+      }
+    } else if (def.value === 'draw2') {
+      advanceTurn(s);
+      const target = s.current;
+      for (let i = 0; i < 2; i++) drawTo(s, target);
+      s.log.push(s.players[target].name + ' draws 2 and is skipped');
+      advanceTurn(s);
+    } else {
+      advanceTurn(s);
+    }
+    return s;
+  }
+
+  if (cmd.type === 'CHOOSE_COLOR') {
+    s.flags.activeColor = cmd.color;
+    s.phase = 'play';
+    const wasWild4 = s.flags.pendingWild4;
+    s.flags.pendingWild4 = false;
+    s.log.push(s.players[actor].name + ' chose ' + cmd.color);
+    if (wasWild4) {
+      advanceTurn(s);
+      const target = s.current;
+      for (let i = 0; i < 4; i++) drawTo(s, target);
+      s.log.push(s.players[target].name + ' draws 4 and is skipped');
+      advanceTurn(s);
+    } else {
+      advanceTurn(s);
+    }
+    return s;
+  }
+
+  if (cmd.type === 'DRAW') {
+    if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
+    const c = drawTo(s, actor);
+    if (!c) {
+      s.log.push('No cards left to draw');
+      advanceTurn(s);
+      return s;
+    }
+    s.flags.drewThisTurn = true;
+    s.flags.drawnCardId = c.id;
+    s.log.push(s.players[actor].name + ' drew a card');
+    return s;
+  }
+
+  if (cmd.type === 'PASS') {
+    s.flags.drewThisTurn = false;
+    s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' passed');
+    advanceTurn(s);
+    return s;
+  }
+
+  throw new Error('Unknown command: ' + cmd.type);
+}
+
+// ============================================================
+// Game: Go Fish
+// ============================================================
+
+function createGF(names) {
+  const s = makeState('go-fish', names);
+  s.zones.draw = { cards: [] };
+  for (const p of s.players) {
+    s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
+    s.zones['sets:' + p.id] = { owner: p.id, cards: [] };
+  }
+  const cards = STD_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
+  s.zones.draw.cards = shuffle(cards);
+  for (const p of s.players) {
+    for (let i = 0; i < 5; i++) s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
+  }
+  for (const p of s.players) collectSets(s, p.id);
+  s.log.push(names[0] + ' starts.');
+  return s;
+}
+
+function collectSets(s, playerId) {
+  const hand = s.zones['hand:' + playerId];
   const byRank = {};
   for (const c of hand.cards) {
-    const r = DECK.defs[c.defId].rank;
+    const r = STD_DECK.defs[c.defId].rank;
     (byRank[r] = byRank[r] || []).push(c);
   }
   for (const [rank, cards] of Object.entries(byRank)) {
@@ -402,96 +946,60 @@ function collectSetsGoFish(state, playerId) {
       for (const c of cards) {
         hand.cards.splice(hand.cards.indexOf(c), 1);
         c.faceUp = true;
-        state.zones['sets:' + playerId].cards.push(c);
+        s.zones['sets:' + playerId].cards.push(c);
       }
-      state.log.push(state.players[playerId].name + ' made a set of ' + rank + 's');
+      s.log.push(s.players[playerId].name + ' made a set of ' + rank + 's');
     }
   }
 }
 
-function checkGoFishEnd(state) {
-  for (const p of state.players) collectSetsGoFish(state, p.id);
-  if (state.zones.draw.cards.length > 0) return;
-  const anyCards = state.players.some(p => state.zones['hand:' + p.id].cards.length > 0);
-  if (anyCards) {
-    for (const p1 of state.players) {
-      const r1 = new Set(state.zones['hand:' + p1.id].cards.map(c => DECK.defs[c.defId].rank));
-      for (const p2 of state.players) {
-        if (p2.id === p1.id) continue;
-        const r2 = new Set(state.zones['hand:' + p2.id].cards.map(c => DECK.defs[c.defId].rank));
-        for (const r of r1) if (r2.has(r)) return;
-      }
-    }
-  }
-  state.ended = true;
+function checkGFEnd(s) {
+  for (const p of s.players) collectSets(s, p.id);
+  let totalSets = 0;
+  for (const p of s.players) totalSets += s.zones['sets:' + p.id].cards.length / 4;
+  const allHandsEmpty = s.players.every(p => s.zones['hand:' + p.id].cards.length === 0);
+  if (totalSets < 13 && !allHandsEmpty) return;
+  s.ended = true;
   let best = -1;
-  state.winners = [];
-  for (const p of state.players) {
-    const n = state.zones['sets:' + p.id].cards.length / 4;
-    if (n > best) { best = n; state.winners = [p.id]; }
-    else if (n === best) state.winners.push(p.id);
+  s.winners = [];
+  for (const p of s.players) {
+    const n = s.zones['sets:' + p.id].cards.length / 4;
+    if (n > best) { best = n; s.winners = [p.id]; }
+    else if (n === best) s.winners.push(p.id);
   }
-  state.log.push('Game over. ' + state.winners.map(w => state.players[w].name).join(', ')
-    + ' win with ' + best + ' set' + (best === 1 ? '' : 's') + '.');
+  const names = s.winners.map(w => s.players[w].name).join(', ');
+  s.log.push('Game over. ' + names + ' win with ' + best + ' set' + (best === 1 ? '' : 's') + '.');
 }
 
-function createGoFish(names) {
-  const state = {
-    scriptId: 'go-fish',
-    players: names.map((name, id) => ({ id, name })),
-    zones: { draw: { cards: [] } },
-    current: 0, turn: 1, phase: 'ask', flags: {},
-    log: [], ended: false, winners: [],
-  };
-  for (const p of state.players) {
-    state.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-    state.zones['sets:' + p.id] = { owner: p.id, cards: [] };
-  }
-  const cards = DECK.cards.map(c => newCard(c.id, c.defId, false));
-  state.zones.draw.cards = shuffle(cards);
-  for (const p of state.players) {
-    for (let i = 0; i < 5; i++) {
-      state.zones['hand:' + p.id].cards.push(state.zones.draw.cards.pop());
-    }
-  }
-  for (const p of state.players) collectSetsGoFish(state, p.id);
-  state.log.push(names[0] + ' starts.');
-  return state;
-}
-
-function legalGoFish(state, player) {
-  if (state.ended || player !== state.current) return [];
-  const hand = state.zones['hand:' + player];
-  const ranks = new Set(hand.cards.map(c => DECK.defs[c.defId].rank));
-  const actions = [];
+function legalGF(s, player) {
+  if (s.ended || player !== s.current) return [];
+  const hand = s.zones['hand:' + player];
+  const ranks = [...new Set(hand.cards.map(c => STD_DECK.defs[c.defId].rank))];
+  const out = [];
   for (const rank of ranks) {
-    for (const p of state.players) {
+    for (const p of s.players) {
       if (p.id === player) continue;
-      actions.push({
-        id: 'ask-' + p.id + '-' + rank,
-        label: 'Ask ' + p.name + ' for ' + rank,
-        group: 'Ask for ' + rank,
-        cmd: { type: 'ASK', target: p.id, rank },
-      });
+      out.push({ id: `ask-${p.id}-${rank}`, target: p.id, rank, cmd: { type: 'ASK', target: p.id, rank } });
     }
   }
-  return actions;
+  return out;
 }
 
-function applyGoFish(state, cmd) {
+function applyGF(state, cmd) {
   if (cmd.type !== 'ASK') throw new Error('Unknown command');
   const s = structuredClone(state);
   const actor = s.current;
   const target = cmd.target;
   const rank = cmd.rank;
   if (target === actor) throw new Error('Cannot ask yourself');
+  if (!s.players[target]) throw new Error('Invalid target');
   const actorHand = s.zones['hand:' + actor];
   const targetHand = s.zones['hand:' + target];
-  if (!actorHand.cards.some(c => DECK.defs[c.defId].rank === rank)) {
+  if (!actorHand.cards.some(c => STD_DECK.defs[c.defId].rank === rank)) {
     throw new Error('You must hold that rank to ask for it');
   }
 
-  const matching = targetHand.cards.filter(c => DECK.defs[c.defId].rank === rank);
+  const matching = targetHand.cards.filter(c => STD_DECK.defs[c.defId].rank === rank);
   let goAgain = false;
 
   if (matching.length > 0) {
@@ -499,93 +1007,130 @@ function applyGoFish(state, cmd) {
       targetHand.cards.splice(targetHand.cards.indexOf(c), 1);
       actorHand.cards.push(c);
     }
-    s.log.push(s.players[actor].name + ' got ' + matching.length + '\u00d7 ' + rank
-      + ' from ' + s.players[target].name);
+    s.log.push(`${s.players[actor].name} got ${matching.length}\u00d7 ${rank} from ${s.players[target].name}`);
     goAgain = true;
   } else if (s.zones.draw.cards.length > 0) {
     const c = s.zones.draw.cards.pop();
     actorHand.cards.push(c);
-    const drawnRank = DECK.defs[c.defId].rank;
-    s.log.push(s.players[actor].name + ' asked ' + s.players[target].name + ' for ' + rank
-      + ', went fishing, drew ' + DECK.defs[c.defId].name);
+    const drawnRank = STD_DECK.defs[c.defId].rank;
+    s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${rank}, drew ${STD_DECK.defs[c.defId].name}`);
     goAgain = (drawnRank === rank);
   } else {
-    s.log.push(s.players[actor].name + ' asked ' + s.players[target].name + ' for ' + rank
-      + ', got nothing');
+    s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${rank}, got nothing`);
   }
 
-  checkGoFishEnd(s);
+  checkGFEnd(s);
 
-  if (!s.ended) {
-    const actorHasCards = s.zones['hand:' + actor].cards.length > 0;
-    if (!goAgain || !actorHasCards) {
-      s.current = (s.current + 1) % s.players.length;
-      s.turn++;
-    }
+  if (!s.ended && (!goAgain || s.zones['hand:' + actor].cards.length === 0)) {
+    advanceTurn(s);
   }
   return s;
 }
 
-// ============ Game registry ============
+// ============================================================
+// Game registry
+// ============================================================
 
 const GAMES = {
+  'uno': {
+    id: 'uno', name: 'UNO',
+    minPlayers: 2, maxPlayers: 6,
+    defs: UNO_DECK.defs,
+    uiMode: 'play',
+    rules: 'Match the top card by color or number. Action cards skip, reverse, or force draws. Wilds let you pick a color. Draw one card if you cannot play. First to empty their hand wins.',
+    create: createUno, legal: legalUno, apply: applyUno,
+  },
   'crazy-eights': {
     id: 'crazy-eights', name: 'Crazy Eights',
     minPlayers: 2, maxPlayers: 7,
-    create: createCrazyEights,
-    legal: legalCrazyEights,
-    apply: applyCrazyEights,
+    defs: STD_DECK.defs,
+    uiMode: 'play',
+    rules: 'Play a card matching the suit or rank of the top card. Eights are wild \u2014 play one and choose the next suit. Draw a card if you cannot play. First to empty their hand wins.',
+    create: createCE, legal: legalCE, apply: applyCE,
   },
   'go-fish': {
     id: 'go-fish', name: 'Go Fish',
     minPlayers: 2, maxPlayers: 6,
-    create: createGoFish,
-    legal: legalGoFish,
-    apply: applyGoFish,
+    defs: STD_DECK.defs,
+    uiMode: 'ask',
+    rules: 'Ask another player for a rank you already hold. If they have it, they hand over all matching cards and you go again. Otherwise you draw one. Collect all four of a rank to make a set. Most sets wins.',
+    create: createGF, legal: legalGF, apply: applyGF,
   },
 };
 
-// ============ App state ============
+// ============================================================
+// App state
+// ============================================================
 
-let G = null;
-let SCREEN = 'menu';
-let VIEWER = 0;
-const MENU = { scriptId: 'crazy-eights', namesInput: 'Alice, Bob' };
+let G = null;                // current game state
+let SCREEN = 'menu';         // 'menu' | 'pass' | 'game'
+let VIEWER = 0;              // which player's perspective we render
+let undoStack = [];          // [{ state, viewer }]
+let pendingRank = null;      // Go Fish UI state
+const MENU = { scriptId: 'uno', namesInput: 'Alice, Bob' };
 
-// ============ DOM helpers ============
+// ============================================================
+// Card rendering
+// ============================================================
 
-function el(tag, props, ...children) {
-  const node = document.createElement(tag);
-  if (props) {
-    for (const k in props) {
-      const v = props[k];
-      if (v === null || v === undefined) continue;
-      if (k === 'class') node.className = v;
-      else if (k.startsWith('on') && typeof v === 'function') {
-        node.addEventListener(k.slice(2).toLowerCase(), v);
-      } else {
-        node[k] = v;
-      }
-    }
+function renderCardEl(card) {
+  if (!card || card.defId === '__hidden__') {
+    return el('div', { class: 'card back' });
   }
-  for (const child of children) {
-    if (child === null || child === undefined) continue;
-    if (typeof child === 'string' || typeof child === 'number') {
-      node.appendChild(document.createTextNode(String(child)));
-    } else {
-      node.appendChild(child);
-    }
-  }
-  return node;
+  const def = GAMES[G.scriptId].defs[card.defId];
+  if (!def) return el('div', { class: 'card back' });
+  return def.kind === 'uno' ? renderUnoCard(def) : renderStdCard(def);
 }
 
-function cardView(defId) {
-  if (defId === '__hidden__') return el('div', { class: 'card hidden' }, '?');
-  const def = DECK.defs[defId];
-  return el('div', { class: 'card ' + (def.color === 'red' ? 'red' : 'black') }, def.name);
+function renderStdCard(def) {
+  const colorCls = def.color === 'red' ? 'red' : 'black';
+  return el('div', { class: 'card std ' + colorCls },
+    el('div', { class: 'corner tl' },
+      el('span', null, def.rank),
+      el('span', null, def.suit)),
+    el('span', { class: 'pip' }, def.suit),
+    el('div', { class: 'corner br' },
+      el('span', null, def.rank),
+      el('span', null, def.suit)));
 }
 
-// ============ Render ============
+function renderUnoCard(def) {
+  let pip;
+  if (def.value === 'skip') pip = '⊘';
+  else if (def.value === 'reverse') pip = '⇄';
+  else if (def.value === 'draw2') pip = '+2';
+  else if (def.value === 'wild') pip = 'WILD';
+  else if (def.value === 'wild4') pip = 'WILD +4';
+  else pip = def.value;
+
+  const colorCls = def.color === 'wild' ? 'wild' : def.color;
+  return el('div', { class: 'card uno ' + colorCls },
+    el('div', { class: 'corner tl' }, el('span', null, pip)),
+    el('span', { class: 'pip' }, pip),
+    el('div', { class: 'corner br' }, el('span', null, pip)));
+}
+
+function sortHand(cards, defs) {
+  return [...cards].sort((a, b) => {
+    const da = defs[a.defId], db = defs[b.defId];
+    if (!da || !db) return 0;
+    if (da.kind === 'std') {
+      const sd = SUIT_ORDER[da.suit] - SUIT_ORDER[db.suit];
+      if (sd !== 0) return sd;
+      return RANK_ORDER[da.rank] - RANK_ORDER[db.rank];
+    }
+    if (da.kind === 'uno') {
+      const cd = UNO_COLOR_ORDER[da.color] - UNO_COLOR_ORDER[db.color];
+      if (cd !== 0) return cd;
+      return (UNO_VALUE_ORDER[da.value] ?? 99) - (UNO_VALUE_ORDER[db.value] ?? 99);
+    }
+    return 0;
+  });
+}
+
+// ============================================================
+// Rendering — screens
+// ============================================================
 
 function render() {
   const root = document.getElementById('app');
@@ -596,153 +1141,320 @@ function render() {
 }
 
 function renderMenu(root) {
-  const opts = Object.values(GAMES).map(g => {
-    const o = document.createElement('option');
-    o.value = g.id;
-    o.textContent = g.name;
-    return o;
+  const gameSelect = el('select', {
+    onchange: e => {
+      MENU.scriptId = e.target.value;
+      rulesEl.textContent = GAMES[MENU.scriptId].rules;
+    },
   });
-  const select = el('select', {
-    onchange: e => { MENU.scriptId = e.target.value; },
-  }, ...opts);
-  select.value = MENU.scriptId;
+  for (const g of Object.values(GAMES)) {
+    const opt = document.createElement('option');
+    opt.value = g.id;
+    opt.textContent = g.name;
+    gameSelect.appendChild(opt);
+  }
+  gameSelect.value = MENU.scriptId;
 
-  const input = el('input', {
+  const rulesEl = el('div', { class: 'rules' }, GAMES[MENU.scriptId].rules);
+
+  const namesInput = el('input', {
     type: 'text',
+    placeholder: 'Alice, Bob',
+    value: MENU.namesInput,
     oninput: e => { MENU.namesInput = e.target.value; },
   });
-  input.value = MENU.namesInput;
+
+  const startBtn = el('button', { class: 'primary', onclick: startGame }, 'Start game');
 
   root.appendChild(el('div', { class: 'menu' },
-    el('h1', null, 'Card Table'),
-    el('label', null, 'Game', select),
-    el('label', null, 'Players (comma-separated)', input),
-    el('button', { onclick: startGame }, 'Start'),
-  ));
+    el('h1', null, 'Card ', el('span', null, 'Table')),
+    el('div', { class: 'tagline' }, 'Pass-and-play card games'),
+    el('div', { class: 'menu-card' },
+      el('label', null, 'Game', gameSelect),
+      rulesEl,
+      el('label', null, 'Players (comma-separated)', namesInput),
+      startBtn)));
 }
 
 function renderPass(root) {
-  root.appendChild(el('div', {
-    class: 'pass',
-    onclick: () => { SCREEN = 'game'; render(); },
-  },
+  const game = GAMES[G.scriptId];
+  const onContinue = () => { SCREEN = 'game'; render(); };
+
+  const content = el('div', { class: 'pass', onclick: onContinue },
+    el('div', { class: 'icon' }, '👋'),
     el('h2', null, 'Pass to ' + G.players[VIEWER].name),
-    el('p', null, 'Tap to continue'),
-  ));
+    el('p', { class: 'hint' }, 'Tap anywhere when ready'));
+  root.appendChild(content);
+
+  if (undoStack.length > 0) {
+    const btn = el('button', { class: 'undo-link', onclick: e => { e.stopPropagation(); undo(); } },
+      'Undo last move');
+    root.appendChild(btn);
+  }
 }
 
 function renderGame(root) {
-  const header = el('header', null,
-    el('span', null, GAMES[G.scriptId].name),
-    el('span', null, 'Turn ' + G.turn),
-    el('span', null, 'Now: ' + G.players[G.current].name),
-  );
+  const game = GAMES[G.scriptId];
+  const isMyTurn = !G.ended && G.current === VIEWER;
+  const actions = isMyTurn ? game.legal(G, VIEWER) : [];
+  const hasPendingChoice = G.phase === 'chooseColor';
 
+  // Header
+  const header = el('header', null,
+    el('span', { class: 'game-name' }, game.name),
+    el('span', { class: 'turn-info' },
+      'Turn ', el('strong', null, String(G.turn)),
+      ' \u00b7 ', el('strong', null, G.players[G.current].name)),
+    el('div', { class: 'controls' },
+      undoStack.length > 0 ? el('button', { class: 'ghost', onclick: undo }, 'Undo') : null));
+
+  // Opponents
   const opponents = el('section', { class: 'opponents' });
   for (const p of G.players) {
     if (p.id === VIEWER) continue;
     const hand = G.zones['hand:' + p.id];
     const sets = G.zones['sets:' + p.id];
-    opponents.appendChild(el('div', { class: 'opponent' },
+    opponents.appendChild(el('div', {
+      class: 'opponent' + (G.current === p.id && !G.ended ? ' current' : ''),
+    },
       el('strong', null, p.name),
       el('span', null, hand.cards.length + ' card' + (hand.cards.length === 1 ? '' : 's')),
-      sets ? el('span', null, (sets.cards.length / 4) + ' set' + (sets.cards.length === 4 ? '' : 's')) : null,
-    ));
+      sets ? el('span', null, (sets.cards.length / 4) + ' set' + (sets.cards.length === 4 ? '' : 's')) : null));
   }
 
+  // Table
   const table = el('section', { class: 'table' });
   table.appendChild(el('div', { class: 'zone' },
     el('span', null, 'Deck'),
-    el('span', null, String(G.zones.draw.cards.length)),
-  ));
-  if (G.zones.discard && G.zones.discard.cards.length > 0) {
+    el('span', null, String(G.zones.draw.cards.length))));
+
+  const discard = G.zones.discard;
+  if (discard && discard.cards.length > 0) {
     table.appendChild(el('div', { class: 'zone' },
       el('span', null, 'Discard'),
-      cardView(topCard(G.zones.discard).defId),
-    ));
+      renderCardEl(topOf(discard))));
+  } else {
+    table.appendChild(el('div', { class: 'zone' },
+      el('span', null, 'Discard'),
+      el('div', { class: 'empty' }, 'empty')));
   }
-  const mySets = G.zones['sets:' + VIEWER];
-  if (mySets) {
+
+  // Active color/suit indicator
+  if (G.flags.activeColor && (G.scriptId === 'uno' || G.scriptId === 'crazy-eights')) {
+    let cls = 'active-color';
+    let text = G.flags.activeColor;
+    if (G.scriptId === 'uno') {
+      cls += ' ' + G.flags.activeColor;
+      text = G.flags.activeColor.toUpperCase();
+    } else {
+      const isRed = G.flags.activeColor === '♥' || G.flags.activeColor === '♦';
+      cls += ' suit-' + (isRed ? 'red' : 'black');
+    }
+    table.appendChild(el('div', { class: 'zone' },
+      el('span', null, 'Active'),
+      el('span', { class: cls }, text)));
+  }
+
+  // My sets (Go Fish)
+  if (G.zones['sets:' + VIEWER]) {
+    const sets = G.zones['sets:' + VIEWER].cards.length / 4;
     table.appendChild(el('div', { class: 'zone' },
       el('span', null, 'Your sets'),
-      el('span', null, String(mySets.cards.length / 4)),
-    ));
+      el('span', null, String(sets))));
   }
 
-  const actions = el('section', { class: 'actions' });
-  const isMyTurn = !G.ended && G.current === VIEWER;
-  if (isMyTurn) {
-    const list = GAMES[G.scriptId].legal(G, VIEWER);
-    const groups = {};
-    for (const a of list) {
-      const g = a.group || '_';
-      (groups[g] = groups[g] || []).push(a);
-    }
-    for (const [g, items] of Object.entries(groups)) {
-      const row = el('div', { class: 'action-group' });
-      if (g !== '_') row.appendChild(el('span', { class: 'group-label' }, g));
-      for (const a of items) {
-        row.appendChild(el('button', { onclick: () => takeAction(a.cmd) }, a.label));
+  // Actions / status
+  const actionsEl = el('section', { class: 'actions' });
+  if (hasPendingChoice && isMyTurn) {
+    actionsEl.appendChild(el('span', { class: 'label' }, 'Choose:'));
+    for (const a of actions) {
+      if (a.cmd.type === 'CHOOSE_COLOR') {
+        const color = a.cmd.color;
+        const cls = G.scriptId === 'uno' ? 'color-btn-mini ' + color : 'suit-btn-mini';
+        actionsEl.appendChild(el('button', {
+          class: 'rank-chip',
+          onclick: () => takeAction(a.cmd),
+        }, G.scriptId === 'uno' ? color.toUpperCase() : color));
       }
-      actions.appendChild(row);
+    }
+  } else if (isMyTurn) {
+    if (game.uiMode === 'play') {
+      renderPlayActions(actionsEl, actions);
+    } else if (game.uiMode === 'ask') {
+      renderAskActions(actionsEl, actions);
+    }
+  } else if (G.ended) {
+    actionsEl.appendChild(el('span', { class: 'label' }, 'Game over'));
+  } else {
+    actionsEl.appendChild(el('span', { class: 'label' }, 'Waiting for ' + G.players[G.current].name));
+  }
+
+  // Log
+  const logEl = el('section', { class: 'log' });
+  const recent = G.log.slice(-5);
+  for (const line of recent) logEl.appendChild(el('div', null, line));
+
+  // Hand
+  const hand = G.zones['hand:' + VIEWER];
+  const playableIds = new Set();
+  if (isMyTurn && game.uiMode === 'play') {
+    for (const a of actions) {
+      if (a.cmd.type === 'PLAY_CARD') playableIds.add(a.cmd.cardId);
     }
   }
-
-  const log = el('section', { class: 'log' });
-  for (const line of G.log.slice(-6)) {
-    log.appendChild(el('div', null, line));
+  const sortedHand = hand ? sortHand(hand.cards, game.defs) : [];
+  const handEl = el('section', { class: 'hand' });
+  for (const c of sortedHand) {
+    const cardEl = renderCardEl(c);
+    const isPlayable = playableIds.has(c.id);
+    if (isPlayable) {
+      cardEl.classList.add('playable');
+      cardEl.addEventListener('click', () => {
+        const action = actions.find(a => a.cmd.type === 'PLAY_CARD' && a.cmd.cardId === c.id);
+        if (action) takeAction(action.cmd);
+      });
+    } else if (isMyTurn && G.flags.drewThisTurn && c.id !== G.flags.drawnCardId) {
+      cardEl.classList.add('dimmed');
+    }
+    handEl.appendChild(cardEl);
   }
-
-  const hand = el('section', { class: 'hand' });
-  const myHand = G.zones['hand:' + VIEWER];
-  if (myHand) for (const c of myHand.cards) hand.appendChild(cardView(c.defId));
 
   root.appendChild(el('div', { class: 'game' },
-    header, opponents, table, actions, log, hand,
-  ));
+    header, opponents, table, actionsEl, logEl, handEl));
 
+  // Modals
   if (G.ended) {
-    root.appendChild(el('div', {
-      class: 'over',
-      onclick: () => { G = null; SCREEN = 'menu'; render(); },
-    },
-      el('h2', null, 'Game over'),
-      el('p', null, G.winners.map(w => G.players[w].name).join(', ')
-        + (G.winners.length === 1 ? ' wins!' : ' win!')),
-      el('p', null, 'Tap to return to menu'),
-    ));
+    root.appendChild(renderGameOver());
+  } else if (hasPendingChoice && isMyTurn) {
+    root.appendChild(renderColorPicker(actions));
   }
 }
 
-// ============ Actions ============
+function renderPlayActions(container, actions) {
+  const playActions = actions.filter(a => a.cmd.type === 'PLAY_CARD');
+  const drawAction = actions.find(a => a.cmd.type === 'DRAW');
+  const passAction = actions.find(a => a.cmd.type === 'PASS');
+
+  if (playActions.length > 0) {
+    container.appendChild(el('span', { class: 'label' }, 'Tap a card to play'));
+  }
+  if (drawAction) {
+    container.appendChild(el('button', {
+      class: 'primary',
+      onclick: () => takeAction(drawAction.cmd),
+    }, 'Draw a card'));
+  }
+  if (passAction) {
+    container.appendChild(el('button', {
+      class: 'ghost',
+      onclick: () => takeAction(passAction.cmd),
+    }, 'Pass'));
+  }
+}
+
+function renderAskActions(container, actions) {
+  const ranks = [...new Set(actions.map(a => a.rank))].sort((a, b) => RANK_ORDER[a] - RANK_ORDER[b]);
+
+  if (pendingRank === null) {
+    container.appendChild(el('span', { class: 'label' }, 'Ask for rank:'));
+    for (const rank of ranks) {
+      container.appendChild(el('button', {
+        class: 'rank-chip',
+        onclick: () => { pendingRank = rank; render(); },
+      }, rank));
+    }
+    return;
+  }
+
+  container.appendChild(el('span', { class: 'label' }, 'Ask for ' + pendingRank + ' from:'));
+  for (const a of actions) {
+    if (a.rank !== pendingRank) continue;
+    container.appendChild(el('button', {
+      class: 'target-chip',
+      onclick: () => { pendingRank = null; takeAction(a.cmd); },
+    }, G.players[a.target].name));
+  }
+  container.appendChild(el('button', {
+    class: 'ghost',
+    onclick: () => { pendingRank = null; render(); },
+  }, 'Cancel'));
+}
+
+function renderColorPicker(actions) {
+  const colors = actions.filter(a => a.cmd.type === 'CHOOSE_COLOR');
+  const isUno = G.scriptId === 'uno';
+  const grid = el('div', { class: 'color-grid' });
+  for (const a of colors) {
+    const color = a.cmd.color;
+    let label, cls;
+    if (isUno) {
+      label = color.toUpperCase();
+      cls = 'color-btn ' + color;
+    } else {
+      label = color;
+      const isRed = color === '♥' || color === '♦';
+      cls = 'color-btn suit' + (isRed ? ' red' : '');
+    }
+    grid.appendChild(el('button', {
+      class: cls,
+      onclick: () => takeAction(a.cmd),
+    }, label));
+  }
+  return el('div', { class: 'overlay' },
+    el('div', { class: 'modal' },
+      el('h3', null, isUno ? 'Choose a color' : 'Choose a suit'),
+      grid));
+}
+
+function renderGameOver() {
+  const winnerNames = G.winners.map(w => G.players[w].name).join(', ');
+  return el('div', { class: 'overlay game-over' },
+    el('div', { class: 'modal' },
+      el('h2', null, '🏆'),
+      el('p', { class: 'winners' }, winnerNames + (G.winners.length === 1 ? ' wins!' : ' win!')),
+      el('button', { class: 'primary', onclick: playAgain }, 'Play again'),
+      el('button', { class: 'ghost', onclick: () => { G = null; SCREEN = 'menu'; render(); } }, 'Back to menu')));
+}
+
+// ============================================================
+// Actions
+// ============================================================
 
 function startGame() {
   const names = MENU.namesInput.split(',').map(s => s.trim()).filter(Boolean);
   const game = GAMES[MENU.scriptId];
   if (names.length < game.minPlayers) {
-    alert('Need at least ' + game.minPlayers + ' players');
+    alert('Need at least ' + game.minPlayers + ' player' + (game.minPlayers === 1 ? '' : 's'));
     return;
   }
   if (names.length > game.maxPlayers) {
     alert('At most ' + game.maxPlayers + ' players');
     return;
   }
-  rng = ((Date.now() ^ 0x9e3779b9) >>> 0) || 1;
+  seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = game.create(names);
   VIEWER = 0;
   SCREEN = 'pass';
+  undoStack = [];
+  pendingRank = null;
   render();
 }
 
 function takeAction(cmd) {
   const game = GAMES[G.scriptId];
+  const prev = { state: structuredClone(G), viewer: VIEWER };
   const prevCurrent = G.current;
+  let next;
   try {
-    G = game.apply(G, cmd);
+    next = game.apply(G, cmd);
   } catch (e) {
     alert(e.message);
     return;
   }
+  undoStack.push(prev);
+  G = next;
+  pendingRank = null;
+
   if (G.ended) {
     SCREEN = 'game';
   } else if (G.current !== prevCurrent) {
@@ -754,7 +1466,31 @@ function takeAction(cmd) {
   render();
 }
 
-// ============ Init ============
+function undo() {
+  if (undoStack.length === 0) return;
+  const entry = undoStack.pop();
+  G = entry.state;
+  VIEWER = entry.viewer;
+  SCREEN = 'game';
+  pendingRank = null;
+  render();
+}
+
+function playAgain() {
+  const names = G.players.map(p => p.name);
+  const game = GAMES[G.scriptId];
+  seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
+  G = game.create(names);
+  VIEWER = 0;
+  SCREEN = 'pass';
+  undoStack = [];
+  pendingRank = null;
+  render();
+}
+
+// ============================================================
+// Init
+// ============================================================
 
 render();
 </script>
