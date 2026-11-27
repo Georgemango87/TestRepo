@@ -2,566 +2,761 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Guess the Baby Name</title>
-<meta name="description" content="Add your guesses for the baby's name!">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Table</title>
 <style>
-  :root {
-    --pink: #ec4899;
-    --purple: #8b5cf6;
-    --ink: #1f2937;
-    --muted: #6b7280;
-    --green: #059669;
-  }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
     margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #17372a;
+    color: #eaeaea;
     min-height: 100vh;
-    padding: 32px 16px 64px;
-    font-family: ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, sans-serif;
-    color: var(--ink);
-    background:
-      radial-gradient(900px 500px at 8% -10%, #ffe4f1 0%, transparent 60%),
-      radial-gradient(800px 500px at 100% 0%, #dbeafe 0%, transparent 55%),
-      linear-gradient(180deg, #fffafc 0%, #f6f6ff 100%);
-    background-attachment: fixed;
-    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
   }
-  main { max-width: 640px; margin: 0 auto; }
+  #app { min-height: 100vh; }
 
-  header { text-align: center; margin-bottom: 28px; }
-  .emoji { font-size: 44px; line-height: 1; }
-  h1 {
-    font-size: clamp(1.8rem, 5vw, 2.6rem);
-    margin: 10px 0 8px;
-    letter-spacing: -0.02em;
-  }
-  .sub { color: var(--muted); margin: 0 auto; max-width: 46ch; line-height: 1.55; }
-
-  .card {
-    background: #fff;
-    border: 1px solid rgba(236, 72, 153, 0.12);
-    border-radius: 22px;
-    padding: 22px;
-    margin-bottom: 22px;
-    box-shadow:
-      0 10px 30px -12px rgba(139, 92, 246, 0.35),
-      0 2px 8px rgba(0, 0, 0, 0.04);
-  }
-
-  label {
-    display: block;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 6px;
-    color: #4b5563;
-  }
-  input {
-    width: 100%;
-    padding: 13px 15px;
-    margin-bottom: 16px;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 14px;
-    background: #fcfcfd;
-    font: inherit;
-    font-size: 1rem;
-    color: var(--ink);
-    transition: border-color .15s, box-shadow .15s, background .15s;
-  }
-  input::placeholder { color: #b6bcc7; }
-  input:focus {
-    outline: none;
-    background: #fff;
-    border-color: var(--pink);
-    box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.15);
-  }
-
-  button[type="submit"] {
-    width: 100%;
-    padding: 14px;
-    border: 0;
-    border-radius: 14px;
-    font: inherit;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    background: linear-gradient(135deg, #f472b6, #a855f7);
-    box-shadow: 0 8px 20px -8px rgba(168, 85, 247, 0.85);
-    cursor: pointer;
-    transition: transform .12s ease, box-shadow .12s ease;
-  }
-  button[type="submit"]:hover { transform: translateY(-1px); box-shadow: 0 12px 24px -8px rgba(168, 85, 247, 0.9); }
-  button[type="submit"]:active { transform: translateY(1px); }
-  button[type="submit"]:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .msg { margin: 14px 0 0; font-size: 0.9rem; text-align: center; }
-  .msg.ok { color: var(--green); }
-  .msg.error { color: #dc2626; }
-
-  .list-head {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin: 0 0 16px;
-  }
-  .list-head h2 { font-size: 1.15rem; margin: 0; }
-  .count { color: var(--muted); font-size: 0.95rem; font-weight: 600; }
-
-  /* ---------- people (grouped guesses) ---------- */
-  .list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .menu, .pass {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-  }
-  .person {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px;
-    border: 1px solid #f0e9ff;
-    border-radius: 16px;
-    background: #faf7ff;
-  }
-  .avatar {
-    flex: 0 0 38px;
-    width: 38px;
-    height: 38px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    font-weight: 800;
-    color: #3b2a4a;
-  }
-  .person-body { flex: 1; min-width: 0; }
-  .person-head {
-    display: flex;
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
+    gap: 1rem;
   }
-  .person-name {
-    font-weight: 700;
+  .menu h1 { margin: 0 0 0.5rem; }
+  .menu label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 22rem;
+  }
+  .menu input, .menu select {
+    padding: 0.7rem;
+    border-radius: 8px;
+    border: 1px solid #2a5a3a;
+    background: #0f2419;
+    color: #eaeaea;
     font-size: 1rem;
-    overflow-wrap: anywhere;
+    width: 100%;
   }
-  .person-total {
-    margin-left: auto;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: var(--green);
-    background: #ecfdf5;
-    border: 1px solid #d1fae5;
-    padding: 1px 9px;
-    border-radius: 999px;
-    white-space: nowrap;
+  .pass { cursor: pointer; text-align: center; user-select: none; }
+  .pass h2 { font-size: 1.6rem; margin: 0; }
+
+  .game {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    background: #0f2419;
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+  header span:first-child { font-weight: 700; }
+
+  .opponents {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .opponent {
+    display: flex;
+    flex-direction: column;
+    min-width: 6.5rem;
+    padding: 0.5rem 0.65rem;
+    background: #0f2419;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+  .opponent strong { margin-bottom: 0.15rem; }
+
+  .table {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    padding: 0.5rem 0;
+    flex-wrap: wrap;
+  }
+  .zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 5.5rem;
+    padding: 0.6rem;
+    background: #0f2419;
+    border-radius: 8px;
+    font-size: 0.8rem;
   }
 
-  /* ---------- name chips (name + $5 on the right) ---------- */
-  .chips {
+  .card {
+    padding: 0.55rem 0.8rem;
+    background: #fafafa;
+    color: #111;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    white-space: nowrap;
+  }
+  .card.red { color: #c00; }
+  .card.hidden { background: #333; color: #666; }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-height: 30vh;
+    overflow-y: auto;
+    padding: 0.5rem;
+    background: #0f2419;
+    border-radius: 8px;
+  }
+  .action-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .chip {
-    display: inline-flex;
+    gap: 0.3rem;
     align-items: center;
-    gap: 6px;
-    padding: 3px 3px 3px 12px;
-    background: #fff;
-    border: 1px solid #ece3f8;
-    border-radius: 999px;
-    max-width: 100%;
   }
-  .chip-name {
-    font-size: 0.95rem;
+  .group-label {
     font-weight: 700;
-    overflow-wrap: anywhere;
+    margin-right: 0.25rem;
+    font-size: 0.8rem;
+    color: #9fdcb0;
+    flex-shrink: 0;
   }
-  .chip-amount {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--green);
-    background: #ecfdf5;
-    padding: 2px 8px;
-    border-radius: 999px;
-    white-space: nowrap;
-  }
-  .remove {
-    border: 0;
-    background: transparent;
-    color: #c0b6d0;
-    font-size: 1.1rem;
-    line-height: 1;
-    padding: 2px 7px;
-    border-radius: 999px;
+
+  button {
+    padding: 0.65rem 1rem;
+    background: #2a6a42;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: background .15s, color .15s;
+    font-family: inherit;
+    min-height: 2.5rem;
   }
-  .remove:hover { background: #ffe4e6; color: #e11d48; }
+  button:hover { background: #3a8052; }
+  button:active { background: #1f5232; }
 
-  .empty {
-    margin: 0;
-    padding: 26px 16px;
-    text-align: center;
-    color: var(--muted);
-    border: 2px dashed #ece3f8;
-    border-radius: 16px;
+  .log {
+    font-size: 0.72rem;
+    max-height: 5.5rem;
+    overflow-y: auto;
+    padding: 0.4rem 0.65rem;
+    background: #0a1a12;
+    border-radius: 8px;
+    color: #b9d9c3;
+    line-height: 1.5;
   }
-  .loading {
-    text-align: center;
-    padding: 24px;
-    color: var(--muted);
-    font-size: 0.95rem;
+  .log div { padding: 0.05rem 0; }
+
+  .hand {
+    display: flex;
+    gap: 0.35rem;
+    overflow-x: auto;
+    padding: 0.5rem 0.1rem;
+    margin-top: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  @media (max-width: 420px) {
-    .person { padding: 10px; gap: 10px; }
-    .avatar { flex-basis: 32px; width: 32px; height: 32px; font-size: 0.9rem; }
+  .over {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    gap: 0.5rem;
+    text-align: center;
+    padding: 1.5rem;
+    cursor: pointer;
+  }
+  .over h2 { margin: 0 0 0.5rem; font-size: 1.6rem; }
+
+  @media (max-width: 600px) {
+    .card { padding: 0.45rem 0.65rem; font-size: 0.85rem; }
+    header { font-size: 0.78rem; }
+    .zone { min-width: 4.8rem; padding: 0.5rem; font-size: 0.75rem; }
+    button { padding: 0.6rem 0.85rem; font-size: 0.85rem; }
   }
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <div class="emoji" aria-hidden="true">👶</div>
-    <h1>Guess the Baby Name</h1>
-    <p class="sub">Think you know the name of the little one? Add your guess below and maybe it'll be right.</p>
-  </header>
+<div id="app"></div>
+<script>
+// ============ Engine ============
 
-  <section class="card">
-    <form id="guess-form" novalidate>
-      <label for="guesser">Your name</label>
-      <input id="guesser" type="text" placeholder="e.g. Jimmy John" maxlength="40" autocomplete="name" required>
+const SUITS = ['♠', '♥', '♦', '♣'];
+const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
-      <label for="guess">Your baby-name guess</label>
-      <input id="guess" type="text" placeholder="e.g. Elbow" maxlength="40" required>
+const DECK = (() => {
+  const defs = {};
+  const cards = [];
+  for (const s of SUITS) for (const r of RANKS) {
+    const id = s + r;
+    defs[id] = {
+      id, name: r + s, suit: s, rank: r,
+      color: (s === '♥' || s === '♦') ? 'red' : 'black',
+    };
+    cards.push({ id, defId: id });
+  }
+  return { defs, cards };
+})();
 
-      <button type="submit" id="submit-btn">Add my guess 🎉</button>
-      <p id="form-msg" class="msg" role="status" aria-live="polite" hidden></p>
-    </form>
-  </section>
+let rng = 1;
+function rand() {
+  rng = (Math.imul(rng, 1664525) + 1013904223) >>> 0;
+  return rng / 4294967296;
+}
+function shuffle(a) {
+  const arr = a.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function newCard(id, defId, faceUp) { return { id, defId, faceUp: !!faceUp }; }
+function topCard(zone) { return zone.cards[zone.cards.length - 1]; }
 
-  <section class="card">
-    <div class="list-head">
-      <h2>Everyone's guesses</h2>
-      <span id="count" class="count"></span>
-    </div>
-    <div id="list-loading" class="loading">Loading guesses…</div>
-    <ul id="guess-list" class="list"></ul>
-    <p id="empty" class="empty" hidden>No guesses yet — be the first!</p>
-  </section>
-</main>
+// ============ Crazy Eights ============
 
-<!-- ============================================================
-     Firebase SDK (modular v9+ via CDN)
-     ============================================================ -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  query,
-  orderBy,
-  onSnapshot,
-  deleteDoc,
-  doc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+function createCrazyEights(names) {
+  const state = {
+    scriptId: 'crazy-eights',
+    players: names.map((name, id) => ({ id, name })),
+    zones: { draw: { cards: [] }, discard: { cards: [] } },
+    current: 0, turn: 1, phase: 'play', flags: {},
+    log: [], ended: false, winners: [],
+  };
+  for (const p of state.players) {
+    state.zones['hand:' + p.id] = { owner: p.id, cards: [] };
+  }
+  const cards = DECK.cards.map(c => newCard(c.id, c.defId, false));
+  state.zones.draw.cards = shuffle(cards);
+  for (const p of state.players) {
+    for (let i = 0; i < 5; i++) {
+      state.zones['hand:' + p.id].cards.push(state.zones.draw.cards.pop());
+    }
+  }
+  let top = state.zones.draw.cards.pop();
+  while (DECK.defs[top.defId].rank === '8') {
+    state.zones.draw.cards.unshift(top);
+    top = state.zones.draw.cards.pop();
+  }
+  top.faceUp = true;
+  state.zones.discard.cards.push(top);
+  state.flags.currentSuit = DECK.defs[top.defId].suit;
+  state.log.push('Top card: ' + DECK.defs[top.defId].name + '. ' + names[0] + ' starts.');
+  return state;
+}
 
-/* ============================================================
-   🔥 REPLACE THIS WITH YOUR OWN FIREBASE CONFIG
-   Firebase Console → Project settings → Your apps → Web app
-   ============================================================ */
-const firebaseConfig = {
-  apiKey: "AIzaSyAhzYCKr8EtEZ_p6EkANp36l_G1Nc3WbIc",
-  authDomain: "guess-the-baby-name.firebaseapp.com",
-  projectId: "guess-the-baby-name",
-  storageBucket: "guess-the-baby-name.firebasestorage.app",
-  messagingSenderId: "129095042080",
-  appId: "1:129095042080:web:e5e6ce73db48013642a845",
-  measurementId: "G-6Q37VJVZZW"
+function isPlayableCE(state, def) {
+  const top = topCard(state.zones.discard);
+  if (!top) return true;
+  const topDef = DECK.defs[top.defId];
+  const cur = state.flags.currentSuit || topDef.suit;
+  if (def.rank === '8') return true;
+  if (def.suit === cur) return true;
+  if (def.rank === topDef.rank) return true;
+  return false;
+}
+
+function legalCrazyEights(state, player) {
+  if (state.ended || player !== state.current) return [];
+  if (state.phase === 'chooseSuit') {
+    return SUITS.map(s => ({
+      id: 'suit-' + s, label: 'Choose ' + s,
+      cmd: { type: 'CHOOSE_SUIT', suit: s },
+    }));
+  }
+  const hand = state.zones['hand:' + player];
+  const actions = [];
+  if (state.flags.drewThisTurn) {
+    const drawn = hand.cards.find(c => c.id === state.flags.drawnCardId);
+    if (drawn && isPlayableCE(state, DECK.defs[drawn.defId])) {
+      actions.push({
+        id: 'play-' + drawn.id,
+        label: 'Play ' + DECK.defs[drawn.defId].name,
+        cmd: { type: 'PLAY_CARD', cardId: drawn.id },
+      });
+    }
+    actions.push({ id: 'pass', label: 'Pass', cmd: { type: 'PASS' } });
+    return actions;
+  }
+  for (const card of hand.cards) {
+    const def = DECK.defs[card.defId];
+    if (isPlayableCE(state, def)) {
+      actions.push({
+        id: 'play-' + card.id,
+        label: 'Play ' + def.name,
+        cmd: { type: 'PLAY_CARD', cardId: card.id },
+      });
+    }
+  }
+  actions.push({ id: 'draw', label: 'Draw a card', cmd: { type: 'DRAW' } });
+  return actions;
+}
+
+function applyCrazyEights(state, cmd) {
+  const s = structuredClone(state);
+  const actor = s.current;
+  const advance = () => { s.current = (s.current + 1) % s.players.length; s.turn++; };
+
+  if (cmd.type === 'PLAY_CARD') {
+    const hand = s.zones['hand:' + actor];
+    const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
+    if (idx < 0) throw new Error('Card not in hand');
+    const card = hand.cards[idx];
+    const def = DECK.defs[card.defId];
+    if (!isPlayableCE(s, def)) throw new Error('Not playable');
+    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId) {
+      throw new Error('You can only play the card you drew');
+    }
+    hand.cards.splice(idx, 1);
+    card.faceUp = true;
+    s.zones.discard.cards.push(card);
+    s.flags.currentSuit = def.suit;
+    s.flags.drewThisTurn = false;
+    s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' played ' + def.name);
+    if (hand.cards.length === 0) {
+      s.ended = true;
+      s.winners = [actor];
+      s.log.push(s.players[actor].name + ' wins!');
+      return s;
+    }
+    if (def.rank === '8') { s.phase = 'chooseSuit'; return s; }
+    advance();
+    return s;
+  }
+
+  if (cmd.type === 'CHOOSE_SUIT') {
+    s.flags.currentSuit = cmd.suit;
+    s.phase = 'play';
+    s.log.push(s.players[actor].name + ' chose ' + cmd.suit);
+    advance();
+    return s;
+  }
+
+  if (cmd.type === 'DRAW') {
+    if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
+    const draw = s.zones.draw;
+    if (draw.cards.length === 0) {
+      const discard = s.zones.discard;
+      const top = discard.cards.pop();
+      draw.cards = shuffle(discard.cards).map(c => ({ ...c, faceUp: false }));
+      discard.cards = [top];
+    }
+    if (draw.cards.length === 0) {
+      s.log.push('No cards to draw');
+      advance();
+      return s;
+    }
+    const card = draw.cards.pop();
+    s.zones['hand:' + actor].cards.push(card);
+    s.flags.drewThisTurn = true;
+    s.flags.drawnCardId = card.id;
+    s.log.push(s.players[actor].name + ' drew a card');
+    return s;
+  }
+
+  if (cmd.type === 'PASS') {
+    s.flags.drewThisTurn = false;
+    s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' passed');
+    advance();
+    return s;
+  }
+
+  throw new Error('Unknown command');
+}
+
+// ============ Go Fish ============
+
+function collectSetsGoFish(state, playerId) {
+  const hand = state.zones['hand:' + playerId];
+  const byRank = {};
+  for (const c of hand.cards) {
+    const r = DECK.defs[c.defId].rank;
+    (byRank[r] = byRank[r] || []).push(c);
+  }
+  for (const [rank, cards] of Object.entries(byRank)) {
+    if (cards.length === 4) {
+      for (const c of cards) {
+        hand.cards.splice(hand.cards.indexOf(c), 1);
+        c.faceUp = true;
+        state.zones['sets:' + playerId].cards.push(c);
+      }
+      state.log.push(state.players[playerId].name + ' made a set of ' + rank + 's');
+    }
+  }
+}
+
+function checkGoFishEnd(state) {
+  for (const p of state.players) collectSetsGoFish(state, p.id);
+  if (state.zones.draw.cards.length > 0) return;
+  const anyCards = state.players.some(p => state.zones['hand:' + p.id].cards.length > 0);
+  if (anyCards) {
+    for (const p1 of state.players) {
+      const r1 = new Set(state.zones['hand:' + p1.id].cards.map(c => DECK.defs[c.defId].rank));
+      for (const p2 of state.players) {
+        if (p2.id === p1.id) continue;
+        const r2 = new Set(state.zones['hand:' + p2.id].cards.map(c => DECK.defs[c.defId].rank));
+        for (const r of r1) if (r2.has(r)) return;
+      }
+    }
+  }
+  state.ended = true;
+  let best = -1;
+  state.winners = [];
+  for (const p of state.players) {
+    const n = state.zones['sets:' + p.id].cards.length / 4;
+    if (n > best) { best = n; state.winners = [p.id]; }
+    else if (n === best) state.winners.push(p.id);
+  }
+  state.log.push('Game over. ' + state.winners.map(w => state.players[w].name).join(', ')
+    + ' win with ' + best + ' set' + (best === 1 ? '' : 's') + '.');
+}
+
+function createGoFish(names) {
+  const state = {
+    scriptId: 'go-fish',
+    players: names.map((name, id) => ({ id, name })),
+    zones: { draw: { cards: [] } },
+    current: 0, turn: 1, phase: 'ask', flags: {},
+    log: [], ended: false, winners: [],
+  };
+  for (const p of state.players) {
+    state.zones['hand:' + p.id] = { owner: p.id, cards: [] };
+    state.zones['sets:' + p.id] = { owner: p.id, cards: [] };
+  }
+  const cards = DECK.cards.map(c => newCard(c.id, c.defId, false));
+  state.zones.draw.cards = shuffle(cards);
+  for (const p of state.players) {
+    for (let i = 0; i < 5; i++) {
+      state.zones['hand:' + p.id].cards.push(state.zones.draw.cards.pop());
+    }
+  }
+  for (const p of state.players) collectSetsGoFish(state, p.id);
+  state.log.push(names[0] + ' starts.');
+  return state;
+}
+
+function legalGoFish(state, player) {
+  if (state.ended || player !== state.current) return [];
+  const hand = state.zones['hand:' + player];
+  const ranks = new Set(hand.cards.map(c => DECK.defs[c.defId].rank));
+  const actions = [];
+  for (const rank of ranks) {
+    for (const p of state.players) {
+      if (p.id === player) continue;
+      actions.push({
+        id: 'ask-' + p.id + '-' + rank,
+        label: 'Ask ' + p.name + ' for ' + rank,
+        group: 'Ask for ' + rank,
+        cmd: { type: 'ASK', target: p.id, rank },
+      });
+    }
+  }
+  return actions;
+}
+
+function applyGoFish(state, cmd) {
+  if (cmd.type !== 'ASK') throw new Error('Unknown command');
+  const s = structuredClone(state);
+  const actor = s.current;
+  const target = cmd.target;
+  const rank = cmd.rank;
+  if (target === actor) throw new Error('Cannot ask yourself');
+  const actorHand = s.zones['hand:' + actor];
+  const targetHand = s.zones['hand:' + target];
+  if (!actorHand.cards.some(c => DECK.defs[c.defId].rank === rank)) {
+    throw new Error('You must hold that rank to ask for it');
+  }
+
+  const matching = targetHand.cards.filter(c => DECK.defs[c.defId].rank === rank);
+  let goAgain = false;
+
+  if (matching.length > 0) {
+    for (const c of matching) {
+      targetHand.cards.splice(targetHand.cards.indexOf(c), 1);
+      actorHand.cards.push(c);
+    }
+    s.log.push(s.players[actor].name + ' got ' + matching.length + '\u00d7 ' + rank
+      + ' from ' + s.players[target].name);
+    goAgain = true;
+  } else if (s.zones.draw.cards.length > 0) {
+    const c = s.zones.draw.cards.pop();
+    actorHand.cards.push(c);
+    const drawnRank = DECK.defs[c.defId].rank;
+    s.log.push(s.players[actor].name + ' asked ' + s.players[target].name + ' for ' + rank
+      + ', went fishing, drew ' + DECK.defs[c.defId].name);
+    goAgain = (drawnRank === rank);
+  } else {
+    s.log.push(s.players[actor].name + ' asked ' + s.players[target].name + ' for ' + rank
+      + ', got nothing');
+  }
+
+  checkGoFishEnd(s);
+
+  if (!s.ended) {
+    const actorHasCards = s.zones['hand:' + actor].cards.length > 0;
+    if (!goAgain || !actorHasCards) {
+      s.current = (s.current + 1) % s.players.length;
+      s.turn++;
+    }
+  }
+  return s;
+}
+
+// ============ Game registry ============
+
+const GAMES = {
+  'crazy-eights': {
+    id: 'crazy-eights', name: 'Crazy Eights',
+    minPlayers: 2, maxPlayers: 7,
+    create: createCrazyEights,
+    legal: legalCrazyEights,
+    apply: applyCrazyEights,
+  },
+  'go-fish': {
+    id: 'go-fish', name: 'Go Fish',
+    minPlayers: 2, maxPlayers: 6,
+    create: createGoFish,
+    legal: legalGoFish,
+    apply: applyGoFish,
+  },
 };
 
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+// ============ App state ============
 
-const GUESSES_COLLECTION = "guesses";
-const PRICE_PER_NAME = 5;   // dollars per guessed name
+let G = null;
+let SCREEN = 'menu';
+let VIEWER = 0;
+const MENU = { scriptId: 'crazy-eights', namesInput: 'Alice, Bob' };
 
-/* ============================================================
-   UI references
-   ============================================================ */
-const form       = document.getElementById("guess-form");
-const nameInput  = document.getElementById("guesser");
-const guessInput = document.getElementById("guess");
-const submitBtn  = document.getElementById("submit-btn");
-const msgEl      = document.getElementById("form-msg");
-const listEl     = document.getElementById("guess-list");
-const emptyEl    = document.getElementById("empty");
-const countEl    = document.getElementById("count");
-const loadingEl  = document.getElementById("list-loading");
+// ============ DOM helpers ============
 
-let guesses = [];       // local mirror of Firestore data
-let msgTimer = null;
-let unsubscribe = null; // onSnapshot unsubscribe
-
-/* ============================================================
-   Utilities
-   ============================================================ */
-function colorFor(str) {
-  const palette = ["#f9a8d4", "#a5b4fc", "#93c5fd", "#6ee7b7",
-                   "#fcd34d", "#fca5a5", "#c4b5fd", "#5eead4"];
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash * 31 + str.charCodeAt(i)) % 100000;
-  }
-  return palette[hash % palette.length];
-}
-
-function tidy(str) {
-  return str.replace(/\s+/g, " ").trim();
-}
-
-function money(n) {
-  return "$" + n;
-}
-
-function showMessage(text, isError) {
-  msgEl.textContent = text;
-  msgEl.hidden = false;
-  msgEl.classList.toggle("error", !!isError);
-  msgEl.classList.toggle("ok", !isError);
-  clearTimeout(msgTimer);
-  if (!isError) {
-    msgTimer = setTimeout(() => { msgEl.hidden = true; }, 6000);
-  }
-}
-
-/* ============================================================
-   Grouping: one row per person, their guesses kept together
-   ============================================================ */
-function groupGuesses(list) {
-  const map = new Map();   // key: lowercase name
-  const order = [];        // preserves first-seen order
-
-  list.forEach(g => {
-    const key = g.name.toLowerCase();
-    if (!map.has(key)) {
-      map.set(key, { name: g.name, guesses: [] });
-      order.push(key);
+function el(tag, props, ...children) {
+  const node = document.createElement(tag);
+  if (props) {
+    for (const k in props) {
+      const v = props[k];
+      if (v === null || v === undefined) continue;
+      if (k === 'class') node.className = v;
+      else if (k.startsWith('on') && typeof v === 'function') {
+        node.addEventListener(k.slice(2).toLowerCase(), v);
+      } else {
+        node[k] = v;
+      }
     }
-    map.get(key).guesses.push(g);
-  });
-
-  return order.map(k => map.get(k));
+  }
+  for (const child of children) {
+    if (child === null || child === undefined) continue;
+    if (typeof child === 'string' || typeof child === 'number') {
+      node.appendChild(document.createTextNode(String(child)));
+    } else {
+      node.appendChild(child);
+    }
+  }
+  return node;
 }
 
-/* ============================================================
-   Rendering
-   ============================================================ */
+function cardView(defId) {
+  if (defId === '__hidden__') return el('div', { class: 'card hidden' }, '?');
+  const def = DECK.defs[defId];
+  return el('div', { class: 'card ' + (def.color === 'red' ? 'red' : 'black') }, def.name);
+}
+
+// ============ Render ============
+
 function render() {
-  listEl.textContent = "";
-
-  const total = guesses.length;
-  countEl.textContent = total
-    ? `(${total} ${total === 1 ? "name" : "names"} · ${money(total * PRICE_PER_NAME)})`
-    : "";
-  emptyEl.hidden = total > 0;
-  loadingEl.hidden = true;
-
-  groupGuesses(guesses).forEach(group => {
-    const li = document.createElement("li");
-    li.className = "person";
-
-    /* avatar */
-    const avatar = document.createElement("div");
-    avatar.className = "avatar";
-    avatar.style.background = colorFor(group.name);
-    avatar.textContent = (group.name.charAt(0) || "?").toUpperCase();
-    avatar.setAttribute("aria-hidden", "true");
-
-    /* body */
-    const body = document.createElement("div");
-    body.className = "person-body";
-
-    /* name + running total for this person */
-    const head = document.createElement("div");
-    head.className = "person-head";
-
-    const nameEl = document.createElement("span");
-    nameEl.className = "person-name";
-    nameEl.textContent = group.name;
-
-    const personTotal = document.createElement("span");
-    personTotal.className = "person-total";
-    personTotal.textContent = money(group.guesses.length * PRICE_PER_NAME);
-    personTotal.title =
-      `${group.guesses.length} ${group.guesses.length === 1 ? "guess" : "guesses"} × $${PRICE_PER_NAME}`;
-
-    head.appendChild(nameEl);
-    head.appendChild(personTotal);
-
-    /* chips: one per guessed name, $5 on the right of each */
-    const chips = document.createElement("div");
-    chips.className = "chips";
-
-    group.guesses.forEach(g => {
-      const chip = document.createElement("span");
-      chip.className = "chip";
-
-      const chipName = document.createElement("span");
-      chipName.className = "chip-name";
-      chipName.textContent = g.guess;
-
-      const chipAmount = document.createElement("span");
-      chipAmount.className = "chip-amount";
-      chipAmount.textContent = money(PRICE_PER_NAME);
-
-      const del = document.createElement("button");
-      del.type = "button";
-      del.className = "remove";
-      del.textContent = "×";
-      del.title = `Remove ${group.name}'s guess "${g.guess}"`;
-      del.setAttribute("aria-label", `Remove ${group.name}'s guess "${g.guess}"`);
-      del.addEventListener("click", () => removeGuess(g.id, group.name, g.guess));
-
-      chip.appendChild(chipName);
-      chip.appendChild(chipAmount);
-      chip.appendChild(del);
-      chips.appendChild(chip);
-    });
-
-    body.appendChild(head);
-    body.appendChild(chips);
-
-    li.appendChild(avatar);
-    li.appendChild(body);
-    listEl.appendChild(li);
-  });
+  const root = document.getElementById('app');
+  root.innerHTML = '';
+  if (SCREEN === 'menu') return renderMenu(root);
+  if (SCREEN === 'pass') return renderPass(root);
+  if (SCREEN === 'game') return renderGame(root);
 }
 
-/* ============================================================
-   Firestore: listen for real-time updates
-   ============================================================ */
-function startListener() {
-  loadingEl.hidden = false;
-  emptyEl.hidden = true;
+function renderMenu(root) {
+  const opts = Object.values(GAMES).map(g => {
+    const o = document.createElement('option');
+    o.value = g.id;
+    o.textContent = g.name;
+    return o;
+  });
+  const select = el('select', {
+    onchange: e => { MENU.scriptId = e.target.value; },
+  }, ...opts);
+  select.value = MENU.scriptId;
 
-  const q = query(
-    collection(db, GUESSES_COLLECTION),
-    orderBy("createdAt", "asc")
+  const input = el('input', {
+    type: 'text',
+    oninput: e => { MENU.namesInput = e.target.value; },
+  });
+  input.value = MENU.namesInput;
+
+  root.appendChild(el('div', { class: 'menu' },
+    el('h1', null, 'Card Table'),
+    el('label', null, 'Game', select),
+    el('label', null, 'Players (comma-separated)', input),
+    el('button', { onclick: startGame }, 'Start'),
+  ));
+}
+
+function renderPass(root) {
+  root.appendChild(el('div', {
+    class: 'pass',
+    onclick: () => { SCREEN = 'game'; render(); },
+  },
+    el('h2', null, 'Pass to ' + G.players[VIEWER].name),
+    el('p', null, 'Tap to continue'),
+  ));
+}
+
+function renderGame(root) {
+  const header = el('header', null,
+    el('span', null, GAMES[G.scriptId].name),
+    el('span', null, 'Turn ' + G.turn),
+    el('span', null, 'Now: ' + G.players[G.current].name),
   );
 
-  unsubscribe = onSnapshot(q,
-    snapshot => {
-      guesses = snapshot.docs.map(d => ({
-        id: d.id,
-        ...d.data()
-      }));
-      render();
-    },
-    error => {
-      console.error("Firestore listen error:", error);
-      loadingEl.hidden = true;
-      showMessage("Could not load guesses. Check your Firebase config & rules.", true);
+  const opponents = el('section', { class: 'opponents' });
+  for (const p of G.players) {
+    if (p.id === VIEWER) continue;
+    const hand = G.zones['hand:' + p.id];
+    const sets = G.zones['sets:' + p.id];
+    opponents.appendChild(el('div', { class: 'opponent' },
+      el('strong', null, p.name),
+      el('span', null, hand.cards.length + ' card' + (hand.cards.length === 1 ? '' : 's')),
+      sets ? el('span', null, (sets.cards.length / 4) + ' set' + (sets.cards.length === 4 ? '' : 's')) : null,
+    ));
+  }
+
+  const table = el('section', { class: 'table' });
+  table.appendChild(el('div', { class: 'zone' },
+    el('span', null, 'Deck'),
+    el('span', null, String(G.zones.draw.cards.length)),
+  ));
+  if (G.zones.discard && G.zones.discard.cards.length > 0) {
+    table.appendChild(el('div', { class: 'zone' },
+      el('span', null, 'Discard'),
+      cardView(topCard(G.zones.discard).defId),
+    ));
+  }
+  const mySets = G.zones['sets:' + VIEWER];
+  if (mySets) {
+    table.appendChild(el('div', { class: 'zone' },
+      el('span', null, 'Your sets'),
+      el('span', null, String(mySets.cards.length / 4)),
+    ));
+  }
+
+  const actions = el('section', { class: 'actions' });
+  const isMyTurn = !G.ended && G.current === VIEWER;
+  if (isMyTurn) {
+    const list = GAMES[G.scriptId].legal(G, VIEWER);
+    const groups = {};
+    for (const a of list) {
+      const g = a.group || '_';
+      (groups[g] = groups[g] || []).push(a);
     }
-  );
+    for (const [g, items] of Object.entries(groups)) {
+      const row = el('div', { class: 'action-group' });
+      if (g !== '_') row.appendChild(el('span', { class: 'group-label' }, g));
+      for (const a of items) {
+        row.appendChild(el('button', { onclick: () => takeAction(a.cmd) }, a.label));
+      }
+      actions.appendChild(row);
+    }
+  }
+
+  const log = el('section', { class: 'log' });
+  for (const line of G.log.slice(-6)) {
+    log.appendChild(el('div', null, line));
+  }
+
+  const hand = el('section', { class: 'hand' });
+  const myHand = G.zones['hand:' + VIEWER];
+  if (myHand) for (const c of myHand.cards) hand.appendChild(cardView(c.defId));
+
+  root.appendChild(el('div', { class: 'game' },
+    header, opponents, table, actions, log, hand,
+  ));
+
+  if (G.ended) {
+    root.appendChild(el('div', {
+      class: 'over',
+      onclick: () => { G = null; SCREEN = 'menu'; render(); },
+    },
+      el('h2', null, 'Game over'),
+      el('p', null, G.winners.map(w => G.players[w].name).join(', ')
+        + (G.winners.length === 1 ? ' wins!' : ' win!')),
+      el('p', null, 'Tap to return to menu'),
+    ));
+  }
 }
 
-/* ============================================================
-   Add a guess (always creates a new entry — multiple allowed)
-   ============================================================ */
-async function addGuess(name, guess) {
-  await addDoc(collection(db, GUESSES_COLLECTION), {
-    name,
-    nameLower: name.toLowerCase(),
-    guess,
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp()
-  });
+// ============ Actions ============
+
+function startGame() {
+  const names = MENU.namesInput.split(',').map(s => s.trim()).filter(Boolean);
+  const game = GAMES[MENU.scriptId];
+  if (names.length < game.minPlayers) {
+    alert('Need at least ' + game.minPlayers + ' players');
+    return;
+  }
+  if (names.length > game.maxPlayers) {
+    alert('At most ' + game.maxPlayers + ' players');
+    return;
+  }
+  rng = ((Date.now() ^ 0x9e3779b9) >>> 0) || 1;
+  G = game.create(names);
+  VIEWER = 0;
+  SCREEN = 'pass';
+  render();
 }
 
-/* ============================================================
-   Remove a guess
-   ============================================================ */
-async function removeGuess(id, name, guess) {
-  if (!window.confirm(`Remove ${name}'s guess "${guess}"?`)) return;
-
+function takeAction(cmd) {
+  const game = GAMES[G.scriptId];
+  const prevCurrent = G.current;
   try {
-    await deleteDoc(doc(db, GUESSES_COLLECTION, id));
-    // onSnapshot will refresh the list automatically
-  } catch (err) {
-    console.error("Delete failed:", err);
-    showMessage("Could not remove that guess. Please try again.", true);
+    G = game.apply(G, cmd);
+  } catch (e) {
+    alert(e.message);
+    return;
   }
+  if (G.ended) {
+    SCREEN = 'game';
+  } else if (G.current !== prevCurrent) {
+    VIEWER = G.current;
+    SCREEN = 'pass';
+  } else {
+    SCREEN = 'game';
+  }
+  render();
 }
 
-/* ============================================================
-   Form submit
-   ============================================================ */
-form.addEventListener("submit", async e => {
-  e.preventDefault();
+// ============ Init ============
 
-  const name  = tidy(nameInput.value);
-  const guess = tidy(guessInput.value);
-
-  if (!name) {
-    showMessage("Please enter your name.", true);
-    nameInput.focus();
-    return;
-  }
-  if (!guess) {
-    showMessage("Please enter your baby-name guess.", true);
-    guessInput.focus();
-    return;
-  }
-
-  // Soft guard: same person can't submit the exact same name twice
-  const duplicate = guesses.some(g =>
-    g.name.toLowerCase() === name.toLowerCase() &&
-    g.guess.toLowerCase() === guess.toLowerCase()
-  );
-  if (duplicate) {
-    showMessage(`${name}, you've already guessed “${guess}”. Try another name!`, true);
-    guessInput.focus();
-    guessInput.select();
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Saving…";
-
-  try {
-    await addGuess(name, guess);
-    showMessage(`Thanks, ${name}! “${guess}” is in (+$${PRICE_PER_NAME}). Add another anytime. 🎉`);
-    guessInput.value = "";   // keep the name, clear the guess
-    guessInput.focus();
-  } catch (err) {
-    console.error("Save failed:", err);
-    showMessage("Could not save your guess. Check your Firebase rules & try again.", true);
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Lock in my guess 🎉";
-  }
-});
-
-/* ============================================================
-   Boot
-   ============================================================ */
-startListener();
-
-window.addEventListener("pagehide", () => {
-  if (unsubscribe) unsubscribe();
-});
+render();
 </script>
 </body>
 </html>
