@@ -4,286 +4,1204 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Card Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d1f16;
-    --panel: #142f20;
-    --panel-hi: #1f4530;
-    --border: #2a5a3a;
-    --text: #eaf3ec;
-    --muted: #7a9d87;
-    --accent: #4ade80;
-    --accent-bg: #166534;
-    --card-w: clamp(2.6rem, 9.5vw, 3.4rem);
-    --card-h: calc(var(--card-w) * 1.45);
+    /* Backgrounds */
+    --bg-deep: #061510;
+    --bg: #0c1e16;
+    --bg-hi: #142c20;
+    --surface: #132419;
+    --surface-hi: #1c3226;
+    --surface-glow: #24402f;
+    --border: rgba(255,255,255,0.07);
+    --border-hi: rgba(255,255,255,0.14);
+    --felt-top: #1e5a3c;
+    --felt-bottom: #0d2e1d;
+
+    /* Text */
+    --text: #eef6f0;
+    --text-dim: #b3c4b8;
+    --muted: #7a9484;
+
+    /* Accents */
+    --accent: #6ee7a7;
+    --accent-dim: #4ade80;
+    --accent-bg: #15803d;
+    --accent-glow: rgba(110,231,167,0.35);
+    --gold: #f0b429;
+    --gold-soft: rgba(240,180,41,0.15);
+    --danger: #f87171;
+    --danger-bg: #991b1b;
+
+    /* Cards */
+    --card-w: clamp(2.7rem, 10vw, 3.6rem);
+    --card-h: calc(var(--card-w) * 1.4);
+    --card-radius: 0.5rem;
+    --card-cream: #fbf8f0;
+    --card-cream-2: #f1ead9;
+    --card-red: #cf2430;
+    --card-black: #1c1c20;
+
+    /* UNO colors */
+    --uno-red: #e4222e;
+    --uno-yellow: #f5c518;
+    --uno-green: #2da54a;
+    --uno-blue: #0d6efd;
+
+    /* Easing */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
   html, body {
     margin: 0;
-    background: var(--bg);
+    padding: 0;
+    background:
+      radial-gradient(ellipse 100% 60% at 50% 0%, rgba(30,90,60,0.55) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(20,60,40,0.3) 0%, transparent 70%),
+      var(--bg-deep);
     color: var(--text);
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    min-height: 100vh; min-height: 100dvh;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'ss01', 'cv11';
+    min-height: 100vh;
+    min-height: 100dvh;
     overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
   }
   #app { min-height: 100dvh; }
 
+  /* ===== Base elements ===== */
   button {
-    font-family: inherit; cursor: pointer; border: none;
-    background: var(--panel-hi); color: var(--text);
-    padding: 0.65rem 1rem; border-radius: 0.55rem;
-    font-size: 0.95rem; font-weight: 500;
-    transition: background 0.15s, transform 0.1s, opacity 0.15s;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(180deg, var(--surface-glow), var(--surface-hi));
+    color: var(--text);
+    padding: 0.7rem 1.1rem;
+    border-radius: 0.6rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    transition: transform 0.12s var(--ease-spring), background 0.15s, box-shadow 0.15s, opacity 0.15s;
     min-height: 2.6rem;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 2px 6px rgba(0,0,0,0.2);
   }
-  button:hover { background: var(--border); }
-  button:active { transform: scale(0.97); }
+  button:hover {
+    background: linear-gradient(180deg, var(--surface-glow), var(--surface-glow));
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.08) inset,
+      0 4px 12px rgba(0,0,0,0.3);
+  }
+  button:active { transform: scale(0.96); }
   button:disabled { opacity: 0.4; cursor: not-allowed; }
-  button.primary { background: var(--accent-bg); }
-  button.primary:hover { background: #1d7a3f; }
-  button.ghost { background: transparent; border: 1px solid var(--border); }
-  button.ghost:hover { background: var(--panel); }
-  button.danger { background: #7f1d1d; }
-  button.danger:hover { background: #991b1b; }
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  button.primary {
+    background: linear-gradient(180deg, #22c55e, #15803d);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.25) inset,
+      0 2px 8px rgba(34,197,94,0.35);
+    color: #052e16;
+  }
+  button.primary:hover {
+    background: linear-gradient(180deg, #34d56e, #15803d);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.3) inset,
+      0 4px 16px rgba(34,197,94,0.5);
+  }
+  button.ghost {
+    background: transparent;
+    border: 1px solid var(--border-hi);
+    box-shadow: none;
+  }
+  button.ghost:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: var(--border-hi);
+  }
+  button.danger {
+    background: linear-gradient(180deg, #b91c1c, #7f1d1d);
+    color: white;
+  }
+  button.danger:hover { background: linear-gradient(180deg, #dc2626, #991b1b); }
 
   input, select, textarea {
     font-family: inherit;
-    padding: 0.6rem 0.75rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--border);
-    background: var(--bg);
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--border-hi);
+    background: rgba(0,0,0,0.25);
     color: var(--text);
     font-size: 0.95rem;
     width: 100%;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
   }
   input:focus, select:focus, textarea:focus {
-    outline: none; border-color: var(--accent);
+    outline: none;
+    border-color: var(--accent-dim);
+    background: rgba(0,0,0,0.35);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  /* ===== Cards ===== */
+  .card {
+    width: var(--card-w);
+    height: var(--card-h);
+    border-radius: var(--card-radius);
+    position: relative;
+    flex-shrink: 0;
+    user-select: none;
+    overflow: hidden;
+    transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), filter 0.2s;
+    box-shadow:
+      0 1px 3px rgba(0,0,0,0.4),
+      0 4px 12px rgba(0,0,0,0.25);
+    font-weight: 700;
+  }
+
+  /* --- Standard playing card --- */
+  .card--std {
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.4), transparent 60%),
+      linear-gradient(135deg, var(--card-cream) 0%, var(--card-cream-2) 100%);
+    border: 1px solid rgba(0,0,0,0.1);
+    color: var(--card-black);
+  }
+  .card--std.card--red { color: var(--card-red); }
+
+  .card__corner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 0.85;
+    font-size: calc(var(--card-w) * 0.18);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    z-index: 2;
+  }
+  .card__corner--tl { top: 0.22rem; left: 0.22rem; }
+  .card__corner--br {
+    bottom: 0.22rem; right: 0.22rem;
+    transform: rotate(180deg);
+  }
+  .card__rank { font-size: 1em; }
+  .card__suit {
+    font-size: 0.85em;
+    margin-top: 0.1em;
+    line-height: 1;
+  }
+
+  .card__center {
+    position: absolute;
+    inset: 1.15rem 0.55rem;
+    z-index: 1;
+  }
+  .card__pip {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: calc(var(--card-w) * 0.38);
+    line-height: 1;
+    font-weight: 400;
+  }
+  .card__pip--flipped { transform: translate(-50%, -50%) rotate(180deg); }
+
+  .card__center--ace {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card__ace {
+    font-size: calc(var(--card-w) * 0.9);
+    line-height: 1;
+  }
+
+  .card__center--face {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.08em;
+  }
+  .card__face-badge {
+    width: calc(var(--card-w) * 0.55);
+    height: calc(var(--card-w) * 0.55);
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: calc(var(--card-w) * 0.32);
+    font-weight: 900;
+    line-height: 1;
+    opacity: 0.9;
+  }
+  .card__face-suit {
+    font-size: calc(var(--card-w) * 0.22);
+    opacity: 0.85;
+  }
+
+  /* --- UNO card --- */
+  .card--uno {
+    color: white;
+    overflow: hidden;
+  }
+  .card--uno .card__uno-corner {
+    position: absolute;
+    font-size: calc(var(--card-w) * 0.22);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    z-index: 2;
+    line-height: 1;
+  }
+  .card--uno .card__uno-corner--tl { top: 0.24rem; left: 0.32rem; }
+  .card--uno .card__uno-corner--br {
+    bottom: 0.24rem; right: 0.32rem;
+    transform: rotate(180deg);
+  }
+
+  .card__uno-oval {
+    position: absolute;
+    inset: 12% 8%;
+    background: rgba(255,255,255,0.96);
+    border-radius: 50%;
+    transform: rotate(-22deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+  }
+  .card__uno-val {
+    transform: rotate(22deg);
+    font-size: calc(var(--card-w) * 0.5);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    display: inline-block;
+  }
+  .card__uno-val--wild {
+    font-size: calc(var(--card-w) * 0.28);
+    letter-spacing: 0.02em;
+    color: #111;
+    font-weight: 800;
+  }
+  .card__uno-val--wild4 {
+    font-size: calc(var(--card-w) * 0.55);
+    color: #111;
+  }
+
+  .card--wild {
+    background: conic-gradient(from 45deg,
+      var(--uno-red) 0deg 90deg,
+      var(--uno-yellow) 90deg 180deg,
+      var(--uno-green) 180deg 270deg,
+      var(--uno-blue) 270deg 360deg);
+  }
+
+  /* --- Custom card --- */
+  .card--custom {
+    color: white;
+    overflow: hidden;
+  }
+  .card--custom .card__corner {
+    font-size: calc(var(--card-w) * 0.2);
+    font-weight: 800;
+    color: inherit;
+    opacity: 0.9;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.25);
+  }
+  .card__custom-center {
+    position: absolute;
+    inset: 22% 12%;
+    background: rgba(255,255,255,0.94);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.15rem 0.4rem;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+  }
+  .card__custom-val {
+    font-size: calc(var(--card-w) * 0.24);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-align: center;
+    word-break: break-word;
+  }
+  .card__custom-val--wild { color: #111; }
+
+  /* --- Card back --- */
+  .card--back {
+    background:
+      repeating-linear-gradient(45deg,
+        #2d4a7a 0 5px,
+        #1c2d52 5px 10px);
+    border: 1.5px solid #e5e7eb;
+  }
+  .card--back::before {
+    content: '';
+    position: absolute;
+    inset: 18%;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 0.25rem;
+  }
+  .card--back::after {
+    content: '';
+    position: absolute;
+    inset: 22%;
+    background: repeating-linear-gradient(45deg,
+      transparent 0 4px,
+      rgba(255,255,255,0.15) 4px 8px);
+    border-radius: 0.2rem;
+  }
+
+  /* --- Playable / dimmed --- */
+  .hand .card--playable {
+    cursor: pointer;
+    transform: translateY(-0.5rem);
+    box-shadow:
+      0 0 0 2px var(--accent),
+      0 0 20px var(--accent-glow),
+      0 6px 16px rgba(0,0,0,0.4);
+  }
+  .hand .card--playable:hover {
+    transform: translateY(-0.85rem) scale(1.03);
+  }
+  .hand .card--playable:active {
+    transform: translateY(-0.6rem) scale(0.98);
+  }
+  .hand .card--dimmed {
+    opacity: 0.4;
+    filter: saturate(0.4);
   }
 
   /* ===== Menu ===== */
-  .menu { display: flex; flex-direction: column; align-items: center; justify-content: center;
-    min-height: 100dvh; padding: 1.25rem; gap: 1rem; }
-  .menu h1 { margin: 0; font-size: 2rem; letter-spacing: -0.02em; }
-  .menu h1 span { color: var(--accent); }
-  .menu .tagline { color: var(--muted); margin: -0.4rem 0 0.5rem; font-size: 0.9rem; }
-  .menu-card {
-    background: var(--panel); border-radius: 0.9rem; padding: 1.1rem;
-    width: 100%; max-width: 26rem;
-    display: flex; flex-direction: column; gap: 0.9rem;
+  .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    padding: 2rem 1.25rem;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
   }
-  .menu label { display: flex; flex-direction: column; gap: 0.35rem;
-    font-size: 0.8rem; color: var(--muted); font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.04em; }
-  .custom-list { display: flex; flex-direction: column; gap: 0.4rem; }
-  .custom-item {
-    display: flex; align-items: center; gap: 0.4rem;
-    padding: 0.5rem 0.7rem; background: var(--bg); border-radius: 0.5rem;
-    font-size: 0.85rem;
+
+  .menu__hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    text-align: center;
   }
-  .custom-item .name { flex: 1; font-weight: 600; }
-  .custom-item .count { color: var(--muted); font-size: 0.75rem; }
-  .custom-item button { padding: 0.35rem 0.6rem; font-size: 0.75rem; min-height: auto; }
-  .empty-note { color: var(--muted); font-size: 0.8rem; text-align: center; padding: 0.5rem; }
-  .section-title { font-size: 0.75rem; color: var(--muted); text-transform: uppercase;
-    letter-spacing: 0.06em; font-weight: 700; margin-top: 0.3rem; }
+
+  .menu__cards {
+    position: relative;
+    width: 8rem;
+    height: 6rem;
+    margin-bottom: 0.75rem;
+  }
+  .menu__cards .card {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform-origin: center 110%;
+  }
+  .menu__cards .card:nth-child(1) {
+    transform: translateX(-85%) rotate(-16deg);
+    z-index: 1;
+  }
+  .menu__cards .card:nth-child(2) {
+    transform: translateX(-50%) rotate(0deg) translateY(-4px);
+    z-index: 3;
+    box-shadow:
+      0 1px 3px rgba(0,0,0,0.4),
+      0 8px 24px rgba(0,0,0,0.5),
+      0 0 30px rgba(110,231,167,0.15);
+  }
+  .menu__cards .card:nth-child(3) {
+    transform: translateX(-15%) rotate(16deg);
+    z-index: 2;
+  }
+
+  .menu h1 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(2.4rem, 7vw, 3.6rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    font-variation-settings: 'SOFT' 40, 'WONK' 1;
+  }
+  .menu h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .menu__tagline {
+    color: var(--muted);
+    margin: 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+  }
+
+  .menu__panel {
+    background: linear-gradient(180deg,
+      rgba(28,50,38,0.8) 0%,
+      rgba(19,36,25,0.9) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-hi);
+    border-radius: 1.1rem;
+    padding: 1.35rem;
+    width: 100%;
+    max-width: 26rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 20px 50px rgba(0,0,0,0.5);
+  }
+
+  .field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .field label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .rules-box {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+    background: rgba(0,0,0,0.2);
+    padding: 0.75rem 0.9rem;
+    border-radius: 0.6rem;
+    border-left: 2px solid var(--accent);
+  }
+
+  .preset-row {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .preset-row button {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.82rem;
+    min-height: auto;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    margin-top: 0.3rem;
+  }
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
 
   /* ===== Pass screen ===== */
-  .pass { display: flex; flex-direction: column; align-items: center; justify-content: center;
-    min-height: 100dvh; padding: 1.5rem; gap: 1rem; text-align: center;
-    cursor: pointer; user-select: none; }
-  .pass .icon { font-size: 3rem; opacity: 0.7; }
-  .pass h2 { margin: 0; font-size: 1.8rem; }
-  .pass .hint { color: var(--muted); margin: 0; }
-  .pass .undo-link { position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
-    color: var(--muted); font-size: 0.8rem; text-decoration: underline;
-    background: none; border: none; padding: 0.5rem; }
-  .pass .undo-link:hover { color: var(--text); }
+  .pass {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .pass__avatar {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-dim), var(--accent-bg));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: #052e16;
+    box-shadow:
+      0 0 0 6px rgba(110,231,167,0.12),
+      0 0 40px rgba(110,231,167,0.35),
+      0 10px 30px rgba(0,0,0,0.4);
+    animation: floatAvatar 3s ease-in-out infinite;
+  }
+  @keyframes floatAvatar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .pass__label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+  }
+  .pass h2 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .pass__hint {
+    color: var(--muted);
+    margin: 0;
+    font-size: 0.9rem;
+    animation: pulseHint 2s ease-in-out infinite;
+  }
+  @keyframes pulseHint {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .pass__undo {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--muted);
+    font-size: 0.8rem;
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    text-decoration: underline;
+    cursor: pointer;
+    box-shadow: none;
+  }
+  .pass__undo:hover { color: var(--text); background: none; }
 
-  /* ===== Game ===== */
-  .game { display: flex; flex-direction: column; min-height: 100dvh;
-    padding: 0.5rem; gap: 0.45rem; max-width: 56rem; margin: 0 auto; }
-  header { display: flex; align-items: center; justify-content: space-between;
-    gap: 0.5rem; padding: 0.55rem 0.75rem;
-    background: var(--panel); border-radius: 0.6rem; font-size: 0.82rem; }
-  header .game-name { font-weight: 700; color: var(--accent); }
-  header .turn-info { color: var(--muted); }
-  header .turn-info strong { color: var(--text); }
-  header .controls { display: flex; gap: 0.35rem; }
-  header .controls button { padding: 0.4rem 0.65rem; font-size: 0.78rem; min-height: auto; }
+  /* ===== Game screen ===== */
+  .game {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    padding: 0.6rem;
+    gap: 0.5rem;
+    max-width: 56rem;
+    margin: 0 auto;
+  }
 
-  .opponents { display: flex; gap: 0.4rem; overflow-x: auto;
-    -webkit-overflow-scrolling: touch; padding-bottom: 0.1rem; }
-  .opponent { display: flex; flex-direction: column; padding: 0.5rem 0.7rem;
-    background: var(--panel); border-radius: 0.6rem; font-size: 0.78rem;
-    min-width: 5.5rem; flex-shrink: 0; gap: 0.1rem; }
-  .opponent.current { outline: 2px solid var(--accent); outline-offset: -1px; }
-  .opponent strong { font-size: 0.85rem; }
-  .opponent span { color: var(--muted); }
+  .game__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.7rem 0.9rem;
+    background: rgba(20,44,32,0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    font-size: 0.82rem;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
+  .game__header-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .game__header-info {
+    color: var(--muted);
+    font-size: 0.78rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .game__header-info strong { color: var(--text); font-weight: 600; }
+  .game__header-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.78rem;
+    min-height: auto;
+  }
 
-  .table { display: flex; gap: 0.6rem; justify-content: center; align-items: flex-start;
-    padding: 0.5rem 0; flex-wrap: wrap; }
-  .zone { display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-    min-width: 4.5rem; font-size: 0.72rem; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.05em; }
-  .zone .card, .zone .empty { margin: 0; }
-  .empty { width: var(--card-w); height: var(--card-h);
-    border: 2px dashed var(--border); border-radius: 0.4rem;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem; color: var(--border);
-    text-transform: none; letter-spacing: 0; }
-  .active-color { display: inline-flex; align-items: center; justify-content: center;
-    padding: 0.3rem 0.7rem; border-radius: 99px;
-    font-size: 0.78rem; font-weight: 700; color: white; min-width: 3rem; }
+  .opponents {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: none;
+  }
+  .opponents::-webkit-scrollbar { display: none; }
 
-  .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
-    padding: 0.5rem; background: var(--panel); border-radius: 0.6rem; min-height: 3.6rem; }
-  .actions .label { font-size: 0.78rem; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.05em; margin-right: 0.2rem; }
-  .rank-chip { padding: 0.55rem 0.95rem; border-radius: 0.55rem;
-    background: var(--panel-hi); border: 1px solid var(--border); color: var(--text);
-    font-weight: 600; cursor: pointer; font-family: inherit; font-size: 0.95rem;
-    min-height: 2.4rem; }
-  .rank-chip:hover { background: var(--border); }
+  .opponent {
+    display: flex;
+    flex-direction: column;
+    padding: 0.6rem 0.85rem;
+    background: rgba(20,44,32,0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 0.7rem;
+    font-size: 0.78rem;
+    min-width: 6rem;
+    flex-shrink: 0;
+    gap: 0.15rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .opponent.current {
+    border-color: var(--accent-dim);
+    box-shadow:
+      0 0 0 1px var(--accent-dim),
+      0 0 20px rgba(110,231,167,0.15);
+  }
+  .opponent strong {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .opponent .meta { color: var(--muted); font-size: 0.72rem; }
 
-  .log { font-size: 0.72rem; max-height: 4.5rem; overflow-y: auto;
-    padding: 0.4rem 0.65rem; background: #081610; border-radius: 0.55rem;
-    color: var(--muted); line-height: 1.5; flex-shrink: 0; }
-  .log div:last-child { color: var(--text); }
+  /* --- Felt table --- */
+  .felt {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    padding: 1.2rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 1rem;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 45%, rgba(255,255,255,0.05), transparent 65%),
+      radial-gradient(ellipse 100% 90% at 50% 40%, var(--felt-top) 0%, var(--felt-bottom) 100%);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 0 0 1px rgba(0,0,0,0.3),
+      0 20px 50px rgba(0,0,0,0.4) inset;
+    position: relative;
+    overflow: hidden;
+    min-height: 9rem;
+    flex-wrap: wrap;
+  }
+  .felt::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.03) 3px 4px),
+      repeating-linear-gradient(90deg, transparent 0 3px, rgba(0,0,0,0.03) 3px 4px);
+    opacity: 0.6;
+    pointer-events: none;
+  }
 
-  .hand { display: flex; gap: 0.35rem; overflow-x: auto;
-    -webkit-overflow-scrolling: touch; padding: 0.6rem 0.1rem 0.4rem;
-    margin-top: auto; scrollbar-width: none; }
+  .pile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    position: relative;
+    z-index: 1;
+  }
+  .pile__label {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+  .pile__empty {
+    width: var(--card-w);
+    height: var(--card-h);
+    border: 2px dashed rgba(255,255,255,0.15);
+    border-radius: var(--card-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.25);
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  .deck {
+    position: relative;
+    width: var(--card-w);
+    height: var(--card-h);
+  }
+  .deck .card {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .deck .card:nth-child(1) { transform: translate(2px, -2px) rotate(2deg); }
+  .deck .card:nth-child(2) { transform: translate(1px, -1px) rotate(1deg); }
+  .deck .card:nth-child(3) { transform: translate(0, 0); }
+  .deck__count {
+    position: absolute;
+    bottom: -0.5rem;
+    right: -0.5rem;
+    background: var(--accent-bg);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.45rem;
+    border-radius: 99px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    z-index: 5;
+    min-width: 1.4rem;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .color-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem 0.75rem;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.3) inset,
+      0 2px 6px rgba(0,0,0,0.25);
+    min-width: 3rem;
+  }
+
+  /* --- Actions bar --- */
+  .actions-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    padding: 0.55rem 0.7rem;
+    background: rgba(20,44,32,0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 0.7rem;
+    min-height: 3.5rem;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
+  .actions-bar__label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    margin-right: 0.15rem;
+  }
+
+  .chip {
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.5rem;
+    background: var(--surface-hi);
+    border: 1px solid var(--border-hi);
+    color: var(--text);
+    font-weight: 600;
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-height: 2.4rem;
+    transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset;
+  }
+  .chip:hover { background: var(--surface-glow); }
+  .chip:active { transform: scale(0.96); }
+
+  /* --- Log --- */
+  .log {
+    font-size: 0.72rem;
+    max-height: 4.2rem;
+    overflow-y: auto;
+    padding: 0.5rem 0.75rem;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    color: var(--muted);
+    line-height: 1.55;
+    flex-shrink: 0;
+    scrollbar-width: thin;
+  }
+  .log > div { padding: 0.08rem 0; }
+  .log > div:last-child { color: var(--text-dim); }
+
+  /* --- Hand --- */
+  .hand-wrap {
+    margin-top: auto;
+    padding: 0.5rem 0.15rem 0;
+  }
+  .hand {
+    display: flex;
+    gap: 0.3rem;
+    overflow-x: auto;
+    padding: 0.85rem 0.15rem 0.5rem;
+    scrollbar-width: none;
+    align-items: flex-end;
+    min-height: calc(var(--card-h) + 1.35rem);
+  }
   .hand::-webkit-scrollbar { display: none; }
 
-  /* ===== Cards ===== */
-  .card { width: var(--card-w); height: var(--card-h);
-    border-radius: 0.4rem; background: white; position: relative;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; user-select: none;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-    transition: transform 0.15s, box-shadow 0.15s; font-weight: 700; }
-  .card .corner { position: absolute; display: flex; flex-direction: column;
-    align-items: center; line-height: 1; font-size: 0.58rem; gap: 0.05rem; }
-  .card .corner.tl { top: 0.22rem; left: 0.25rem; }
-  .card .corner.br { bottom: 0.22rem; right: 0.25rem; transform: rotate(180deg); }
-  .card .pip { font-size: 1.35rem; line-height: 1; }
-
-  .card.std { color: #111; }
-  .card.std.red { color: #dc2626; }
-
-  .card.uno { color: white; font-weight: 900; }
-  .card.uno .corner { font-size: 0.62rem; }
-  .card.uno .pip { font-size: 1.25rem; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
-
-  .card.custom { color: white; font-weight: 800; }
-  .card.custom .corner { font-size: 0.55rem; }
-  .card.custom .pip { font-size: 1.15rem; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-  .card.custom.wild {
-    background: conic-gradient(from 45deg, #dc2626 0deg 90deg, #eab308 90deg 180deg,
-      #16a34a 180deg 270deg, #2563eb 270deg 360deg);
-  }
-
-  .card.back {
-    background: repeating-linear-gradient(45deg, #2d4a7a 0 6px, #1a2d4a 6px 12px);
-    border: 2px solid #e5e7eb;
-  }
-  .card.back::after { content: ''; position: absolute; inset: 20%;
-    border: 2px solid rgba(255,255,255,0.25); border-radius: 0.2rem; }
-
-  .hand .card.playable {
-    transform: translateY(-0.45rem);
-    box-shadow: 0 0 0 2px var(--accent), 0 6px 14px rgba(74,222,128,0.4);
-    cursor: pointer; }
-  .hand .card.playable:active { transform: translateY(-0.55rem) scale(0.96); }
-  .hand .card.dimmed { opacity: 0.55; }
-
   /* ===== Modals ===== */
-  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.78);
-    display: flex; align-items: center; justify-content: center;
-    padding: 1.25rem; z-index: 100; animation: fadeIn 0.2s ease; }
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(6,21,16,0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    z-index: 100;
+    animation: fadeIn 0.22s var(--ease-out);
+  }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .modal { background: var(--panel); border-radius: 0.9rem; padding: 1.4rem;
-    width: 100%; max-width: 24rem; display: flex; flex-direction: column;
-    gap: 0.9rem; text-align: center; }
-  .modal h3 { margin: 0; font-size: 1.1rem; }
+
+  .modal {
+    background: linear-gradient(180deg,
+      rgba(28,50,38,0.98),
+      rgba(19,36,25,0.98));
+    border: 1px solid var(--border-hi);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 24rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 30px 60px rgba(0,0,0,0.6);
+    animation: modalIn 0.3s var(--ease-spring);
+  }
+  @keyframes modalIn {
+    from { transform: scale(0.92); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .modal h3 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
   .modal p { margin: 0; color: var(--muted); font-size: 0.9rem; }
-  .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-  .color-btn { padding: 1.1rem; border-radius: 0.6rem; font-weight: 800;
-    font-size: 1rem; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-    min-height: 4rem; }
-  .color-btn:hover { filter: brightness(1.15); }
-  .game-over .modal h2 { margin: 0; font-size: 1.6rem; }
-  .game-over .winners { font-size: 1rem; color: var(--accent);
-    font-weight: 600; margin: 0.25rem 0; }
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .color-btn {
+    padding: 1.15rem;
+    border-radius: 0.7rem;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    min-height: 4rem;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.25) inset,
+      0 4px 12px rgba(0,0,0,0.3);
+    transition: transform 0.15s var(--ease-spring), box-shadow 0.15s;
+  }
+  .color-btn:hover { filter: brightness(1.1); }
+  .color-btn:active { transform: scale(0.94); }
+
+  .game-over { text-align: center; }
+  .game-over .trophy {
+    font-size: 3rem;
+    margin: 0;
+    filter: drop-shadow(0 4px 20px rgba(240,180,41,0.6));
+  }
+  .game-over h2 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--gold);
+    text-shadow: 0 2px 20px rgba(240,180,41,0.4);
+  }
+  .game-over .winners {
+    font-size: 1rem;
+    color: var(--text);
+    font-weight: 500;
+    margin: 0.35rem 0;
+  }
 
   /* ===== Editor ===== */
-  .editor { min-height: 100dvh; max-width: 60rem; margin: 0 auto;
-    padding: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
-  .editor-header { display: flex; align-items: center; justify-content: space-between;
-    gap: 0.5rem; padding: 0.5rem 0; }
-  .editor-header h2 { margin: 0; font-size: 1.15rem; }
-  .editor-header .actions { display: flex; gap: 0.4rem; padding: 0; background: none; min-height: auto; }
-  .tabs { display: flex; gap: 0.15rem; border-bottom: 1px solid var(--border); overflow-x: auto; }
-  .tab { padding: 0.6rem 0.95rem; background: none; border: none;
-    border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer;
-    font-size: 0.9rem; font-weight: 500; white-space: nowrap; }
-  .tab.active { color: var(--text); border-bottom-color: var(--accent); }
-  .tab:hover { color: var(--text); background: none; }
-  .tab-content { flex: 1; display: flex; flex-direction: column; gap: 0.9rem; }
+  .editor {
+    min-height: 100dvh;
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .editor__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.75rem 0.9rem;
+    background: rgba(20,44,32,0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
+  .editor__header h2 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .editor__actions {
+    display: flex;
+    gap: 0.4rem;
+  }
+  .editor__actions button {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
+    min-height: auto;
+  }
 
-  .preset-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-  .preset-row button { padding: 0.5rem 0.8rem; font-size: 0.82rem; }
+  .tabs {
+    display: flex;
+    gap: 0.15rem;
+    padding: 0.25rem;
+    background: rgba(0,0,0,0.25);
+    border-radius: 0.6rem;
+    border: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1;
+    padding: 0.55rem 0.9rem;
+    background: transparent;
+    border: none;
+    border-radius: 0.4rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: auto;
+    box-shadow: none;
+    transition: background 0.15s, color 0.15s;
+  }
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .tab.active {
+    background: var(--surface-glow);
+    color: var(--text);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 2px 6px rgba(0,0,0,0.2);
+  }
 
-  .table-scroll { overflow-x: auto; background: var(--panel); border-radius: 0.6rem; }
-  .cards-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 40rem; }
-  .cards-table th { text-align: left; padding: 0.5rem 0.4rem;
-    background: var(--panel-hi); color: var(--muted); font-weight: 600;
-    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; }
-  .cards-table td { padding: 0.25rem 0.4rem; border-top: 1px solid var(--border); }
-  .cards-table input, .cards-table select { padding: 0.4rem 0.5rem;
-    border-radius: 0.35rem; border: 1px solid var(--border);
-    background: var(--bg); color: var(--text); font-size: 0.82rem; }
+  .tab-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .panel {
+    background: rgba(20,44,32,0.7);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
+  .panel h3 {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .form-row > * { flex: 1; min-width: 8rem; }
+  .form-row .field label { font-size: 0.7rem; }
+
+  .check-row {
+    display: flex;
+    gap: 1.1rem;
+    flex-wrap: wrap;
+  }
+  .check-row label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+  .check-row input[type="checkbox"] {
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: var(--accent-dim);
+    cursor: pointer;
+  }
+
+  .cards-table-scroll {
+    overflow-x: auto;
+    background: rgba(0,0,0,0.15);
+    border-radius: 0.6rem;
+    border: 1px solid var(--border);
+  }
+  .cards-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    min-width: 44rem;
+  }
+  .cards-table th {
+    text-align: left;
+    padding: 0.65rem 0.55rem;
+    background: rgba(0,0,0,0.3);
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  .cards-table td {
+    padding: 0.35rem 0.55rem;
+    border-top: 1px solid var(--border);
+  }
+  .cards-table input, .cards-table select {
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.35rem;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text);
+    font-size: 0.82rem;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .cards-table input:hover, .cards-table select:hover {
+    background: rgba(255,255,255,0.04);
+  }
+  .cards-table input:focus, .cards-table select:focus {
+    border-color: var(--accent-dim);
+    background: rgba(0,0,0,0.3);
+    box-shadow: none;
+  }
   .cards-table input[type="number"] { width: 4rem; }
-  .cards-table input[type="checkbox"] { width: auto; }
-  .cards-table .del-card { padding: 0.35rem 0.55rem; min-height: auto;
-    background: transparent; color: #f87171; font-size: 1rem; }
-  .cards-table .del-card:hover { background: #7f1d1d; color: white; }
-  .color-swatch { width: 1.2rem; height: 1.2rem; border-radius: 0.2rem;
-    display: inline-block; border: 1px solid rgba(0,0,0,0.3); vertical-align: middle; }
+  .cards-table input[type="checkbox"] { width: 1.05rem; height: 1.05rem; accent-color: var(--accent-dim); }
+  .cards-table .del-card {
+    padding: 0.35rem 0.6rem;
+    min-height: auto;
+    background: transparent;
+    color: var(--danger);
+    font-size: 1.05rem;
+    box-shadow: none;
+    font-weight: 400;
+  }
+  .cards-table .del-card:hover { background: var(--danger-bg); color: white; }
 
-  .form-section { background: var(--panel); border-radius: 0.6rem;
-    padding: 0.9rem; display: flex; flex-direction: column; gap: 0.75rem; }
-  .form-section h3 { margin: 0; font-size: 0.78rem; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
-  .form-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-  .form-row > label { flex: 1; min-width: 8rem; display: flex; flex-direction: column;
-    gap: 0.3rem; font-size: 0.8rem; color: var(--muted); font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.04em; }
-  .form-row input, .form-row select { padding: 0.55rem 0.65rem; font-size: 0.9rem; }
-  .check-row { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .check-row label { display: flex; align-items: center; gap: 0.4rem;
-    font-size: 0.85rem; cursor: pointer; text-transform: none; letter-spacing: 0;
-    color: var(--text); font-weight: 500; }
-  .check-row input[type="checkbox"] { width: auto; }
+  .stat {
+    color: var(--muted);
+    font-size: 0.78rem;
+    padding: 0.2rem 0;
+  }
 
-  .json-view { background: #081610; color: #7dd3a0; padding: 0.85rem;
-    border-radius: 0.5rem; font-family: ui-monospace, monospace;
-    font-size: 0.72rem; overflow-x: auto; max-height: 24rem; line-height: 1.4; }
+  .preview-deck {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.9rem;
+    background:
+      radial-gradient(ellipse at 50% 40%, var(--felt-top), var(--felt-bottom));
+    border-radius: 0.7rem;
+    min-height: 5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3) inset;
+  }
 
-  .preview-cards { display: flex; flex-wrap: wrap; gap: 0.35rem;
-    padding: 0.6rem; background: var(--panel); border-radius: 0.6rem; min-height: 4.5rem; }
+  .json-view {
+    background: rgba(0,0,0,0.35);
+    color: #8fe5b1;
+    padding: 0.9rem;
+    border-radius: 0.6rem;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.72rem;
+    overflow-x: auto;
+    max-height: 24rem;
+    line-height: 1.5;
+    border: 1px solid var(--border);
+  }
 
-  .editor-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; padding-top: 0.4rem; }
-  .editor-actions button { flex: 1; min-width: 8rem; }
+  .editor-footer {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding-top: 0.3rem;
+  }
+  .editor-footer button { flex: 1; min-width: 8rem; }
 
-  .stat { color: var(--muted); font-size: 0.78rem; padding: 0.3rem 0; }
-
-  @media (max-width: 480px) {
-    .menu h1 { font-size: 1.6rem; }
-    header { font-size: 0.76rem; padding: 0.5rem 0.65rem; }
+  /* ===== Responsive ===== */
+  @media (max-width: 560px) {
+    .menu { padding: 1.5rem 1rem; }
+    .menu__cards { width: 6.5rem; height: 5rem; }
+    .game { padding: 0.4rem; }
+    .game__header { padding: 0.55rem 0.7rem; font-size: 0.75rem; }
+    .game__header-title { font-size: 0.9rem; }
+    .felt { padding: 0.9rem 0.5rem; min-height: 7.5rem; gap: 0.6rem; }
     .log { max-height: 3.5rem; }
-    .actions { min-height: 3.2rem; }
-    .editor-header h2 { font-size: 1rem; }
+    .editor__header h2 { font-size: 1rem; }
+    .modal { padding: 1.25rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 </style>
 </head>
@@ -332,14 +1250,14 @@ function shuffle(arr) {
 }
 
 // ============================================================
-// Colors and rank ordering
+// Colors and constants
 // ============================================================
 
 const COLOR_HEX = {
-  red: '#dc2626', orange: '#ea580c', yellow: '#eab308',
-  green: '#16a34a', teal: '#0d9488', blue: '#2563eb',
+  red: '#e4222e', orange: '#ea580c', yellow: '#f5c518',
+  green: '#2da54a', teal: '#0d9488', blue: '#0d6efd',
   purple: '#9333ea', pink: '#ec4899', brown: '#78350f',
-  gray: '#6b7280', black: '#111827', white: '#f3f4f6',
+  gray: '#6b7280', black: '#1c1c20', white: '#f3f4f6',
 };
 const LIGHT_COLORS = new Set(['yellow', 'white']);
 const COLOR_ORDER = Object.fromEntries(Object.keys(COLOR_HEX).map((c, i) => [c, i]));
@@ -354,8 +1272,21 @@ const UNO_VALUE_ORDER = {
   skip: 10, reverse: 11, draw2: 12, wild: 13, wild4: 14,
 };
 
+// Pip layouts as [x%, y%] of the inner card area
+const PIP_LAYOUTS = {
+  '2': [[50, 22], [50, 78]],
+  '3': [[50, 22], [50, 50], [50, 78]],
+  '4': [[32, 22], [68, 22], [32, 78], [68, 78]],
+  '5': [[32, 22], [68, 22], [50, 50], [32, 78], [68, 78]],
+  '6': [[32, 22], [68, 22], [32, 50], [68, 50], [32, 78], [68, 78]],
+  '7': [[32, 22], [68, 22], [50, 36], [32, 50], [68, 50], [32, 78], [68, 78]],
+  '8': [[32, 22], [68, 22], [50, 36], [32, 50], [68, 50], [50, 64], [32, 78], [68, 78]],
+  '9': [[32, 22], [68, 22], [32, 36], [68, 36], [50, 50], [32, 64], [68, 64], [32, 78], [68, 78]],
+  '10': [[32, 20], [68, 20], [50, 28], [32, 36], [68, 36], [32, 64], [68, 64], [50, 72], [32, 80], [68, 80]],
+};
+
 // ============================================================
-// Deck builders (built-in presets)
+// Deck builders
 // ============================================================
 
 function buildStd() {
@@ -401,7 +1332,7 @@ const STD_DECK = buildStd();
 const UNO_DECK = buildUno();
 
 // ============================================================
-// Shared state helpers
+// State helpers
 // ============================================================
 
 function makeState(scriptId, names) {
@@ -444,7 +1375,7 @@ function reshuffleDiscard(s) {
 }
 
 // ============================================================
-// Game: Crazy Eights (kept as example)
+// Game: Crazy Eights
 // ============================================================
 
 function createCE(names) {
@@ -536,7 +1467,7 @@ function applyCE(state, cmd) {
 }
 
 // ============================================================
-// Game: UNO (kept as example)
+// Game: UNO
 // ============================================================
 
 function createUno(names) {
@@ -662,13 +1593,10 @@ function newCardId() { return 'c' + (_cardSeq++); }
 
 function finalizeCustomGame(def) {
   const defs = {};
-  for (const c of def.cards) {
-    defs[c.id] = { ...c, kind: 'custom' };
-  }
+  for (const c of def.cards) defs[c.id] = { ...c, kind: 'custom' };
   const instances = [];
-  for (const c of def.cards) {
-    for (let i = 0; i < c.count; i++) instances.push({ id: c.id + '_' + i, defId: c.id });
-  }
+  for (const c of def.cards) for (let i = 0; i < c.count; i++)
+    instances.push({ id: c.id + '_' + i, defId: c.id });
   return { ...def, _defs: defs, _instances: instances };
 }
 
@@ -677,9 +1605,8 @@ function createCustomState(def, names) {
   s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
   for (const p of s.players) {
     s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-    if (def.winCondition === 'mostSets') {
+    if (def.winCondition === 'mostSets')
       s.zones['sets:' + p.id] = { owner: p.id, cards: [] };
-    }
   }
   const allCards = def._instances.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
   s.zones.draw.cards = shuffle(allCards);
@@ -699,9 +1626,8 @@ function createCustomState(def, names) {
       s.flags.activeGroup = def._defs[top.defId]?.group || def._defs[top.defId]?.color;
     }
   }
-  if (def.winCondition === 'mostSets') {
+  if (def.winCondition === 'mostSets')
     for (const p of s.players) collectSetsCustom(def, s, p.id);
-  }
   s.log.push((names[0] || 'P1') + ' starts.');
   return s;
 }
@@ -730,22 +1656,20 @@ function collectSetsCustom(def, s, playerId) {
 }
 
 function isPlayableCustom(def, s, card) {
-  const def_ = def._defs[card.defId];
-  if (!def_) return false;
-  if (def_.isWild) return true;
+  const d = def._defs[card.defId];
+  if (!d) return false;
+  if (d.isWild) return true;
   const top = topOf(s.zones.discard);
   if (!top) return true;
   const topDef = def._defs[top.defId];
   if (!topDef) return true;
   const checks = [];
-  if (def.matchBy.includes('color'))
-    checks.push(def_.color === topDef.color);
+  if (def.matchBy.includes('color')) checks.push(d.color === topDef.color);
   if (def.matchBy.includes('group')) {
     const active = s.flags.activeGroup;
-    checks.push(active != null ? def_.group === active : def_.group === topDef.group);
+    checks.push(active != null ? d.group === active : d.group === topDef.group);
   }
-  if (def.matchBy.includes('rank'))
-    checks.push(def_.rank === topDef.rank);
+  if (def.matchBy.includes('rank')) checks.push(d.rank === topDef.rank);
   return checks.some(x => x);
 }
 
@@ -777,8 +1701,6 @@ function legalCustom(def, s, player) {
 
 function applyCustom(def, state, cmd) {
   const s = structuredClone(state); const actor = s.current;
-  const n = s.players.length;
-
   if (cmd.type === 'PLAY_CARD') {
     const hand = s.zones['hand:' + actor];
     const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
@@ -793,27 +1715,20 @@ function applyCustom(def, state, cmd) {
     s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
     const label = cardDef.label || cardDef.rank;
     s.log.push(s.players[actor].name + ' played ' + label);
-
-    // Wild: choose new group/color
     if (cardDef.isWild && def.wildChoosesGroup) {
       s.phase = 'chooseGroup';
       s.flags.pendingAction = cardDef.actionType || 'none';
       return s;
     }
-
     if (cardDef.group) s.flags.activeGroup = cardDef.group;
     if (cardDef.color && !cardDef.group) s.flags.activeGroup = cardDef.color;
-
-    // Win condition check (emptyHand)
     if (def.winCondition === 'emptyHand' && hand.cards.length === 0) {
       s.ended = true; s.winners = [actor];
       s.log.push(s.players[actor].name + ' wins!'); return s;
     }
-
     applyCustomAction(def, s, cardDef, actor);
     return s;
   }
-
   if (cmd.type === 'CHOOSE_GROUP') {
     s.flags.activeGroup = cmd.group;
     s.phase = 'play';
@@ -828,45 +1743,38 @@ function applyCustom(def, state, cmd) {
     applyCustomAction(def, s, { actionType: pendingAction, isWild: false, group: cmd.group }, actor);
     return s;
   }
-
   if (cmd.type === 'DRAW') {
     if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
     const c = drawTo(s, actor);
     if (!c) { s.log.push('No cards left to draw'); advanceTurn(s); return s; }
     s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
-    s.log.push(s.players[actor].name + ' drew a card');
-    return s;
+    s.log.push(s.players[actor].name + ' drew a card'); return s;
   }
-
   if (cmd.type === 'PASS') {
     s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
     s.log.push(s.players[actor].name + ' passed'); advanceTurn(s);
     if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
     return s;
   }
-
   throw new Error('Unknown command: ' + cmd.type);
 }
 
 function applyCustomAction(def, s, cardDef, actor) {
   const n = s.players.length;
   const action = cardDef.actionType || 'none';
-  if (action === 'skip') {
-    advanceTurn(s); s.log.push(s.players[s.current].name + ' is skipped'); advanceTurn(s);
-  } else if (action === 'reverse') {
+  if (action === 'skip') { advanceTurn(s); advanceTurn(s); }
+  else if (action === 'reverse') {
     s.flags.direction *= -1; advanceTurn(s);
-    if (n === 2) { s.log.push('Reverse acts as Skip with 2 players'); advanceTurn(s); }
+    if (n === 2) advanceTurn(s);
   } else if (action === 'draw2') {
-    advanceTurn(s); const target = s.current;
-    for (let i = 0; i < 2; i++) drawTo(s, target);
-    s.log.push(s.players[target].name + ' draws 2 and is skipped'); advanceTurn(s);
+    advanceTurn(s); const t = s.current;
+    for (let i = 0; i < 2; i++) drawTo(s, t);
+    s.log.push(s.players[t].name + ' draws 2 and is skipped'); advanceTurn(s);
   } else if (action === 'draw4') {
-    advanceTurn(s); const target = s.current;
-    for (let i = 0; i < 4; i++) drawTo(s, target);
-    s.log.push(s.players[target].name + ' draws 4 and is skipped'); advanceTurn(s);
-  } else {
-    advanceTurn(s);
-  }
+    advanceTurn(s); const t = s.current;
+    for (let i = 0; i < 4; i++) drawTo(s, t);
+    s.log.push(s.players[t].name + ' draws 4 and is skipped'); advanceTurn(s);
+  } else advanceTurn(s);
   if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
 }
 
@@ -895,7 +1803,7 @@ function makeCustomAdapter(def) {
     minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
     defs: def._defs, uiMode: 'play',
     rules: def.description || ('Custom game: ' + def.name),
-    isCustom: true,
+    isCustom: true, _setSize: def.setSize,
     create: names => createCustomState(def, names),
     legal: (s, p) => legalCustom(def, s, p),
     apply: (s, cmd) => applyCustom(def, s, cmd),
@@ -914,7 +1822,6 @@ function loadCustomGames() {
     const out = {};
     for (const id in raw) {
       out[id] = finalizeCustomGame(raw[id]);
-      // Track highest card id to avoid collisions
       for (const c of raw[id].cards || []) {
         const m = /^c(\d+)$/.exec(c.id || '');
         if (m) _cardSeq = Math.max(_cardSeq, parseInt(m[1]) + 1);
@@ -942,7 +1849,7 @@ function persistCustomGames() {
 }
 
 // ============================================================
-// Game registry
+// Registry
 // ============================================================
 
 const CUSTOM_GAMES = loadCustomGames();
@@ -972,23 +1879,17 @@ function unregisterCustomGame(id) {
   persistCustomGames();
 }
 
-// Register saved custom games at startup
-for (const id in CUSTOM_GAMES) {
-  GAMES[id] = makeCustomAdapter(CUSTOM_GAMES[id]);
-}
+for (const id in CUSTOM_GAMES) GAMES[id] = makeCustomAdapter(CUSTOM_GAMES[id]);
 
 // ============================================================
 // App state
 // ============================================================
 
 let G = null;
-let SCREEN = 'menu';         // 'menu' | 'pass' | 'game' | 'editor'
+let SCREEN = 'menu';
 let VIEWER = 0;
 let undoStack = [];
-let pendingRank = null;
 const MENU = { scriptId: 'uno', namesInput: 'Alice, Bob' };
-
-// Editor state
 let editingGame = null;
 let editorTab = 'cards';
 
@@ -997,59 +1898,101 @@ let editorTab = 'cards';
 // ============================================================
 
 function renderCardEl(card) {
-  if (!card || card.defId === '__hidden__') return el('div', { class: 'card back' });
+  if (!card || card.defId === '__hidden__') return el('div', { class: 'card card--back' });
   const game = GAMES[G.scriptId];
   const def = game && game.defs[card.defId];
-  if (!def) return el('div', { class: 'card back' });
+  if (!def) return el('div', { class: 'card card--back' });
   if (def.kind === 'uno') return renderUnoCard(def);
   if (def.kind === 'std') return renderStdCard(def);
   if (def.kind === 'custom') return renderCustomCard(def);
-  return el('div', { class: 'card back' });
+  return el('div', { class: 'card card--back' });
 }
 
 function renderStdCard(def) {
-  const colorCls = def.color === 'red' ? 'red' : 'black';
-  return el('div', { class: 'card std ' + colorCls },
-    el('div', { class: 'corner tl' },
-      el('span', null, def.rank), el('span', null, def.suit)),
-    el('span', { class: 'pip' }, def.suit),
-    el('div', { class: 'corner br' },
-      el('span', null, def.rank), el('span', null, def.suit)));
+  const isRed = def.color === 'red';
+  const card = el('div', {
+    class: 'card card--std' + (isRed ? ' card--red' : ''),
+  });
+
+  card.appendChild(el('div', { class: 'card__corner card__corner--tl' },
+    el('span', { class: 'card__rank' }, def.rank),
+    el('span', { class: 'card__suit' }, def.suit)));
+  card.appendChild(el('div', { class: 'card__corner card__corner--br' },
+    el('span', { class: 'card__rank' }, def.rank),
+    el('span', { class: 'card__suit' }, def.suit)));
+
+  if (def.rank === 'A') {
+    card.appendChild(el('div', { class: 'card__center card__center--ace' },
+      el('span', { class: 'card__ace' }, def.suit)));
+  } else if (['J','Q','K'].includes(def.rank)) {
+    card.appendChild(el('div', { class: 'card__center card__center--face' },
+      el('div', { class: 'card__face-badge' }, def.rank),
+      el('span', { class: 'card__face-suit' }, def.suit)));
+  } else {
+    const center = el('div', { class: 'card__center' });
+    const pips = PIP_LAYOUTS[def.rank] || [];
+    for (const [x, y] of pips) {
+      const pip = el('span', {
+        class: 'card__pip' + (y > 50 ? ' card__pip--flipped' : ''),
+      }, def.suit);
+      pip.style.left = x + '%';
+      pip.style.top = y + '%';
+      center.appendChild(pip);
+    }
+    card.appendChild(center);
+  }
+  return card;
 }
 
 function renderUnoCard(def) {
+  if (def.color === 'wild') {
+    const isDraw4 = def.value === 'wild4';
+    return el('div', { class: 'card card--uno card--wild' },
+      el('div', { class: 'card__uno-corner card__uno-corner--tl' },
+        el('span', null, isDraw4 ? '+4' : 'W')),
+      el('div', { class: 'card__uno-corner card__uno-corner--br' },
+        el('span', null, isDraw4 ? '+4' : 'W')),
+      el('div', { class: 'card__uno-oval' },
+        el('span', { class: 'card__uno-val ' + (isDraw4 ? 'card__uno-val--wild4' : 'card__uno-val--wild') },
+          isDraw4 ? '+4' : 'WILD')));
+  }
   let pip;
   if (def.value === 'skip') pip = '⊘';
   else if (def.value === 'reverse') pip = '⇄';
   else if (def.value === 'draw2') pip = '+2';
-  else if (def.value === 'wild') pip = 'W';
-  else if (def.value === 'wild4') pip = '+4';
   else pip = def.value;
-  const colorCls = def.color === 'wild' ? 'wild' : '';
-  const bg = def.color === 'wild' ? '' : COLOR_HEX[def.color];
-  const fg = LIGHT_COLORS.has(def.color) ? '#111' : 'white';
+  const bg = COLOR_HEX[def.color];
+  const fg = def.color === 'yellow' ? '#1a1a1a' : 'white';
   return el('div', {
-    class: 'card uno' + (def.color === 'wild' ? ' wild' : ''),
-    style: { background: bg, color: fg },
+    class: 'card card--uno',
+    style: { background: bg },
   },
-    el('div', { class: 'corner tl' }, el('span', null, pip)),
-    el('span', { class: 'pip' }, pip),
-    el('div', { class: 'corner br' }, el('span', null, pip)));
+    el('div', { class: 'card__uno-corner card__uno-corner--tl', style: { color: fg } },
+      el('span', null, pip)),
+    el('div', { class: 'card__uno-corner card__uno-corner--br', style: { color: fg } },
+      el('span', null, pip)),
+    el('div', { class: 'card__uno-oval' },
+      el('span', { class: 'card__uno-val', style: { color: bg } }, pip)));
 }
 
 function renderCustomCard(def) {
-  if (def.isWild) {
-    return el('div', { class: 'card custom wild' },
-      el('div', { class: 'corner tl' }, el('span', null, def.label)),
-      el('span', { class: 'pip' }, def.label),
-      el('div', { class: 'corner br' }, el('span', null, def.label)));
-  }
-  const bg = COLOR_HEX[def.color] || '#374151';
-  const fg = LIGHT_COLORS.has(def.color) ? '#111' : 'white';
-  return el('div', { class: 'card custom', style: { background: bg, color: fg } },
-    el('div', { class: 'corner tl' }, el('span', null, def.rank || '')),
-    el('span', { class: 'pip' }, def.label),
-    el('div', { class: 'corner br' }, el('span', null, def.rank || '')));
+  const isWild = def.isWild;
+  const bg = isWild ? null : (COLOR_HEX[def.color] || '#374151');
+  const fg = isWild ? 'white' : (LIGHT_COLORS.has(def.color) ? '#1a1a1a' : 'white');
+  const card = el('div', {
+    class: 'card card--custom' + (isWild ? ' card--wild' : ''),
+    style: isWild ? null : { background: bg, color: fg },
+  });
+  card.appendChild(el('div', { class: 'card__corner card__corner--tl' },
+    el('span', null, def.rank || '')));
+  card.appendChild(el('div', { class: 'card__corner card__corner--br' },
+    el('span', null, def.rank || '')));
+  card.appendChild(el('div', { class: 'card__custom-center' },
+    el('span', {
+      class: 'card__custom-val' + (isWild ? ' card__custom-val--wild' : ''),
+      style: isWild ? null : { color: bg },
+    }, def.label)));
+  return card;
 }
 
 function sortHand(cards, defs) {
@@ -1095,6 +2038,23 @@ function render() {
 // ============================================================
 
 function renderMenu(root) {
+  // Hero cards decoration
+  const heroCards = el('div', { class: 'menu__cards' });
+  const decoStd = renderStdCard({ rank: 'A', suit: '♠', color: 'black', kind: 'std' });
+  const decoUno = renderUnoCard({ color: 'red', value: '7', kind: 'uno' });
+  const decoCustom = renderCustomCard({
+    label: 'J', color: 'blue', group: 'blue', rank: 'J', isWild: false, kind: 'custom',
+  });
+  heroCards.appendChild(decoStd);
+  heroCards.appendChild(decoUno);
+  heroCards.appendChild(decoCustom);
+
+  const hero = el('div', { class: 'menu__hero' },
+    heroCards,
+    el('h1', null, 'Card ', el('em', null, 'Table')),
+    el('p', { class: 'menu__tagline' }, 'Build card games. Play them anywhere.'));
+
+  // Game select
   const gameSelect = el('select', {
     onchange: e => { MENU.scriptId = e.target.value; render(); },
   });
@@ -1120,34 +2080,28 @@ function renderMenu(root) {
   gameSelect.value = MENU.scriptId;
 
   const currentGame = GAMES[MENU.scriptId];
-
   const namesInput = el('input', {
     type: 'text', placeholder: 'Alice, Bob',
     value: MENU.namesInput,
     oninput: e => { MENU.namesInput = e.target.value; },
   });
 
-  const startBtn = el('button', { class: 'primary', onclick: startGame }, 'Start game');
-
-  const menuCard = el('div', { class: 'menu-card' },
-    el('label', null, 'Game', gameSelect),
-    el('div', { class: 'rules' }, currentGame?.rules || ''),
-    el('label', null, 'Players (comma-separated)', namesInput),
-    startBtn);
+  const panel = el('div', { class: 'menu__panel' },
+    el('div', { class: 'field' }, el('label', null, 'Game'), gameSelect),
+    el('div', { class: 'rules-box' }, currentGame?.rules || ''),
+    el('div', { class: 'field' }, el('label', null, 'Players'), namesInput),
+    el('button', { class: 'primary', onclick: startGame, style: { padding: '0.9rem', fontSize: '1rem' } }, 'Start game'));
 
   if (currentGame?.isCustom) {
-    menuCard.appendChild(el('div', { class: 'preset-row' },
+    panel.appendChild(el('div', { class: 'preset-row' },
       el('button', { class: 'ghost', onclick: () => editCustomGame(MENU.scriptId) }, 'Edit'),
       el('button', { class: 'danger', onclick: () => deleteCustomGame(MENU.scriptId) }, 'Delete')));
   }
 
-  menuCard.appendChild(el('div', { class: 'section-title' }, 'Build a game'));
-  menuCard.appendChild(el('button', { class: 'ghost', onclick: newCustomGame }, '+ Create custom game'));
+  panel.appendChild(el('div', { class: 'section-label' }, 'Build your own'));
+  panel.appendChild(el('button', { class: 'ghost', onclick: newCustomGame }, '+ Create custom game'));
 
-  root.appendChild(el('div', { class: 'menu' },
-    el('h1', null, 'Card ', el('span', null, 'Table')),
-    el('div', { class: 'tagline' }, 'Build and play card games'),
-    menuCard));
+  root.appendChild(el('div', { class: 'menu' }, hero, panel));
 }
 
 // ============================================================
@@ -1167,17 +2121,11 @@ function defaultCustomGame() {
     { id: newCardId(), label: 'Wild', color: 'wild', group: '', rank: 'wild', value: 0, count: 4, isWild: true, actionType: 'none' },
   ];
   return {
-    id: 'custom_' + Date.now(),
-    name: 'My game',
-    minPlayers: 2, maxPlayers: 4,
-    deal: 5, flipStart: true,
-    matchBy: ['group', 'rank'],
-    wildChoosesGroup: true,
-    turnMode: 'standard',
-    winCondition: 'emptyHand',
-    setSize: 4,
-    cards,
-    description: '',
+    id: 'custom_' + Date.now(), name: 'My game',
+    minPlayers: 2, maxPlayers: 4, deal: 5, flipStart: true,
+    matchBy: ['group', 'rank'], wildChoosesGroup: true,
+    turnMode: 'standard', winCondition: 'emptyHand', setSize: 4,
+    cards, description: '',
   };
 }
 
@@ -1201,9 +2149,8 @@ const DECK_PRESETS = {
     const cards = [];
     for (const color of ['red', 'yellow', 'green', 'blue']) {
       cards.push({ id: newCardId(), label: color[0].toUpperCase() + '0', color, group: color, rank: '0', value: 0, count: 1, isWild: false, actionType: 'none' });
-      for (let n = 1; n <= 9; n++) {
+      for (let n = 1; n <= 9; n++)
         cards.push({ id: newCardId(), label: color[0].toUpperCase() + n, color, group: color, rank: String(n), value: n, count: 2, isWild: false, actionType: 'none' });
-      }
       cards.push({ id: newCardId(), label: color[0].toUpperCase() + ' Skip', color, group: color, rank: 'skip', value: 0, count: 2, isWild: false, actionType: 'skip' });
       cards.push({ id: newCardId(), label: color[0].toUpperCase() + ' Rev', color, group: color, rank: 'reverse', value: 0, count: 2, isWild: false, actionType: 'reverse' });
       cards.push({ id: newCardId(), label: color[0].toUpperCase() + ' +2', color, group: color, rank: 'draw2', value: 0, count: 2, isWild: false, actionType: 'draw2' });
@@ -1214,12 +2161,8 @@ const DECK_PRESETS = {
   },
   numberCards: () => {
     const cards = [];
-    for (let n = 1; n <= 10; n++) {
-      cards.push({
-        id: newCardId(), label: 'N' + n, color: 'white', group: 'num', rank: String(n),
-        value: n, count: 4, isWild: false, actionType: 'none',
-      });
-    }
+    for (let n = 1; n <= 10; n++)
+      cards.push({ id: newCardId(), label: 'N' + n, color: 'white', group: 'num', rank: String(n), value: n, count: 4, isWild: false, actionType: 'none' });
     return cards;
   },
   empty: () => [],
@@ -1256,16 +2199,16 @@ function deleteCustomGame(id) {
 
 function renderEditor(root) {
   const def = editingGame;
-  const header = el('div', { class: 'editor-header' },
+  const header = el('div', { class: 'editor__header' },
     el('h2', null, def.name || 'Untitled game'),
-    el('div', { class: 'actions' },
+    el('div', { class: 'editor__actions' },
       el('button', { class: 'ghost', onclick: () => { SCREEN = 'menu'; render(); } }, 'Cancel'),
       el('button', { class: 'primary', onclick: saveEditor }, 'Save')));
 
   const tabs = el('div', { class: 'tabs' },
     el('button', { class: 'tab' + (editorTab === 'cards' ? ' active' : ''), onclick: () => { editorTab = 'cards'; render(); } }, 'Cards'),
     el('button', { class: 'tab' + (editorTab === 'rules' ? ' active' : ''), onclick: () => { editorTab = 'rules'; render(); } }, 'Rules'),
-    el('button', { class: 'tab' + (editorTab === 'preview' ? ' active' : ''), onclick: () => { editorTab = 'preview'; render(); } }, 'Preview & Test'));
+    el('button', { class: 'tab' + (editorTab === 'preview' ? ' active' : ''), onclick: () => { editorTab = 'preview'; render(); } }, 'Preview'));
 
   const content = el('div', { class: 'tab-content' });
   if (editorTab === 'cards') renderCardsTab(content);
@@ -1279,30 +2222,22 @@ function renderCardsTab(container) {
   const def = editingGame;
 
   const presetRow = el('div', { class: 'preset-row' },
-    el('span', { class: 'stat', style: { padding: '0.5rem 0.3rem', flex: 'none' } }, 'Load preset:'),
-    el('button', { class: 'ghost', onclick: () => loadPreset('uno') }, 'UNO deck'),
+    el('span', { class: 'stat', style: { padding: '0.4rem 0.3rem', flex: 'none' } }, 'Load:'),
+    el('button', { class: 'ghost', onclick: () => loadPreset('uno') }, 'UNO'),
     el('button', { class: 'ghost', onclick: () => loadPreset('standard52') }, 'Standard 52'),
-    el('button', { class: 'ghost', onclick: () => loadPreset('numberCards') }, 'Number cards'),
+    el('button', { class: 'ghost', onclick: () => loadPreset('numberCards') }, 'Numbers'),
     el('button', { class: 'ghost', onclick: () => loadPreset('empty') }, 'Clear'));
 
   const tbody = el('tbody');
-  const rows = def.cards.map((c, i) => buildCardRow(c, i));
-  rows.forEach(r => tbody.appendChild(r));
+  def.cards.forEach((c, i) => tbody.appendChild(buildCardRow(c, i)));
 
   const table = el('table', { class: 'cards-table' },
     el('thead', null, el('tr', null,
-      el('th', null, 'Label'),
-      el('th', null, 'Color'),
-      el('th', null, 'Group'),
-      el('th', null, 'Rank'),
-      el('th', null, 'Val'),
-      el('th', null, 'Count'),
-      el('th', null, 'Wild'),
-      el('th', null, 'Action'),
-      el('th', null, ''))),
+      el('th', null, 'Label'), el('th', null, 'Color'), el('th', null, 'Group'),
+      el('th', null, 'Rank'), el('th', null, 'Val'), el('th', null, 'Count'),
+      el('th', null, 'Wild'), el('th', null, 'Action'), el('th', null, ''))),
     tbody);
 
-  // Wire events
   tbody.addEventListener('change', e => {
     const t = e.target;
     const idx = parseInt(t.dataset.idx, 10);
@@ -1340,12 +2275,13 @@ function renderCardsTab(container) {
   } }, '+ Add card');
 
   const stats = el('div', { class: 'stat' },
-    def.cards.reduce((n, c) => n + c.count, 0) + ' total cards across '
-    + def.cards.length + ' card types');
+    def.cards.reduce((n, c) => n + c.count, 0) + ' total cards · '
+    + def.cards.length + ' types');
 
-  container.appendChild(presetRow);
-  container.appendChild(el('div', { class: 'table-scroll' }, table));
-  container.appendChild(el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' } }, addBtn, stats));
+  container.appendChild(el('div', { class: 'panel' },
+    presetRow,
+    el('div', { class: 'cards-table-scroll' }, table),
+    el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' } }, addBtn, stats)));
 }
 
 function buildCardRow(card, idx) {
@@ -1366,35 +2302,15 @@ function buildCardRow(card, idx) {
   actionSelect.value = card.actionType || 'none';
 
   return el('tr', null,
-    el('td', null, el('input', {
-      type: 'text', value: card.label || '',
-      'data-idx': idx, 'data-field': 'label',
-    })),
+    el('td', null, el('input', { type: 'text', value: card.label || '', 'data-idx': idx, 'data-field': 'label' })),
     el('td', null, colorSelect),
-    el('td', null, el('input', {
-      type: 'text', value: card.group || '',
-      'data-idx': idx, 'data-field': 'group',
-    })),
-    el('td', null, el('input', {
-      type: 'text', value: card.rank || '',
-      'data-idx': idx, 'data-field': 'rank',
-    })),
-    el('td', null, el('input', {
-      type: 'number', value: card.value ?? 0, min: 0,
-      'data-idx': idx, 'data-field': 'value',
-    })),
-    el('td', null, el('input', {
-      type: 'number', value: card.count ?? 1, min: 1,
-      'data-idx': idx, 'data-field': 'count',
-    })),
-    el('td', null, el('input', {
-      type: 'checkbox', checked: !!card.isWild,
-      'data-idx': idx, 'data-field': 'isWild',
-    })),
+    el('td', null, el('input', { type: 'text', value: card.group || '', 'data-idx': idx, 'data-field': 'group' })),
+    el('td', null, el('input', { type: 'text', value: card.rank || '', 'data-idx': idx, 'data-field': 'rank' })),
+    el('td', null, el('input', { type: 'number', value: card.value ?? 0, min: 0, 'data-idx': idx, 'data-field': 'value' })),
+    el('td', null, el('input', { type: 'number', value: card.count ?? 1, min: 1, 'data-idx': idx, 'data-field': 'count' })),
+    el('td', null, el('input', { type: 'checkbox', checked: !!card.isWild, 'data-idx': idx, 'data-field': 'isWild' })),
     el('td', null, actionSelect),
-    el('td', null, el('button', {
-      class: 'del-card', 'data-idx': idx, title: 'Delete',
-    }, '×')));
+    el('td', null, el('button', { class: 'del-card', 'data-idx': idx, title: 'Delete' }, '×')));
 }
 
 function loadPreset(name) {
@@ -1406,36 +2322,31 @@ function loadPreset(name) {
 function renderRulesTab(container) {
   const def = editingGame;
 
-  container.appendChild(el('div', { class: 'form-section' },
+  container.appendChild(el('div', { class: 'panel' },
     el('h3', null, 'Basics'),
     el('div', { class: 'form-row' },
-      el('label', null, 'Name',
-        el('input', { type: 'text', value: def.name,
-          oninput: e => { def.name = e.target.value; } })),
-    ),
+      el('div', { class: 'field' }, el('label', null, 'Name'),
+        el('input', { type: 'text', value: def.name, oninput: e => { def.name = e.target.value; } }))),
     el('div', { class: 'form-row' },
-      el('label', null, 'Min players',
+      el('div', { class: 'field' }, el('label', null, 'Min players'),
         el('input', { type: 'number', min: 2, max: 12, value: def.minPlayers,
           oninput: e => { def.minPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } })),
-      el('label', null, 'Max players',
+      el('div', { class: 'field' }, el('label', null, 'Max players'),
         el('input', { type: 'number', min: 2, max: 12, value: def.maxPlayers,
           oninput: e => { def.maxPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } })),
-      el('label', null, 'Cards dealt',
+      el('div', { class: 'field' }, el('label', null, 'Deal'),
         el('input', { type: 'number', min: 1, value: def.deal,
-          oninput: e => { def.deal = Math.max(1, parseInt(e.target.value, 10) || 1); } })),
-    ),
+          oninput: e => { def.deal = Math.max(1, parseInt(e.target.value, 10) || 1); } }))),
     el('div', { class: 'check-row' },
       el('label', null,
         el('input', { type: 'checkbox', checked: def.flipStart,
           onchange: e => { def.flipStart = e.target.checked; } }),
-        'Flip a starting card'),
-    ),
-  ));
+        'Flip starting card'))));
 
-  container.appendChild(el('div', { class: 'form-section' },
+  container.appendChild(el('div', { class: 'panel' },
     el('h3', null, 'Turn structure'),
     el('div', { class: 'form-row' },
-      el('label', null, 'Turn mode',
+      el('div', { class: 'field' }, el('label', null, 'Turn mode'),
         (() => {
           const sel = el('select', { onchange: e => { def.turnMode = e.target.value; } });
           for (const [v, l] of [
@@ -1446,13 +2357,10 @@ function renderRulesTab(container) {
             const opt = document.createElement('option');
             opt.value = v; opt.textContent = l; sel.appendChild(opt);
           }
-          sel.value = def.turnMode;
-          return sel;
-        })()),
-    ),
-  ));
+          sel.value = def.turnMode; return sel;
+        })()))));
 
-  container.appendChild(el('div', { class: 'form-section' },
+  container.appendChild(el('div', { class: 'panel' },
     el('h3', null, 'Matching'),
     el('div', { class: 'check-row' },
       el('label', null,
@@ -1461,38 +2369,32 @@ function renderRulesTab(container) {
             def.matchBy = e.target.checked
               ? [...new Set([...def.matchBy, 'color'])]
               : def.matchBy.filter(x => x !== 'color');
-          } }),
-        'Match by color'),
+          } }), 'Match by color'),
       el('label', null,
         el('input', { type: 'checkbox', checked: def.matchBy.includes('group'),
           onchange: e => {
             def.matchBy = e.target.checked
               ? [...new Set([...def.matchBy, 'group'])]
               : def.matchBy.filter(x => x !== 'group');
-          } }),
-        'Match by group'),
+          } }), 'Match by group'),
       el('label', null,
         el('input', { type: 'checkbox', checked: def.matchBy.includes('rank'),
           onchange: e => {
             def.matchBy = e.target.checked
               ? [...new Set([...def.matchBy, 'rank'])]
               : def.matchBy.filter(x => x !== 'rank');
-          } }),
-        'Match by rank'),
-    ),
+          } }), 'Match by rank')),
     el('div', { class: 'stat' }, 'A card is playable if it matches ANY selected attribute.'),
     el('div', { class: 'check-row' },
       el('label', null,
         el('input', { type: 'checkbox', checked: def.wildChoosesGroup,
           onchange: e => { def.wildChoosesGroup = e.target.checked; } }),
-        'Wild cards let player choose new group'),
-    ),
-  ));
+        'Wild lets player choose new group'))));
 
-  container.appendChild(el('div', { class: 'form-section' },
+  container.appendChild(el('div', { class: 'panel' },
     el('h3', null, 'Win condition'),
     el('div', { class: 'form-row' },
-      el('label', null, 'When does the game end?',
+      el('div', { class: 'field' }, el('label', null, 'Ends when'),
         (() => {
           const sel = el('select', { onchange: e => { def.winCondition = e.target.value; render(); } });
           for (const [v, l] of [
@@ -1502,16 +2404,12 @@ function renderRulesTab(container) {
             const opt = document.createElement('option');
             opt.value = v; opt.textContent = l; sel.appendChild(opt);
           }
-          sel.value = def.winCondition;
-          return sel;
-        })()),
-    ),
+          sel.value = def.winCondition; return sel;
+        })())),
     def.winCondition === 'mostSets' ? el('div', { class: 'form-row' },
-      el('label', null, 'Cards per set',
+      el('div', { class: 'field' }, el('label', null, 'Cards per set'),
         el('input', { type: 'number', min: 2, max: 8, value: def.setSize,
-          oninput: e => { def.setSize = Math.max(2, parseInt(e.target.value, 10) || 4); } })),
-    ) : null,
-  ));
+          oninput: e => { def.setSize = Math.max(2, parseInt(e.target.value, 10) || 4); } }))) : null));
 }
 
 function renderPreviewTab(container) {
@@ -1523,31 +2421,26 @@ function renderPreviewTab(container) {
     turnMode: def.turnMode, winCondition: def.winCondition, setSize: def.setSize,
     cards: def.cards,
   };
-
   const total = def.cards.reduce((n, c) => n + c.count, 0);
   const stats = el('div', { class: 'stat' },
     `${def.cards.length} card types · ${total} total cards · `
     + `deal ${def.deal} each to ${def.minPlayers}–${def.maxPlayers} players`);
 
-  // Card preview
-  const previewCards = el('div', { class: 'preview-cards' });
+  const preview = el('div', { class: 'preview-deck' });
   const defsForPreview = {};
   for (const c of def.cards) defsForPreview[c.id] = { ...c, kind: 'custom' };
-  for (const c of def.cards.slice(0, 12)) {
-    previewCards.appendChild(renderCustomCard(defsForPreview[c.id]));
-  }
-  if (def.cards.length > 12) {
-    previewCards.appendChild(el('span', { class: 'stat', style: { alignSelf: 'center' } },
+  for (const c of def.cards.slice(0, 12))
+    preview.appendChild(renderCustomCard(defsForPreview[c.id]));
+  if (def.cards.length > 12)
+    preview.appendChild(el('span', { class: 'stat', style: { alignSelf: 'center', color: 'rgba(255,255,255,0.7)' } },
       '+' + (def.cards.length - 12) + ' more'));
-  }
-
-  const testBtn = el('button', { class: 'primary', onclick: () => testCustomGame() }, 'Save & test');
-  const saveBtn = el('button', { class: 'ghost', onclick: saveEditor }, 'Save & close');
 
   container.appendChild(stats);
-  container.appendChild(previewCards);
-  container.appendChild(el('div', { class: 'editor-actions' }, testBtn, saveBtn));
-  container.appendChild(el('h3', { style: { margin: '0.5rem 0 0', fontSize: '0.78rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' } }, 'JSON definition'));
+  container.appendChild(preview);
+  container.appendChild(el('div', { class: 'editor-footer' },
+    el('button', { class: 'primary', onclick: () => testCustomGame() }, 'Save & test'),
+    el('button', { class: 'ghost', onclick: saveEditor }, 'Save & close')));
+  container.appendChild(el('h3', { style: { margin: '0.5rem 0 0', fontSize: '0.72rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '700' } }, 'JSON definition'));
   container.appendChild(el('pre', { class: 'json-view' }, JSON.stringify(jsonClean, null, 2)));
 }
 
@@ -1564,10 +2457,7 @@ function validateEditor() {
       + ' players needs at least ' + (def.deal * def.minPlayers));
     return false;
   }
-  // Auto-fill description
-  if (!def.description) {
-    def.description = 'Custom game: ' + def.name;
-  }
+  if (!def.description) def.description = 'Custom game: ' + def.name;
   return true;
 }
 
@@ -1584,39 +2474,40 @@ function testCustomGame() {
   if (!validateEditor()) return;
   registerCustomGame(editingGame);
   persistCustomGames();
-
   const names = MENU.namesInput.split(',').map(s => s.trim()).filter(Boolean);
-  if (names.length < editingGame.minPlayers || names.length > editingGame.maxPlayers) {
-    // Fill in defaults for testing
-    while (names.length < editingGame.minPlayers) names.push('Player ' + (names.length + 1));
-    while (names.length > editingGame.maxPlayers) names.pop();
-  }
-
+  while (names.length < editingGame.minPlayers) names.push('Player ' + (names.length + 1));
+  while (names.length > editingGame.maxPlayers) names.pop();
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = createCustomState(CUSTOM_GAMES[editingGame.id], names);
-  VIEWER = 0;
-  SCREEN = 'pass';
-  undoStack = [];
-  pendingRank = null;
+  VIEWER = 0; SCREEN = 'pass'; undoStack = [];
   render();
 }
 
 // ============================================================
-// Play screens (pass / game) — shared for all games
+// Pass screen
 // ============================================================
 
 function renderPass(root) {
+  const player = G.players[VIEWER];
+  const initial = (player.name[0] || '?').toUpperCase();
   const onContinue = () => { SCREEN = 'game'; render(); };
+
   const content = el('div', { class: 'pass', onclick: onContinue },
-    el('div', { class: 'icon' }, '👋'),
-    el('h2', null, 'Pass to ' + G.players[VIEWER].name),
-    el('p', { class: 'hint' }, 'Tap anywhere when ready'));
+    el('div', { class: 'pass__label' }, 'Pass to'),
+    el('div', { class: 'pass__avatar' }, initial),
+    el('h2', null, player.name),
+    el('p', { class: 'pass__hint' }, 'Tap anywhere when ready'));
   root.appendChild(content);
+
   if (undoStack.length > 0) {
-    root.appendChild(el('button', { class: 'undo-link', onclick: e => { e.stopPropagation(); undo(); } },
+    root.appendChild(el('button', { class: 'pass__undo', onclick: e => { e.stopPropagation(); undo(); } },
       'Undo last move'));
   }
 }
+
+// ============================================================
+// Game screen
+// ============================================================
 
 function renderGame(root) {
   const game = GAMES[G.scriptId];
@@ -1624,75 +2515,99 @@ function renderGame(root) {
   const actions = isMyTurn ? game.legal(G, VIEWER) : [];
   const hasPendingChoice = G.phase === 'chooseColor' || G.phase === 'chooseGroup';
 
-  const header = el('header', null,
-    el('span', { class: 'game-name' }, game.name),
-    el('span', { class: 'turn-info' },
+  // Header
+  const header = el('div', { class: 'game__header' },
+    el('span', { class: 'game__header-title' }, game.name),
+    el('span', { class: 'game__header-info' },
       'Turn ', el('strong', null, String(G.turn)),
-      ' · ', el('strong', null, G.players[G.current].name)),
+      '·', el('strong', null, G.players[G.current].name)),
     el('div', { class: 'controls' },
-      undoStack.length > 0 ? el('button', { class: 'ghost', onclick: undo }, 'Undo') : null));
+      undoStack.length > 0 ? el('button', { class: 'ghost game__header-btn', onclick: undo }, 'Undo') : null));
 
-  const opponents = el('section', { class: 'opponents' });
+  // Opponents
+  const opponents = el('div', { class: 'opponents' });
   for (const p of G.players) {
     if (p.id === VIEWER) continue;
     const hand = G.zones['hand:' + p.id];
     const sets = G.zones['sets:' + p.id];
-    opponents.appendChild(el('div', {
-      class: 'opponent' + (G.current === p.id && !G.ended ? ' current' : ''),
-    },
+    const item = el('div', { class: 'opponent' + (G.current === p.id && !G.ended ? ' current' : '') },
       el('strong', null, p.name),
-      el('span', null, hand.cards.length + ' card' + (hand.cards.length === 1 ? '' : 's')),
-      sets ? el('span', null, (sets.cards.length / (GAMES[G.scriptId]._setSize || 4)) + ' sets') : null));
+      el('span', { class: 'meta' }, hand.cards.length + ' card' + (hand.cards.length === 1 ? '' : 's')));
+    if (sets) {
+      const size = game._setSize || 4;
+      item.appendChild(el('span', { class: 'meta' }, Math.floor(sets.cards.length / size) + ' sets'));
+    }
+    opponents.appendChild(item);
   }
 
-  const table = el('section', { class: 'table' });
-  table.appendChild(el('div', { class: 'zone' },
-    el('span', null, 'Deck'),
-    el('span', null, String(G.zones.draw.cards.length))));
+  // Felt table
+  const felt = el('div', { class: 'felt' });
 
+  // Deck
+  const deckPile = el('div', { class: 'pile' });
+  deckPile.appendChild(el('span', { class: 'pile__label' }, 'Deck'));
+  const deck = el('div', { class: 'deck' });
+  const deckCount = G.zones.draw.cards.length;
+  const showCount = Math.min(3, Math.max(1, Math.ceil(deckCount / 15)));
+  for (let i = 0; i < showCount; i++) deck.appendChild(el('div', { class: 'card card--back' }));
+  if (deckCount > 0) deck.appendChild(el('span', { class: 'deck__count' }, String(deckCount)));
+  else deck.appendChild(el('div', { class: 'pile__empty' }, '0'));
+  deckPile.appendChild(deck);
+  felt.appendChild(deckPile);
+
+  // Discard
   const discard = G.zones.discard;
+  const discardPile = el('div', { class: 'pile' });
+  discardPile.appendChild(el('span', { class: 'pile__label' }, 'Discard'));
   if (discard && discard.cards.length > 0) {
-    table.appendChild(el('div', { class: 'zone' },
-      el('span', null, 'Discard'), renderCardEl(topOf(discard))));
+    discardPile.appendChild(renderCardEl(topOf(discard)));
   } else {
-    table.appendChild(el('div', { class: 'zone' },
-      el('span', null, 'Discard'), el('div', { class: 'empty' }, 'empty')));
+    discardPile.appendChild(el('div', { class: 'pile__empty' }, 'empty'));
   }
+  felt.appendChild(discardPile);
 
-  // Active color/group pill
+  // Active color badge
   const activeKey = G.flags.activeColor || G.flags.activeGroup;
   if (activeKey && !G.ended) {
-    const game = GAMES[G.scriptId];
-    let bg = '#6b7280', textColor = 'white', label = String(activeKey);
-    // Try to find a color matching the active key
-    if (COLOR_HEX[activeKey]) { bg = COLOR_HEX[activeKey]; }
-    if (LIGHT_COLORS.has(activeKey)) textColor = '#111';
-    // Suit mapping (Crazy Eights)
-    if (activeKey === '♥' || activeKey === '♦') { bg = '#dc2626'; }
-    else if (activeKey === '♠' || activeKey === '♣') { bg = '#111827'; }
-    table.appendChild(el('div', { class: 'zone' },
-      el('span', null, 'Active'),
-      el('span', { class: 'active-color', style: { background: bg, color: textColor } }, label)));
+    let bg = COLOR_HEX[activeKey] || '#6b7280';
+    let fg = LIGHT_COLORS.has(activeKey) ? '#1a1a1a' : 'white';
+    let label = String(activeKey);
+    if (activeKey === '♥' || activeKey === '♦') bg = '#cf2430';
+    else if (activeKey === '♠' || activeKey === '♣') bg = '#1c1c20';
+    const badgePile = el('div', { class: 'pile' });
+    badgePile.appendChild(el('span', { class: 'pile__label' }, 'Active'));
+    badgePile.appendChild(el('span', { class: 'color-badge', style: { background: bg, color: fg } }, label));
+    felt.appendChild(badgePile);
   }
 
+  // My sets
   if (G.zones['sets:' + VIEWER]) {
     const sets = G.zones['sets:' + VIEWER].cards.length;
-    const size = GAMES[G.scriptId]._setSize || 4;
-    table.appendChild(el('div', { class: 'zone' },
-      el('span', null, 'Your sets'),
-      el('span', null, String(Math.floor(sets / size)))));
+    const size = game._setSize || 4;
+    const setsPile = el('div', { class: 'pile' });
+    setsPile.appendChild(el('span', { class: 'pile__label' }, 'Your sets'));
+    setsPile.appendChild(el('span', { class: 'color-badge', style: { background: 'var(--surface-glow)', color: 'var(--text)' } },
+      String(Math.floor(sets / size))));
+    felt.appendChild(setsPile);
   }
 
-  const actionsEl = el('section', { class: 'actions' });
+  // Actions bar
+  const actionsEl = el('div', { class: 'actions-bar' });
   if (hasPendingChoice && isMyTurn) {
-    actionsEl.appendChild(el('span', { class: 'label' }, 'Choose:'));
+    actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Choose:'));
     for (const a of actions) {
       if (a.cmd.type === 'CHOOSE_COLOR' || a.cmd.type === 'CHOOSE_GROUP') {
         const v = a.cmd.color || a.cmd.group;
-        const btn = el('button', { class: 'rank-chip', onclick: () => takeAction(a.cmd) });
+        const btn = el('button', { class: 'chip', onclick: () => takeAction(a.cmd) });
         const hex = COLOR_HEX[v];
-        if (hex) { btn.style.background = hex; btn.style.color = LIGHT_COLORS.has(v) ? '#111' : 'white'; }
-        else { btn.style.background = (v === '♠' || v === '♣') ? '#111827' : '#dc2626'; btn.style.color = 'white'; }
+        if (hex) {
+          btn.style.background = hex;
+          btn.style.color = LIGHT_COLORS.has(v) ? '#111' : 'white';
+        } else if (v === '♠' || v === '♣') {
+          btn.style.background = '#1c1c20'; btn.style.color = 'white';
+        } else if (v === '♥' || v === '♦') {
+          btn.style.background = '#cf2430'; btn.style.color = 'white';
+        }
         btn.textContent = v;
         actionsEl.appendChild(btn);
       }
@@ -1701,49 +2616,50 @@ function renderGame(root) {
     const drawAction = actions.find(a => a.cmd.type === 'DRAW');
     const passAction = actions.find(a => a.cmd.type === 'PASS');
     const playActions = actions.filter(a => a.cmd.type === 'PLAY_CARD');
-    if (playActions.length > 0) {
-      actionsEl.appendChild(el('span', { class: 'label' }, 'Tap a card to play'));
-    }
+    if (playActions.length > 0)
+      actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Tap a card to play'));
     if (drawAction) actionsEl.appendChild(el('button', {
       class: 'primary', onclick: () => takeAction(drawAction.cmd),
     }, 'Draw a card'));
     if (passAction) actionsEl.appendChild(el('button', {
       class: 'ghost', onclick: () => takeAction(passAction.cmd),
     }, 'Pass'));
-    if (!drawAction && !passAction && playActions.length === 0) {
-      actionsEl.appendChild(el('span', { class: 'label' }, 'No moves available'));
-    }
+    if (!drawAction && !passAction && playActions.length === 0)
+      actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'No moves available'));
   } else if (G.ended) {
-    actionsEl.appendChild(el('span', { class: 'label' }, 'Game over'));
+    actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Game over'));
   } else {
-    actionsEl.appendChild(el('span', { class: 'label' }, 'Waiting for ' + G.players[G.current].name));
+    actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Waiting for ' + G.players[G.current].name));
   }
 
-  const logEl = el('section', { class: 'log' });
+  // Log
+  const logEl = el('div', { class: 'log' });
   for (const line of G.log.slice(-5)) logEl.appendChild(el('div', null, line));
 
+  // Hand
   const hand = G.zones['hand:' + VIEWER];
   const playableIds = new Set();
   if (isMyTurn) for (const a of actions)
     if (a.cmd.type === 'PLAY_CARD') playableIds.add(a.cmd.cardId);
   const sortedHand = hand ? sortHand(hand.cards, game.defs) : [];
-  const handEl = el('section', { class: 'hand' });
+  const handEl = el('div', { class: 'hand' });
   for (const c of sortedHand) {
     const cardEl = renderCardEl(c);
     if (playableIds.has(c.id)) {
-      cardEl.classList.add('playable');
+      cardEl.classList.add('card--playable');
       cardEl.addEventListener('click', () => {
         const action = actions.find(a => a.cmd.type === 'PLAY_CARD' && a.cmd.cardId === c.id);
         if (action) takeAction(action.cmd);
       });
     } else if (isMyTurn && G.flags.drewThisTurn && c.id !== G.flags.drawnCardId) {
-      cardEl.classList.add('dimmed');
+      cardEl.classList.add('card--dimmed');
     }
     handEl.appendChild(cardEl);
   }
+  const handWrap = el('div', { class: 'hand-wrap' }, handEl);
 
   root.appendChild(el('div', { class: 'game' },
-    header, opponents, table, actionsEl, logEl, handEl));
+    header, opponents, felt, actionsEl, logEl, handWrap));
 
   if (G.ended) root.appendChild(renderGameOver());
 }
@@ -1752,8 +2668,8 @@ function renderGameOver() {
   const winnerNames = G.winners.map(w => G.players[w].name).join(', ');
   return el('div', { class: 'overlay game-over' },
     el('div', { class: 'modal' },
-      el('h2', null, '🏆'),
-      el('p', { class: 'winners' }, winnerNames + (G.winners.length === 1 ? ' wins!' : ' win!')),
+      el('div', { class: 'trophy' }, '🏆'),
+      el('h2', null, winnerNames + (G.winners.length === 1 ? ' wins!' : ' win!')),
       el('button', { class: 'primary', onclick: playAgain }, 'Play again'),
       el('button', { class: 'ghost', onclick: () => { G = null; SCREEN = 'menu'; render(); } }, 'Back to menu')));
 }
@@ -1769,7 +2685,7 @@ function startGame() {
   if (names.length > game.maxPlayers) { alert('At most ' + game.maxPlayers + ' players'); return; }
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = game.create(names);
-  VIEWER = 0; SCREEN = 'pass'; undoStack = []; pendingRank = null;
+  VIEWER = 0; SCREEN = 'pass'; undoStack = [];
   render();
 }
 
@@ -1781,8 +2697,7 @@ function takeAction(cmd) {
   try { next = game.apply(G, cmd); }
   catch (e) { alert(e.message); return; }
   undoStack.push(prev);
-  G = next; pendingRank = null;
-
+  G = next;
   if (G.ended) SCREEN = 'game';
   else if (G.current !== prevCurrent) { VIEWER = G.current; SCREEN = 'pass'; }
   else SCREEN = 'game';
@@ -1793,7 +2708,7 @@ function undo() {
   if (undoStack.length === 0) return;
   const entry = undoStack.pop();
   G = entry.state; VIEWER = entry.viewer;
-  SCREEN = 'game'; pendingRank = null;
+  SCREEN = 'game';
   render();
 }
 
@@ -1802,7 +2717,7 @@ function playAgain() {
   const game = GAMES[G.scriptId];
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = game.create(names);
-  VIEWER = 0; SCREEN = 'pass'; undoStack = []; pendingRank = null;
+  VIEWER = 0; SCREEN = 'pass'; undoStack = [];
   render();
 }
 
