@@ -14,33 +14,25 @@
     --muted: #7a9d87;
     --accent: #4ade80;
     --accent-bg: #166534;
-    --red: #dc2626;
     --card-w: clamp(2.6rem, 9.5vw, 3.4rem);
     --card-h: calc(var(--card-w) * 1.45);
   }
-
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
     margin: 0;
     background: var(--bg);
     color: var(--text);
     font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: 100vh; min-height: 100dvh;
     overscroll-behavior: none;
   }
   #app { min-height: 100dvh; }
 
   button {
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-    background: var(--panel-hi);
-    color: var(--text);
-    padding: 0.65rem 1rem;
-    border-radius: 0.55rem;
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-family: inherit; cursor: pointer; border: none;
+    background: var(--panel-hi); color: var(--text);
+    padding: 0.65rem 1rem; border-radius: 0.55rem;
+    font-size: 0.95rem; font-weight: 500;
     transition: background 0.15s, transform 0.1s, opacity 0.15s;
     min-height: 2.6rem;
   }
@@ -54,396 +46,244 @@
   button.danger { background: #7f1d1d; }
   button.danger:hover { background: #991b1b; }
 
-  /* ===== Menu ===== */
-  .menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100dvh;
-    padding: 1.25rem;
-    gap: 1.1rem;
-  }
-  .menu h1 {
-    margin: 0;
-    font-size: 2rem;
-    letter-spacing: -0.02em;
-  }
-  .menu h1 span { color: var(--accent); }
-  .menu .tagline { color: var(--muted); margin: -0.5rem 0 0.5rem; font-size: 0.9rem; }
-  .menu-card {
-    background: var(--panel);
-    border-radius: 0.9rem;
-    padding: 1.1rem;
-    width: 100%;
-    max-width: 24rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-  }
-  .menu label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    font-size: 0.85rem;
-    color: var(--muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .menu input, .menu select {
-    padding: 0.75rem;
-    border-radius: 0.55rem;
+  input, select, textarea {
+    font-family: inherit;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.5rem;
     border: 1px solid var(--border);
     background: var(--bg);
     color: var(--text);
-    font-size: 1rem;
-    font-family: inherit;
+    font-size: 0.95rem;
     width: 100%;
   }
-  .menu input:focus, .menu select:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-  .rules {
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.5;
-    background: var(--bg);
-    padding: 0.7rem 0.9rem;
-    border-radius: 0.55rem;
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--accent);
   }
 
+  /* ===== Menu ===== */
+  .menu { display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100dvh; padding: 1.25rem; gap: 1rem; }
+  .menu h1 { margin: 0; font-size: 2rem; letter-spacing: -0.02em; }
+  .menu h1 span { color: var(--accent); }
+  .menu .tagline { color: var(--muted); margin: -0.4rem 0 0.5rem; font-size: 0.9rem; }
+  .menu-card {
+    background: var(--panel); border-radius: 0.9rem; padding: 1.1rem;
+    width: 100%; max-width: 26rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  .menu label { display: flex; flex-direction: column; gap: 0.35rem;
+    font-size: 0.8rem; color: var(--muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em; }
+  .custom-list { display: flex; flex-direction: column; gap: 0.4rem; }
+  .custom-item {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.5rem 0.7rem; background: var(--bg); border-radius: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .custom-item .name { flex: 1; font-weight: 600; }
+  .custom-item .count { color: var(--muted); font-size: 0.75rem; }
+  .custom-item button { padding: 0.35rem 0.6rem; font-size: 0.75rem; min-height: auto; }
+  .empty-note { color: var(--muted); font-size: 0.8rem; text-align: center; padding: 0.5rem; }
+  .section-title { font-size: 0.75rem; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.06em; font-weight: 700; margin-top: 0.3rem; }
+
   /* ===== Pass screen ===== */
-  .pass {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100dvh;
-    padding: 1.5rem;
-    gap: 1rem;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-  }
-  .pass .icon {
-    font-size: 3rem;
-    opacity: 0.7;
-  }
+  .pass { display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100dvh; padding: 1.5rem; gap: 1rem; text-align: center;
+    cursor: pointer; user-select: none; }
+  .pass .icon { font-size: 3rem; opacity: 0.7; }
   .pass h2 { margin: 0; font-size: 1.8rem; }
   .pass .hint { color: var(--muted); margin: 0; }
-  .pass .undo-link {
-    position: absolute;
-    bottom: 1.25rem;
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--muted);
-    font-size: 0.8rem;
-    text-decoration: underline;
-    background: none;
-    border: none;
-    padding: 0.5rem;
-  }
+  .pass .undo-link { position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
+    color: var(--muted); font-size: 0.8rem; text-decoration: underline;
+    background: none; border: none; padding: 0.5rem; }
   .pass .undo-link:hover { color: var(--text); }
 
   /* ===== Game ===== */
-  .game {
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-    padding: 0.5rem;
-    gap: 0.45rem;
-    max-width: 56rem;
-    margin: 0 auto;
-  }
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.55rem 0.75rem;
-    background: var(--panel);
-    border-radius: 0.6rem;
-    font-size: 0.82rem;
-  }
+  .game { display: flex; flex-direction: column; min-height: 100dvh;
+    padding: 0.5rem; gap: 0.45rem; max-width: 56rem; margin: 0 auto; }
+  header { display: flex; align-items: center; justify-content: space-between;
+    gap: 0.5rem; padding: 0.55rem 0.75rem;
+    background: var(--panel); border-radius: 0.6rem; font-size: 0.82rem; }
   header .game-name { font-weight: 700; color: var(--accent); }
   header .turn-info { color: var(--muted); }
   header .turn-info strong { color: var(--text); }
   header .controls { display: flex; gap: 0.35rem; }
-  header .controls button {
-    padding: 0.4rem 0.65rem;
-    font-size: 0.78rem;
-    min-height: auto;
-  }
+  header .controls button { padding: 0.4rem 0.65rem; font-size: 0.78rem; min-height: auto; }
 
-  .opponents {
-    display: flex;
-    gap: 0.4rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.1rem;
-  }
-  .opponent {
-    display: flex;
-    flex-direction: column;
-    padding: 0.5rem 0.7rem;
-    background: var(--panel);
-    border-radius: 0.6rem;
-    font-size: 0.78rem;
-    min-width: 5.5rem;
-    flex-shrink: 0;
-    gap: 0.1rem;
-  }
-  .opponent.current {
-    outline: 2px solid var(--accent);
-    outline-offset: -1px;
-  }
+  .opponents { display: flex; gap: 0.4rem; overflow-x: auto;
+    -webkit-overflow-scrolling: touch; padding-bottom: 0.1rem; }
+  .opponent { display: flex; flex-direction: column; padding: 0.5rem 0.7rem;
+    background: var(--panel); border-radius: 0.6rem; font-size: 0.78rem;
+    min-width: 5.5rem; flex-shrink: 0; gap: 0.1rem; }
+  .opponent.current { outline: 2px solid var(--accent); outline-offset: -1px; }
   .opponent strong { font-size: 0.85rem; }
   .opponent span { color: var(--muted); }
 
-  .table {
-    display: flex;
-    gap: 0.6rem;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 0.5rem 0;
-    flex-wrap: wrap;
-  }
-  .zone {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-    min-width: 4.5rem;
-    font-size: 0.72rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .zone .card, .zone .empty {
-    margin: 0;
-  }
-  .empty {
-    width: var(--card-w);
-    height: var(--card-h);
-    border: 2px dashed var(--border);
-    border-radius: 0.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    color: var(--border);
-    text-transform: none;
-    letter-spacing: 0;
-  }
-  .active-color {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.3rem 0.7rem;
-    border-radius: 99px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: white;
-    min-width: 3rem;
-  }
-  .active-color.red { background: #dc2626; }
-  .active-color.yellow { background: #eab308; color: #1f1f1f; }
-  .active-color.green { background: #16a34a; }
-  .active-color.blue { background: #2563eb; }
-  .active-color.suit-red { background: #fff; color: #dc2626; }
-  .active-color.suit-black { background: #fff; color: #111; }
+  .table { display: flex; gap: 0.6rem; justify-content: center; align-items: flex-start;
+    padding: 0.5rem 0; flex-wrap: wrap; }
+  .zone { display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    min-width: 4.5rem; font-size: 0.72rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em; }
+  .zone .card, .zone .empty { margin: 0; }
+  .empty { width: var(--card-w); height: var(--card-h);
+    border: 2px dashed var(--border); border-radius: 0.4rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; color: var(--border);
+    text-transform: none; letter-spacing: 0; }
+  .active-color { display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.3rem 0.7rem; border-radius: 99px;
+    font-size: 0.78rem; font-weight: 700; color: white; min-width: 3rem; }
 
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    align-items: center;
-    padding: 0.5rem;
-    background: var(--panel);
-    border-radius: 0.6rem;
-    min-height: 3.6rem;
-  }
-  .actions .label {
-    font-size: 0.78rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-right: 0.2rem;
-  }
-  .rank-chip, .target-chip {
-    padding: 0.55rem 0.95rem;
-    border-radius: 0.55rem;
-    background: var(--panel-hi);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.95rem;
-    min-height: 2.4rem;
-  }
-  .rank-chip.selected { background: var(--accent-bg); border-color: var(--accent); }
-  .rank-chip:hover, .target-chip:hover { background: var(--border); }
-  .chip-row { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
+    padding: 0.5rem; background: var(--panel); border-radius: 0.6rem; min-height: 3.6rem; }
+  .actions .label { font-size: 0.78rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-right: 0.2rem; }
+  .rank-chip { padding: 0.55rem 0.95rem; border-radius: 0.55rem;
+    background: var(--panel-hi); border: 1px solid var(--border); color: var(--text);
+    font-weight: 600; cursor: pointer; font-family: inherit; font-size: 0.95rem;
+    min-height: 2.4rem; }
+  .rank-chip:hover { background: var(--border); }
 
-  .log {
-    font-size: 0.72rem;
-    max-height: 4.5rem;
-    overflow-y: auto;
-    padding: 0.4rem 0.65rem;
-    background: #081610;
-    border-radius: 0.55rem;
-    color: var(--muted);
-    line-height: 1.5;
-    flex-shrink: 0;
-  }
+  .log { font-size: 0.72rem; max-height: 4.5rem; overflow-y: auto;
+    padding: 0.4rem 0.65rem; background: #081610; border-radius: 0.55rem;
+    color: var(--muted); line-height: 1.5; flex-shrink: 0; }
   .log div:last-child { color: var(--text); }
 
-  .hand {
-    display: flex;
-    gap: 0.35rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 0.6rem 0.1rem 0.4rem;
-    margin-top: auto;
-    scrollbar-width: none;
-  }
+  .hand { display: flex; gap: 0.35rem; overflow-x: auto;
+    -webkit-overflow-scrolling: touch; padding: 0.6rem 0.1rem 0.4rem;
+    margin-top: auto; scrollbar-width: none; }
   .hand::-webkit-scrollbar { display: none; }
 
   /* ===== Cards ===== */
-  .card {
-    width: var(--card-w);
-    height: var(--card-h);
-    border-radius: 0.4rem;
-    background: white;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    user-select: none;
+  .card { width: var(--card-w); height: var(--card-h);
+    border-radius: 0.4rem; background: white; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; user-select: none;
     box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-    transition: transform 0.15s, box-shadow 0.15s;
-    font-weight: 700;
-  }
-  .card .corner {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1;
-    font-size: 0.58rem;
-    gap: 0.05rem;
-  }
+    transition: transform 0.15s, box-shadow 0.15s; font-weight: 700; }
+  .card .corner { position: absolute; display: flex; flex-direction: column;
+    align-items: center; line-height: 1; font-size: 0.58rem; gap: 0.05rem; }
   .card .corner.tl { top: 0.22rem; left: 0.25rem; }
   .card .corner.br { bottom: 0.22rem; right: 0.25rem; transform: rotate(180deg); }
   .card .pip { font-size: 1.35rem; line-height: 1; }
 
-  /* Standard playing cards */
   .card.std { color: #111; }
   .card.std.red { color: #dc2626; }
 
-  /* UNO cards */
   .card.uno { color: white; font-weight: 900; }
-  .card.uno.red { background: #dc2626; }
-  .card.uno.yellow { background: #eab308; color: #1f1f1f; }
-  .card.uno.green { background: #16a34a; }
-  .card.uno.blue { background: #2563eb; }
-  .card.uno.wild {
-    background: conic-gradient(from 45deg, #dc2626 0deg 90deg, #eab308 90deg 180deg, #16a34a 180deg 270deg, #2563eb 270deg 360deg);
-    color: white;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
-  }
   .card.uno .corner { font-size: 0.62rem; }
   .card.uno .pip { font-size: 1.25rem; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
-  .card.uno.wild .pip { font-size: 0.9rem; }
 
-  /* Card back */
+  .card.custom { color: white; font-weight: 800; }
+  .card.custom .corner { font-size: 0.55rem; }
+  .card.custom .pip { font-size: 1.15rem; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+  .card.custom.wild {
+    background: conic-gradient(from 45deg, #dc2626 0deg 90deg, #eab308 90deg 180deg,
+      #16a34a 180deg 270deg, #2563eb 270deg 360deg);
+  }
+
   .card.back {
-    background:
-      repeating-linear-gradient(45deg, #2d4a7a 0 6px, #1a2d4a 6px 12px);
+    background: repeating-linear-gradient(45deg, #2d4a7a 0 6px, #1a2d4a 6px 12px);
     border: 2px solid #e5e7eb;
   }
-  .card.back::after {
-    content: '';
-    position: absolute;
-    inset: 20%;
-    border: 2px solid rgba(255,255,255,0.25);
-    border-radius: 0.2rem;
-  }
+  .card.back::after { content: ''; position: absolute; inset: 20%;
+    border: 2px solid rgba(255,255,255,0.25); border-radius: 0.2rem; }
 
-  /* Playable hand cards */
   .hand .card.playable {
     transform: translateY(-0.45rem);
     box-shadow: 0 0 0 2px var(--accent), 0 6px 14px rgba(74,222,128,0.4);
-    cursor: pointer;
-  }
+    cursor: pointer; }
   .hand .card.playable:active { transform: translateY(-0.55rem) scale(0.96); }
   .hand .card.dimmed { opacity: 0.55; }
 
   /* ===== Modals ===== */
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.78);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem;
-    z-index: 100;
-    animation: fadeIn 0.2s ease;
-  }
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.78);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.25rem; z-index: 100; animation: fadeIn 0.2s ease; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .modal {
-    background: var(--panel);
-    border-radius: 0.9rem;
-    padding: 1.4rem;
-    width: 100%;
-    max-width: 22rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-  }
+  .modal { background: var(--panel); border-radius: 0.9rem; padding: 1.4rem;
+    width: 100%; max-width: 24rem; display: flex; flex-direction: column;
+    gap: 0.9rem; text-align: center; }
   .modal h3 { margin: 0; font-size: 1.1rem; }
   .modal p { margin: 0; color: var(--muted); font-size: 0.9rem; }
-  .color-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-  }
-  .color-btn {
-    padding: 1.1rem;
-    border-radius: 0.6rem;
-    font-weight: 800;
-    font-size: 1rem;
-    color: white;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-    min-height: 4rem;
-  }
-  .color-btn.red { background: #dc2626; }
-  .color-btn.yellow { background: #eab308; color: #1f1f1f; text-shadow: none; }
-  .color-btn.green { background: #16a34a; }
-  .color-btn.blue { background: #2563eb; }
-  .color-btn.suit { background: white; color: #111; text-shadow: none; }
-  .color-btn.suit.red { color: #dc2626; }
+  .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .color-btn { padding: 1.1rem; border-radius: 0.6rem; font-weight: 800;
+    font-size: 1rem; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    min-height: 4rem; }
   .color-btn:hover { filter: brightness(1.15); }
-
   .game-over .modal h2 { margin: 0; font-size: 1.6rem; }
-  .game-over .winners {
-    font-size: 1rem;
-    color: var(--accent);
-    font-weight: 600;
-    margin: 0.25rem 0;
-  }
+  .game-over .winners { font-size: 1rem; color: var(--accent);
+    font-weight: 600; margin: 0.25rem 0; }
+
+  /* ===== Editor ===== */
+  .editor { min-height: 100dvh; max-width: 60rem; margin: 0 auto;
+    padding: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .editor-header { display: flex; align-items: center; justify-content: space-between;
+    gap: 0.5rem; padding: 0.5rem 0; }
+  .editor-header h2 { margin: 0; font-size: 1.15rem; }
+  .editor-header .actions { display: flex; gap: 0.4rem; padding: 0; background: none; min-height: auto; }
+  .tabs { display: flex; gap: 0.15rem; border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tab { padding: 0.6rem 0.95rem; background: none; border: none;
+    border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer;
+    font-size: 0.9rem; font-weight: 500; white-space: nowrap; }
+  .tab.active { color: var(--text); border-bottom-color: var(--accent); }
+  .tab:hover { color: var(--text); background: none; }
+  .tab-content { flex: 1; display: flex; flex-direction: column; gap: 0.9rem; }
+
+  .preset-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .preset-row button { padding: 0.5rem 0.8rem; font-size: 0.82rem; }
+
+  .table-scroll { overflow-x: auto; background: var(--panel); border-radius: 0.6rem; }
+  .cards-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 40rem; }
+  .cards-table th { text-align: left; padding: 0.5rem 0.4rem;
+    background: var(--panel-hi); color: var(--muted); font-weight: 600;
+    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .cards-table td { padding: 0.25rem 0.4rem; border-top: 1px solid var(--border); }
+  .cards-table input, .cards-table select { padding: 0.4rem 0.5rem;
+    border-radius: 0.35rem; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text); font-size: 0.82rem; }
+  .cards-table input[type="number"] { width: 4rem; }
+  .cards-table input[type="checkbox"] { width: auto; }
+  .cards-table .del-card { padding: 0.35rem 0.55rem; min-height: auto;
+    background: transparent; color: #f87171; font-size: 1rem; }
+  .cards-table .del-card:hover { background: #7f1d1d; color: white; }
+  .color-swatch { width: 1.2rem; height: 1.2rem; border-radius: 0.2rem;
+    display: inline-block; border: 1px solid rgba(0,0,0,0.3); vertical-align: middle; }
+
+  .form-section { background: var(--panel); border-radius: 0.6rem;
+    padding: 0.9rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .form-section h3 { margin: 0; font-size: 0.78rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+  .form-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .form-row > label { flex: 1; min-width: 8rem; display: flex; flex-direction: column;
+    gap: 0.3rem; font-size: 0.8rem; color: var(--muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em; }
+  .form-row input, .form-row select { padding: 0.55rem 0.65rem; font-size: 0.9rem; }
+  .check-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .check-row label { display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.85rem; cursor: pointer; text-transform: none; letter-spacing: 0;
+    color: var(--text); font-weight: 500; }
+  .check-row input[type="checkbox"] { width: auto; }
+
+  .json-view { background: #081610; color: #7dd3a0; padding: 0.85rem;
+    border-radius: 0.5rem; font-family: ui-monospace, monospace;
+    font-size: 0.72rem; overflow-x: auto; max-height: 24rem; line-height: 1.4; }
+
+  .preview-cards { display: flex; flex-wrap: wrap; gap: 0.35rem;
+    padding: 0.6rem; background: var(--panel); border-radius: 0.6rem; min-height: 4.5rem; }
+
+  .editor-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; padding-top: 0.4rem; }
+  .editor-actions button { flex: 1; min-width: 8rem; }
+
+  .stat { color: var(--muted); font-size: 0.78rem; padding: 0.3rem 0; }
 
   @media (max-width: 480px) {
     .menu h1 { font-size: 1.6rem; }
     header { font-size: 0.76rem; padding: 0.5rem 0.65rem; }
     .log { max-height: 3.5rem; }
     .actions { min-height: 3.2rem; }
+    .editor-header h2 { font-size: 1rem; }
   }
 </style>
 </head>
@@ -476,7 +316,6 @@ function el(tag, props, ...children) {
   return n;
 }
 
-// Deterministic RNG (LCG)
 let _rng = 1;
 function seedRng(seed) { _rng = (seed >>> 0) || 1; }
 function rand() {
@@ -493,8 +332,17 @@ function shuffle(arr) {
 }
 
 // ============================================================
-// Deck builders
+// Colors and rank ordering
 // ============================================================
+
+const COLOR_HEX = {
+  red: '#dc2626', orange: '#ea580c', yellow: '#eab308',
+  green: '#16a34a', teal: '#0d9488', blue: '#2563eb',
+  purple: '#9333ea', pink: '#ec4899', brown: '#78350f',
+  gray: '#6b7280', black: '#111827', white: '#f3f4f6',
+};
+const LIGHT_COLORS = new Set(['yellow', 'white']);
+const COLOR_ORDER = Object.fromEntries(Object.keys(COLOR_HEX).map((c, i) => [c, i]));
 
 const STD_SUITS = ['♠', '♥', '♦', '♣'];
 const STD_RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
@@ -506,39 +354,34 @@ const UNO_VALUE_ORDER = {
   skip: 10, reverse: 11, draw2: 12, wild: 13, wild4: 14,
 };
 
+// ============================================================
+// Deck builders (built-in presets)
+// ============================================================
+
 function buildStd() {
-  const defs = {};
-  const cards = [];
-  for (const suit of STD_SUITS) {
-    for (const rank of STD_RANKS) {
-      const id = 'std:' + suit + rank;
-      defs[id] = {
-        id, kind: 'std', suit, rank, name: rank + suit,
-        color: (suit === '♥' || suit === '♦') ? 'red' : 'black',
-      };
-      cards.push({ id: id + ':0', defId: id });
-    }
+  const defs = {}; const cards = [];
+  for (const suit of STD_SUITS) for (const rank of STD_RANKS) {
+    const id = 'std:' + suit + rank;
+    defs[id] = { id, kind: 'std', suit, rank, name: rank + suit,
+      color: (suit === '♥' || suit === '♦') ? 'red' : 'black' };
+    cards.push({ id: id + ':0', defId: id });
   }
   return { defs, cards };
 }
 
 function buildUno() {
-  const defs = {};
-  const cards = [];
+  const defs = {}; const cards = [];
   const colors = ['red', 'yellow', 'green', 'blue'];
   for (const color of colors) {
-    // 0 (one copy)
     const zid = `uno:${color}:0`;
     defs[zid] = { id: zid, kind: 'uno', color, value: '0' };
     cards.push({ id: zid + ':0', defId: zid });
-    // 1-9 (two copies each)
     for (let n = 1; n <= 9; n++) {
       const nid = `uno:${color}:${n}`;
       defs[nid] = { id: nid, kind: 'uno', color, value: String(n) };
       cards.push({ id: nid + ':0', defId: nid });
       cards.push({ id: nid + ':1', defId: nid });
     }
-    // Actions (two copies each)
     for (const v of ['skip', 'reverse', 'draw2']) {
       const vid = `uno:${color}:${v}`;
       defs[vid] = { id: vid, kind: 'uno', color, value: v };
@@ -546,7 +389,6 @@ function buildUno() {
       cards.push({ id: vid + ':1', defId: vid });
     }
   }
-  // Wilds
   for (const v of ['wild', 'wild4']) {
     const wid = `uno:wild:${v}`;
     defs[wid] = { id: wid, kind: 'uno', color: 'wild', value: v };
@@ -567,13 +409,9 @@ function makeState(scriptId, names) {
     scriptId,
     players: names.map((name, id) => ({ id, name })),
     zones: {},
-    current: 0,
-    turn: 1,
-    phase: 'play',
+    current: 0, turn: 1, phase: 'play',
     flags: { direction: 1 },
-    log: [],
-    ended: false,
-    winners: [],
+    log: [], ended: false, winners: [],
   };
 }
 
@@ -606,25 +444,20 @@ function reshuffleDiscard(s) {
 }
 
 // ============================================================
-// Game: Crazy Eights
+// Game: Crazy Eights (kept as example)
 // ============================================================
 
 function createCE(names) {
   const s = makeState('crazy-eights', names);
-  s.zones.draw = { cards: [] };
-  s.zones.discard = { cards: [] };
-  for (const p of s.players) {
-    s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-  }
+  s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
+  for (const p of s.players) s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
   const cards = STD_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
   s.zones.draw.cards = shuffle(cards);
-  for (const p of s.players) {
-    for (let i = 0; i < 5; i++) s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
-  }
+  for (const p of s.players) for (let i = 0; i < 5; i++)
+    s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
   let top = s.zones.draw.cards.pop();
   while (STD_DECK.defs[top.defId].rank === '8') {
-    s.zones.draw.cards.unshift(top);
-    top = s.zones.draw.cards.pop();
+    s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
   }
   top.faceUp = true;
   s.zones.discard.cards.push(top);
@@ -645,129 +478,86 @@ function isPlayableCE(s, def) {
 
 function legalCE(s, player) {
   if (s.ended || player !== s.current) return [];
-  if (s.phase === 'chooseColor') {
-    return STD_SUITS.map(suit => ({
-      id: 'suit-' + suit,
-      cmd: { type: 'CHOOSE_COLOR', color: suit },
-    }));
-  }
-  const hand = s.zones['hand:' + player];
-  const out = [];
+  if (s.phase === 'chooseColor') return STD_SUITS.map(suit => ({
+    id: 'suit-' + suit, cmd: { type: 'CHOOSE_COLOR', color: suit },
+  }));
+  const hand = s.zones['hand:' + player]; const out = [];
   if (s.flags.drewThisTurn) {
     const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
-    if (drawn && isPlayableCE(s, STD_DECK.defs[drawn.defId])) {
+    if (drawn && isPlayableCE(s, STD_DECK.defs[drawn.defId]))
       out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
-    }
-    out.push({ id: 'pass', cmd: { type: 'PASS' } });
-    return out;
+    out.push({ id: 'pass', cmd: { type: 'PASS' } }); return out;
   }
-  for (const c of hand.cards) {
-    if (isPlayableCE(s, STD_DECK.defs[c.defId])) {
-      out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
-    }
-  }
+  for (const c of hand.cards) if (isPlayableCE(s, STD_DECK.defs[c.defId]))
+    out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
   if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
   return out;
 }
 
 function applyCE(state, cmd) {
-  const s = structuredClone(state);
-  const actor = s.current;
-
+  const s = structuredClone(state); const actor = s.current;
   if (cmd.type === 'PLAY_CARD') {
     const hand = s.zones['hand:' + actor];
     const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
     if (idx < 0) throw new Error('Card not in hand');
-    const card = hand.cards[idx];
-    const def = STD_DECK.defs[card.defId];
+    const card = hand.cards[idx]; const def = STD_DECK.defs[card.defId];
     if (!isPlayableCE(s, def)) throw new Error('Not playable');
-    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId) {
+    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId)
       throw new Error('You can only play the card you drew');
-    }
-    hand.cards.splice(idx, 1);
-    card.faceUp = true;
+    hand.cards.splice(idx, 1); card.faceUp = true;
     s.zones.discard.cards.push(card);
     s.flags.activeColor = def.suit;
-    s.flags.drewThisTurn = false;
-    s.flags.drawnCardId = undefined;
+    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
     s.log.push(s.players[actor].name + ' played ' + def.name);
     if (hand.cards.length === 0) {
-      s.ended = true;
-      s.winners = [actor];
-      s.log.push(s.players[actor].name + ' wins!');
-      return s;
+      s.ended = true; s.winners = [actor];
+      s.log.push(s.players[actor].name + ' wins!'); return s;
     }
     if (def.rank === '8') { s.phase = 'chooseColor'; return s; }
-    advanceTurn(s);
-    return s;
+    advanceTurn(s); return s;
   }
-
   if (cmd.type === 'CHOOSE_COLOR') {
-    s.flags.activeColor = cmd.color;
-    s.phase = 'play';
+    s.flags.activeColor = cmd.color; s.phase = 'play';
     s.log.push(s.players[actor].name + ' chose ' + cmd.color);
-    advanceTurn(s);
-    return s;
+    advanceTurn(s); return s;
   }
-
   if (cmd.type === 'DRAW') {
     if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
     const c = drawTo(s, actor);
-    if (!c) {
-      s.log.push('No cards left to draw');
-      advanceTurn(s);
-      return s;
-    }
-    s.flags.drewThisTurn = true;
-    s.flags.drawnCardId = c.id;
-    s.log.push(s.players[actor].name + ' drew a card');
-    return s;
+    if (!c) { s.log.push('No cards to draw'); advanceTurn(s); return s; }
+    s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
+    s.log.push(s.players[actor].name + ' drew a card'); return s;
   }
-
   if (cmd.type === 'PASS') {
-    s.flags.drewThisTurn = false;
-    s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' passed');
-    advanceTurn(s);
-    return s;
+    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' passed'); advanceTurn(s); return s;
   }
-
   throw new Error('Unknown command: ' + cmd.type);
 }
 
 // ============================================================
-// Game: UNO
+// Game: UNO (kept as example)
 // ============================================================
 
 function createUno(names) {
   const s = makeState('uno', names);
-  s.flags.direction = 1;
-  s.zones.draw = { cards: [] };
-  s.zones.discard = { cards: [] };
-  for (const p of s.players) {
-    s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-  }
+  s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
+  for (const p of s.players) s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
   const cards = UNO_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
   s.zones.draw.cards = shuffle(cards);
-  for (const p of s.players) {
-    for (let i = 0; i < 7; i++) s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
-  }
-  // Flip a starting card; if wild, reinsert and reflip
+  for (const p of s.players) for (let i = 0; i < 7; i++)
+    s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
   let top = s.zones.draw.cards.pop();
   while (UNO_DECK.defs[top.defId].color === 'wild') {
-    s.zones.draw.cards.unshift(top);
-    top = s.zones.draw.cards.pop();
+    s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
   }
-  top.faceUp = true;
-  s.zones.discard.cards.push(top);
+  top.faceUp = true; s.zones.discard.cards.push(top);
   s.flags.activeColor = UNO_DECK.defs[top.defId].color;
-  s.log.push('Top card: ' + cardLabel(UNO_DECK.defs[top.defId]) + '. ' + names[0] + ' starts.');
-  // Note: we skip first-card action effects for simplicity
+  s.log.push('Top card: ' + cardLabelUno(UNO_DECK.defs[top.defId]) + '. ' + names[0] + ' starts.');
   return s;
 }
 
-function cardLabel(def) {
-  if (def.kind !== 'uno') return def.name || def.id;
+function cardLabelUno(def) {
   const names = { skip: 'Skip', reverse: 'Reverse', draw2: 'Draw Two', wild: 'Wild', wild4: 'Wild Draw Four' };
   if (def.color === 'wild') return names[def.value] || def.value;
   return def.color + ' ' + (names[def.value] || def.value);
@@ -785,165 +575,151 @@ function isPlayableUno(s, def) {
 
 function legalUno(s, player) {
   if (s.ended || player !== s.current) return [];
-  if (s.phase === 'chooseColor') {
-    return ['red', 'yellow', 'green', 'blue'].map(c => ({
-      id: 'color-' + c,
-      cmd: { type: 'CHOOSE_COLOR', color: c },
-    }));
-  }
-  const hand = s.zones['hand:' + player];
-  const out = [];
+  if (s.phase === 'chooseColor') return ['red', 'yellow', 'green', 'blue'].map(c => ({
+    id: 'color-' + c, cmd: { type: 'CHOOSE_COLOR', color: c },
+  }));
+  const hand = s.zones['hand:' + player]; const out = [];
   if (s.flags.drewThisTurn) {
     const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
-    if (drawn && isPlayableUno(s, UNO_DECK.defs[drawn.defId])) {
+    if (drawn && isPlayableUno(s, UNO_DECK.defs[drawn.defId]))
       out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
-    }
-    out.push({ id: 'pass', cmd: { type: 'PASS' } });
-    return out;
+    out.push({ id: 'pass', cmd: { type: 'PASS' } }); return out;
   }
-  for (const c of hand.cards) {
-    if (isPlayableUno(s, UNO_DECK.defs[c.defId])) {
-      out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
-    }
-  }
+  for (const c of hand.cards) if (isPlayableUno(s, UNO_DECK.defs[c.defId]))
+    out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
   if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
   return out;
 }
 
 function applyUno(state, cmd) {
-  const s = structuredClone(state);
-  const actor = s.current;
+  const s = structuredClone(state); const actor = s.current;
   const n = s.players.length;
-
   if (cmd.type === 'PLAY_CARD') {
     const hand = s.zones['hand:' + actor];
     const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
     if (idx < 0) throw new Error('Card not in hand');
-    const card = hand.cards[idx];
-    const def = UNO_DECK.defs[card.defId];
+    const card = hand.cards[idx]; const def = UNO_DECK.defs[card.defId];
     if (!isPlayableUno(s, def)) throw new Error('Not playable');
-    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId) {
+    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId)
       throw new Error('You can only play the card you drew');
-    }
-    hand.cards.splice(idx, 1);
-    card.faceUp = true;
+    hand.cards.splice(idx, 1); card.faceUp = true;
     s.zones.discard.cards.push(card);
-    s.flags.drewThisTurn = false;
-    s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' played ' + cardLabel(def));
-
+    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' played ' + cardLabelUno(def));
     if (hand.cards.length === 0) {
-      s.ended = true;
-      s.winners = [actor];
-      s.log.push(s.players[actor].name + ' wins!');
-      return s;
+      s.ended = true; s.winners = [actor];
+      s.log.push(s.players[actor].name + ' wins!'); return s;
     }
-
-    // Apply effect
     if (def.color === 'wild') {
       s.phase = 'chooseColor';
-      s.flags.pendingWild4 = def.value === 'wild4';
-      return s;
+      s.flags.pendingWild4 = def.value === 'wild4'; return s;
     }
     s.flags.activeColor = def.color;
-
-    if (def.value === 'skip') {
-      advanceTurn(s);
-      s.log.push(s.players[s.current].name + ' is skipped');
-      advanceTurn(s);
-    } else if (def.value === 'reverse') {
-      s.flags.direction *= -1;
-      advanceTurn(s);
-      if (n === 2) {
-        s.log.push('Reverse acts as Skip with 2 players');
-        advanceTurn(s);
-      }
+    if (def.value === 'skip') { advanceTurn(s); advanceTurn(s); }
+    else if (def.value === 'reverse') {
+      s.flags.direction *= -1; advanceTurn(s);
+      if (n === 2) advanceTurn(s);
     } else if (def.value === 'draw2') {
-      advanceTurn(s);
-      const target = s.current;
+      advanceTurn(s); const target = s.current;
       for (let i = 0; i < 2; i++) drawTo(s, target);
       s.log.push(s.players[target].name + ' draws 2 and is skipped');
       advanceTurn(s);
-    } else {
-      advanceTurn(s);
-    }
+    } else advanceTurn(s);
     return s;
   }
-
   if (cmd.type === 'CHOOSE_COLOR') {
-    s.flags.activeColor = cmd.color;
-    s.phase = 'play';
-    const wasWild4 = s.flags.pendingWild4;
-    s.flags.pendingWild4 = false;
+    s.flags.activeColor = cmd.color; s.phase = 'play';
+    const wasWild4 = s.flags.pendingWild4; s.flags.pendingWild4 = false;
     s.log.push(s.players[actor].name + ' chose ' + cmd.color);
     if (wasWild4) {
-      advanceTurn(s);
-      const target = s.current;
+      advanceTurn(s); const target = s.current;
       for (let i = 0; i < 4; i++) drawTo(s, target);
       s.log.push(s.players[target].name + ' draws 4 and is skipped');
       advanceTurn(s);
-    } else {
-      advanceTurn(s);
-    }
+    } else advanceTurn(s);
     return s;
   }
-
   if (cmd.type === 'DRAW') {
     if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
     const c = drawTo(s, actor);
-    if (!c) {
-      s.log.push('No cards left to draw');
-      advanceTurn(s);
-      return s;
-    }
-    s.flags.drewThisTurn = true;
-    s.flags.drawnCardId = c.id;
-    s.log.push(s.players[actor].name + ' drew a card');
-    return s;
+    if (!c) { s.log.push('No cards left to draw'); advanceTurn(s); return s; }
+    s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
+    s.log.push(s.players[actor].name + ' drew a card'); return s;
   }
-
   if (cmd.type === 'PASS') {
-    s.flags.drewThisTurn = false;
-    s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' passed');
-    advanceTurn(s);
-    return s;
+    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' passed'); advanceTurn(s); return s;
   }
-
   throw new Error('Unknown command: ' + cmd.type);
 }
 
 // ============================================================
-// Game: Go Fish
+// Custom game engine
 // ============================================================
 
-function createGF(names) {
-  const s = makeState('go-fish', names);
-  s.zones.draw = { cards: [] };
+let _cardSeq = 1;
+function newCardId() { return 'c' + (_cardSeq++); }
+
+function finalizeCustomGame(def) {
+  const defs = {};
+  for (const c of def.cards) {
+    defs[c.id] = { ...c, kind: 'custom' };
+  }
+  const instances = [];
+  for (const c of def.cards) {
+    for (let i = 0; i < c.count; i++) instances.push({ id: c.id + '_' + i, defId: c.id });
+  }
+  return { ...def, _defs: defs, _instances: instances };
+}
+
+function createCustomState(def, names) {
+  const s = makeState(def.id, names);
+  s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
   for (const p of s.players) {
     s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-    s.zones['sets:' + p.id] = { owner: p.id, cards: [] };
+    if (def.winCondition === 'mostSets') {
+      s.zones['sets:' + p.id] = { owner: p.id, cards: [] };
+    }
   }
-  const cards = STD_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
-  s.zones.draw.cards = shuffle(cards);
+  const allCards = def._instances.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
+  s.zones.draw.cards = shuffle(allCards);
   for (const p of s.players) {
-    for (let i = 0; i < 5; i++) s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
+    for (let i = 0; i < def.deal; i++) {
+      const c = s.zones.draw.cards.pop();
+      if (c) s.zones['hand:' + p.id].cards.push(c);
+    }
   }
-  for (const p of s.players) collectSets(s, p.id);
-  s.log.push(names[0] + ' starts.');
+  if (def.flipStart) {
+    let top = s.zones.draw.cards.pop(); let tries = 0;
+    while (top && def._defs[top.defId]?.isWild && tries++ < 30) {
+      s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
+    }
+    if (top) {
+      top.faceUp = true; s.zones.discard.cards.push(top);
+      s.flags.activeGroup = def._defs[top.defId]?.group || def._defs[top.defId]?.color;
+    }
+  }
+  if (def.winCondition === 'mostSets') {
+    for (const p of s.players) collectSetsCustom(def, s, p.id);
+  }
+  s.log.push((names[0] || 'P1') + ' starts.');
   return s;
 }
 
-function collectSets(s, playerId) {
+function collectSetsCustom(def, s, playerId) {
+  if (def.winCondition !== 'mostSets') return;
   const hand = s.zones['hand:' + playerId];
+  if (!hand) return;
   const byRank = {};
   for (const c of hand.cards) {
-    const r = STD_DECK.defs[c.defId].rank;
+    const r = def._defs[c.defId]?.rank;
+    if (r == null) continue;
     (byRank[r] = byRank[r] || []).push(c);
   }
   for (const [rank, cards] of Object.entries(byRank)) {
-    if (cards.length === 4) {
-      for (const c of cards) {
+    if (cards.length >= def.setSize) {
+      const take = cards.slice(0, def.setSize);
+      for (const c of take) {
         hand.cards.splice(hand.cards.indexOf(c), 1);
         c.faceUp = true;
         s.zones['sets:' + playerId].cards.push(c);
@@ -953,145 +729,292 @@ function collectSets(s, playerId) {
   }
 }
 
-function checkGFEnd(s) {
-  for (const p of s.players) collectSets(s, p.id);
-  let totalSets = 0;
-  for (const p of s.players) totalSets += s.zones['sets:' + p.id].cards.length / 4;
-  const allHandsEmpty = s.players.every(p => s.zones['hand:' + p.id].cards.length === 0);
-  if (totalSets < 13 && !allHandsEmpty) return;
-  s.ended = true;
-  let best = -1;
-  s.winners = [];
-  for (const p of s.players) {
-    const n = s.zones['sets:' + p.id].cards.length / 4;
-    if (n > best) { best = n; s.winners = [p.id]; }
-    else if (n === best) s.winners.push(p.id);
+function isPlayableCustom(def, s, card) {
+  const def_ = def._defs[card.defId];
+  if (!def_) return false;
+  if (def_.isWild) return true;
+  const top = topOf(s.zones.discard);
+  if (!top) return true;
+  const topDef = def._defs[top.defId];
+  if (!topDef) return true;
+  const checks = [];
+  if (def.matchBy.includes('color'))
+    checks.push(def_.color === topDef.color);
+  if (def.matchBy.includes('group')) {
+    const active = s.flags.activeGroup;
+    checks.push(active != null ? def_.group === active : def_.group === topDef.group);
   }
-  const names = s.winners.map(w => s.players[w].name).join(', ');
-  s.log.push('Game over. ' + names + ' win with ' + best + ' set' + (best === 1 ? '' : 's') + '.');
+  if (def.matchBy.includes('rank'))
+    checks.push(def_.rank === topDef.rank);
+  return checks.some(x => x);
 }
 
-function legalGF(s, player) {
+function legalCustom(def, s, player) {
   if (s.ended || player !== s.current) return [];
-  const hand = s.zones['hand:' + player];
-  const ranks = [...new Set(hand.cards.map(c => STD_DECK.defs[c.defId].rank))];
-  const out = [];
-  for (const rank of ranks) {
-    for (const p of s.players) {
-      if (p.id === player) continue;
-      out.push({ id: `ask-${p.id}-${rank}`, target: p.id, rank, cmd: { type: 'ASK', target: p.id, rank } });
-    }
+  if (s.phase === 'chooseGroup') {
+    const groups = [...new Set(def.cards.filter(c => !c.isWild).map(c => c.group).filter(Boolean))];
+    return groups.map(g => ({ id: 'group-' + g, cmd: { type: 'CHOOSE_GROUP', group: g } }));
   }
+  if (s.phase === 'chooseColor') {
+    const colors = [...new Set(def.cards.filter(c => !c.isWild).map(c => c.color).filter(Boolean))];
+    return colors.map(c => ({ id: 'color-' + c, cmd: { type: 'CHOOSE_GROUP', group: c } }));
+  }
+  const hand = s.zones['hand:' + player]; const out = [];
+  if (s.flags.drewThisTurn) {
+    const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
+    if (drawn && isPlayableCustom(def, s, drawn))
+      out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
+    out.push({ id: 'pass', cmd: { type: 'PASS' } }); return out;
+  }
+  for (const c of hand.cards) if (isPlayableCustom(def, s, c))
+    out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
+  if (def.turnMode !== 'playOnly' && out.length === 0)
+    out.push({ id: 'draw', cmd: { type: 'DRAW' } });
+  if (def.turnMode === 'drawFirst')
+    return [{ id: 'draw', cmd: { type: 'DRAW' } }].concat(out.filter(a => a.cmd.type !== 'DRAW'));
   return out;
 }
 
-function applyGF(state, cmd) {
-  if (cmd.type !== 'ASK') throw new Error('Unknown command');
-  const s = structuredClone(state);
-  const actor = s.current;
-  const target = cmd.target;
-  const rank = cmd.rank;
-  if (target === actor) throw new Error('Cannot ask yourself');
-  if (!s.players[target]) throw new Error('Invalid target');
-  const actorHand = s.zones['hand:' + actor];
-  const targetHand = s.zones['hand:' + target];
-  if (!actorHand.cards.some(c => STD_DECK.defs[c.defId].rank === rank)) {
-    throw new Error('You must hold that rank to ask for it');
-  }
+function applyCustom(def, state, cmd) {
+  const s = structuredClone(state); const actor = s.current;
+  const n = s.players.length;
 
-  const matching = targetHand.cards.filter(c => STD_DECK.defs[c.defId].rank === rank);
-  let goAgain = false;
+  if (cmd.type === 'PLAY_CARD') {
+    const hand = s.zones['hand:' + actor];
+    const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
+    if (idx < 0) throw new Error('Card not in hand');
+    const card = hand.cards[idx];
+    const cardDef = def._defs[card.defId];
+    if (!isPlayableCustom(def, s, card)) throw new Error('Not playable');
+    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId)
+      throw new Error('You can only play the card you drew');
+    hand.cards.splice(idx, 1); card.faceUp = true;
+    s.zones.discard.cards.push(card);
+    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
+    const label = cardDef.label || cardDef.rank;
+    s.log.push(s.players[actor].name + ' played ' + label);
 
-  if (matching.length > 0) {
-    for (const c of matching) {
-      targetHand.cards.splice(targetHand.cards.indexOf(c), 1);
-      actorHand.cards.push(c);
+    // Wild: choose new group/color
+    if (cardDef.isWild && def.wildChoosesGroup) {
+      s.phase = 'chooseGroup';
+      s.flags.pendingAction = cardDef.actionType || 'none';
+      return s;
     }
-    s.log.push(`${s.players[actor].name} got ${matching.length}\u00d7 ${rank} from ${s.players[target].name}`);
-    goAgain = true;
-  } else if (s.zones.draw.cards.length > 0) {
-    const c = s.zones.draw.cards.pop();
-    actorHand.cards.push(c);
-    const drawnRank = STD_DECK.defs[c.defId].rank;
-    s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${rank}, drew ${STD_DECK.defs[c.defId].name}`);
-    goAgain = (drawnRank === rank);
-  } else {
-    s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${rank}, got nothing`);
+
+    if (cardDef.group) s.flags.activeGroup = cardDef.group;
+    if (cardDef.color && !cardDef.group) s.flags.activeGroup = cardDef.color;
+
+    // Win condition check (emptyHand)
+    if (def.winCondition === 'emptyHand' && hand.cards.length === 0) {
+      s.ended = true; s.winners = [actor];
+      s.log.push(s.players[actor].name + ' wins!'); return s;
+    }
+
+    applyCustomAction(def, s, cardDef, actor);
+    return s;
   }
 
-  checkGFEnd(s);
+  if (cmd.type === 'CHOOSE_GROUP') {
+    s.flags.activeGroup = cmd.group;
+    s.phase = 'play';
+    s.log.push(s.players[actor].name + ' chose ' + cmd.group);
+    const pendingAction = s.flags.pendingAction || 'none';
+    s.flags.pendingAction = undefined;
+    const hand = s.zones['hand:' + actor];
+    if (def.winCondition === 'emptyHand' && hand.cards.length === 0) {
+      s.ended = true; s.winners = [actor];
+      s.log.push(s.players[actor].name + ' wins!'); return s;
+    }
+    applyCustomAction(def, s, { actionType: pendingAction, isWild: false, group: cmd.group }, actor);
+    return s;
+  }
 
-  if (!s.ended && (!goAgain || s.zones['hand:' + actor].cards.length === 0)) {
+  if (cmd.type === 'DRAW') {
+    if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
+    const c = drawTo(s, actor);
+    if (!c) { s.log.push('No cards left to draw'); advanceTurn(s); return s; }
+    s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
+    s.log.push(s.players[actor].name + ' drew a card');
+    return s;
+  }
+
+  if (cmd.type === 'PASS') {
+    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' passed'); advanceTurn(s);
+    if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
+    return s;
+  }
+
+  throw new Error('Unknown command: ' + cmd.type);
+}
+
+function applyCustomAction(def, s, cardDef, actor) {
+  const n = s.players.length;
+  const action = cardDef.actionType || 'none';
+  if (action === 'skip') {
+    advanceTurn(s); s.log.push(s.players[s.current].name + ' is skipped'); advanceTurn(s);
+  } else if (action === 'reverse') {
+    s.flags.direction *= -1; advanceTurn(s);
+    if (n === 2) { s.log.push('Reverse acts as Skip with 2 players'); advanceTurn(s); }
+  } else if (action === 'draw2') {
+    advanceTurn(s); const target = s.current;
+    for (let i = 0; i < 2; i++) drawTo(s, target);
+    s.log.push(s.players[target].name + ' draws 2 and is skipped'); advanceTurn(s);
+  } else if (action === 'draw4') {
+    advanceTurn(s); const target = s.current;
+    for (let i = 0; i < 4; i++) drawTo(s, target);
+    s.log.push(s.players[target].name + ' draws 4 and is skipped'); advanceTurn(s);
+  } else {
     advanceTurn(s);
   }
-  return s;
+  if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
+}
+
+function checkCustomEnd(def, s) {
+  if (def.winCondition !== 'mostSets') return;
+  for (const p of s.players) collectSetsCustom(def, s, p.id);
+  let totalSets = 0;
+  for (const p of s.players) totalSets += s.zones['sets:' + p.id].cards.length / def.setSize;
+  const allHandsEmpty = s.players.every(p => s.zones['hand:' + p.id].cards.length === 0);
+  const drawEmpty = s.zones.draw.cards.length === 0;
+  if (totalSets < 13 && !(drawEmpty && allHandsEmpty)) return;
+  s.ended = true;
+  let best = -1; s.winners = [];
+  for (const p of s.players) {
+    const cnt = s.zones['sets:' + p.id].cards.length / def.setSize;
+    if (cnt > best) { best = cnt; s.winners = [p.id]; }
+    else if (cnt === best) s.winners.push(p.id);
+  }
+  s.log.push('Game over. ' + s.winners.map(w => s.players[w].name).join(', ')
+    + ' win with ' + best + ' set' + (best === 1 ? '' : 's') + '.');
+}
+
+function makeCustomAdapter(def) {
+  return {
+    id: def.id, name: def.name,
+    minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
+    defs: def._defs, uiMode: 'play',
+    rules: def.description || ('Custom game: ' + def.name),
+    isCustom: true,
+    create: names => createCustomState(def, names),
+    legal: (s, p) => legalCustom(def, s, p),
+    apply: (s, cmd) => applyCustom(def, s, cmd),
+  };
+}
+
+// ============================================================
+// Persistence
+// ============================================================
+
+const STORAGE_KEY = 'card-table:custom-games';
+
+function loadCustomGames() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const out = {};
+    for (const id in raw) {
+      out[id] = finalizeCustomGame(raw[id]);
+      // Track highest card id to avoid collisions
+      for (const c of raw[id].cards || []) {
+        const m = /^c(\d+)$/.exec(c.id || '');
+        if (m) _cardSeq = Math.max(_cardSeq, parseInt(m[1]) + 1);
+      }
+    }
+    return out;
+  } catch (e) { return {}; }
+}
+
+function persistCustomGames() {
+  try {
+    const raw = {};
+    for (const id in CUSTOM_GAMES) {
+      const d = CUSTOM_GAMES[id];
+      raw[id] = {
+        id: d.id, name: d.name, minPlayers: d.minPlayers, maxPlayers: d.maxPlayers,
+        cards: d.cards, deal: d.deal, flipStart: d.flipStart,
+        matchBy: d.matchBy, wildChoosesGroup: d.wildChoosesGroup,
+        turnMode: d.turnMode, winCondition: d.winCondition, setSize: d.setSize,
+        description: d.description,
+      };
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(raw));
+  } catch (e) { console.warn('Failed to save custom games', e); }
 }
 
 // ============================================================
 // Game registry
 // ============================================================
 
+const CUSTOM_GAMES = loadCustomGames();
 const GAMES = {
   'uno': {
-    id: 'uno', name: 'UNO',
-    minPlayers: 2, maxPlayers: 6,
-    defs: UNO_DECK.defs,
-    uiMode: 'play',
-    rules: 'Match the top card by color or number. Action cards skip, reverse, or force draws. Wilds let you pick a color. Draw one card if you cannot play. First to empty their hand wins.',
+    id: 'uno', name: 'UNO', minPlayers: 2, maxPlayers: 6,
+    defs: UNO_DECK.defs, uiMode: 'play',
+    rules: 'Match color or number. Action cards skip, reverse, or force draws.',
     create: createUno, legal: legalUno, apply: applyUno,
   },
   'crazy-eights': {
-    id: 'crazy-eights', name: 'Crazy Eights',
-    minPlayers: 2, maxPlayers: 7,
-    defs: STD_DECK.defs,
-    uiMode: 'play',
-    rules: 'Play a card matching the suit or rank of the top card. Eights are wild \u2014 play one and choose the next suit. Draw a card if you cannot play. First to empty their hand wins.',
+    id: 'crazy-eights', name: 'Crazy Eights', minPlayers: 2, maxPlayers: 7,
+    defs: STD_DECK.defs, uiMode: 'play',
+    rules: 'Match suit or rank. Eights are wild.',
     create: createCE, legal: legalCE, apply: applyCE,
   },
-  'go-fish': {
-    id: 'go-fish', name: 'Go Fish',
-    minPlayers: 2, maxPlayers: 6,
-    defs: STD_DECK.defs,
-    uiMode: 'ask',
-    rules: 'Ask another player for a rank you already hold. If they have it, they hand over all matching cards and you go again. Otherwise you draw one. Collect all four of a rank to make a set. Most sets wins.',
-    create: createGF, legal: legalGF, apply: applyGF,
-  },
 };
+
+function registerCustomGame(def) {
+  CUSTOM_GAMES[def.id] = finalizeCustomGame(def);
+  GAMES[def.id] = makeCustomAdapter(CUSTOM_GAMES[def.id]);
+}
+
+function unregisterCustomGame(id) {
+  delete CUSTOM_GAMES[id];
+  delete GAMES[id];
+  persistCustomGames();
+}
+
+// Register saved custom games at startup
+for (const id in CUSTOM_GAMES) {
+  GAMES[id] = makeCustomAdapter(CUSTOM_GAMES[id]);
+}
 
 // ============================================================
 // App state
 // ============================================================
 
-let G = null;                // current game state
-let SCREEN = 'menu';         // 'menu' | 'pass' | 'game'
-let VIEWER = 0;              // which player's perspective we render
-let undoStack = [];          // [{ state, viewer }]
-let pendingRank = null;      // Go Fish UI state
+let G = null;
+let SCREEN = 'menu';         // 'menu' | 'pass' | 'game' | 'editor'
+let VIEWER = 0;
+let undoStack = [];
+let pendingRank = null;
 const MENU = { scriptId: 'uno', namesInput: 'Alice, Bob' };
+
+// Editor state
+let editingGame = null;
+let editorTab = 'cards';
 
 // ============================================================
 // Card rendering
 // ============================================================
 
 function renderCardEl(card) {
-  if (!card || card.defId === '__hidden__') {
-    return el('div', { class: 'card back' });
-  }
-  const def = GAMES[G.scriptId].defs[card.defId];
+  if (!card || card.defId === '__hidden__') return el('div', { class: 'card back' });
+  const game = GAMES[G.scriptId];
+  const def = game && game.defs[card.defId];
   if (!def) return el('div', { class: 'card back' });
-  return def.kind === 'uno' ? renderUnoCard(def) : renderStdCard(def);
+  if (def.kind === 'uno') return renderUnoCard(def);
+  if (def.kind === 'std') return renderStdCard(def);
+  if (def.kind === 'custom') return renderCustomCard(def);
+  return el('div', { class: 'card back' });
 }
 
 function renderStdCard(def) {
   const colorCls = def.color === 'red' ? 'red' : 'black';
   return el('div', { class: 'card std ' + colorCls },
     el('div', { class: 'corner tl' },
-      el('span', null, def.rank),
-      el('span', null, def.suit)),
+      el('span', null, def.rank), el('span', null, def.suit)),
     el('span', { class: 'pip' }, def.suit),
     el('div', { class: 'corner br' },
-      el('span', null, def.rank),
-      el('span', null, def.suit)));
+      el('span', null, def.rank), el('span', null, def.suit)));
 }
 
 function renderUnoCard(def) {
@@ -1099,15 +1022,34 @@ function renderUnoCard(def) {
   if (def.value === 'skip') pip = '⊘';
   else if (def.value === 'reverse') pip = '⇄';
   else if (def.value === 'draw2') pip = '+2';
-  else if (def.value === 'wild') pip = 'WILD';
-  else if (def.value === 'wild4') pip = 'WILD +4';
+  else if (def.value === 'wild') pip = 'W';
+  else if (def.value === 'wild4') pip = '+4';
   else pip = def.value;
-
-  const colorCls = def.color === 'wild' ? 'wild' : def.color;
-  return el('div', { class: 'card uno ' + colorCls },
+  const colorCls = def.color === 'wild' ? 'wild' : '';
+  const bg = def.color === 'wild' ? '' : COLOR_HEX[def.color];
+  const fg = LIGHT_COLORS.has(def.color) ? '#111' : 'white';
+  return el('div', {
+    class: 'card uno' + (def.color === 'wild' ? ' wild' : ''),
+    style: { background: bg, color: fg },
+  },
     el('div', { class: 'corner tl' }, el('span', null, pip)),
     el('span', { class: 'pip' }, pip),
     el('div', { class: 'corner br' }, el('span', null, pip)));
+}
+
+function renderCustomCard(def) {
+  if (def.isWild) {
+    return el('div', { class: 'card custom wild' },
+      el('div', { class: 'corner tl' }, el('span', null, def.label)),
+      el('span', { class: 'pip' }, def.label),
+      el('div', { class: 'corner br' }, el('span', null, def.label)));
+  }
+  const bg = COLOR_HEX[def.color] || '#374151';
+  const fg = LIGHT_COLORS.has(def.color) ? '#111' : 'white';
+  return el('div', { class: 'card custom', style: { background: bg, color: fg } },
+    el('div', { class: 'corner tl' }, el('span', null, def.rank || '')),
+    el('span', { class: 'pip' }, def.label),
+    el('div', { class: 'corner br' }, el('span', null, def.rank || '')));
 }
 
 function sortHand(cards, defs) {
@@ -1124,72 +1066,555 @@ function sortHand(cards, defs) {
       if (cd !== 0) return cd;
       return (UNO_VALUE_ORDER[da.value] ?? 99) - (UNO_VALUE_ORDER[db.value] ?? 99);
     }
+    if (da.kind === 'custom') {
+      const cd = (COLOR_ORDER[da.color] ?? 99) - (COLOR_ORDER[db.color] ?? 99);
+      if (cd !== 0) return cd;
+      const gd = String(da.group || '').localeCompare(String(db.group || ''));
+      if (gd !== 0) return gd;
+      return String(da.rank || '').localeCompare(String(db.rank || ''));
+    }
     return 0;
   });
 }
 
 // ============================================================
-// Rendering — screens
+// Screen router
 // ============================================================
 
 function render() {
   const root = document.getElementById('app');
   root.innerHTML = '';
   if (SCREEN === 'menu') return renderMenu(root);
+  if (SCREEN === 'editor') return renderEditor(root);
   if (SCREEN === 'pass') return renderPass(root);
   if (SCREEN === 'game') return renderGame(root);
 }
 
+// ============================================================
+// Menu
+// ============================================================
+
 function renderMenu(root) {
   const gameSelect = el('select', {
-    onchange: e => {
-      MENU.scriptId = e.target.value;
-      rulesEl.textContent = GAMES[MENU.scriptId].rules;
-    },
+    onchange: e => { MENU.scriptId = e.target.value; render(); },
   });
-  for (const g of Object.values(GAMES)) {
-    const opt = document.createElement('option');
-    opt.value = g.id;
-    opt.textContent = g.name;
-    gameSelect.appendChild(opt);
+  const customGames = Object.values(GAMES).filter(g => g.isCustom);
+  const builtInGames = Object.values(GAMES).filter(g => !g.isCustom);
+  if (builtInGames.length > 0) {
+    const grp = el('optgroup', { label: 'Examples' });
+    for (const g of builtInGames) {
+      const o = document.createElement('option');
+      o.value = g.id; o.textContent = g.name; grp.appendChild(o);
+    }
+    gameSelect.appendChild(grp);
   }
+  if (customGames.length > 0) {
+    const grp = el('optgroup', { label: 'My games' });
+    for (const g of customGames) {
+      const o = document.createElement('option');
+      o.value = g.id; o.textContent = g.name; grp.appendChild(o);
+    }
+    gameSelect.appendChild(grp);
+  }
+  if (!GAMES[MENU.scriptId]) MENU.scriptId = Object.keys(GAMES)[0];
   gameSelect.value = MENU.scriptId;
 
-  const rulesEl = el('div', { class: 'rules' }, GAMES[MENU.scriptId].rules);
+  const currentGame = GAMES[MENU.scriptId];
 
   const namesInput = el('input', {
-    type: 'text',
-    placeholder: 'Alice, Bob',
+    type: 'text', placeholder: 'Alice, Bob',
     value: MENU.namesInput,
     oninput: e => { MENU.namesInput = e.target.value; },
   });
 
   const startBtn = el('button', { class: 'primary', onclick: startGame }, 'Start game');
 
+  const menuCard = el('div', { class: 'menu-card' },
+    el('label', null, 'Game', gameSelect),
+    el('div', { class: 'rules' }, currentGame?.rules || ''),
+    el('label', null, 'Players (comma-separated)', namesInput),
+    startBtn);
+
+  if (currentGame?.isCustom) {
+    menuCard.appendChild(el('div', { class: 'preset-row' },
+      el('button', { class: 'ghost', onclick: () => editCustomGame(MENU.scriptId) }, 'Edit'),
+      el('button', { class: 'danger', onclick: () => deleteCustomGame(MENU.scriptId) }, 'Delete')));
+  }
+
+  menuCard.appendChild(el('div', { class: 'section-title' }, 'Build a game'));
+  menuCard.appendChild(el('button', { class: 'ghost', onclick: newCustomGame }, '+ Create custom game'));
+
   root.appendChild(el('div', { class: 'menu' },
     el('h1', null, 'Card ', el('span', null, 'Table')),
-    el('div', { class: 'tagline' }, 'Pass-and-play card games'),
-    el('div', { class: 'menu-card' },
-      el('label', null, 'Game', gameSelect),
-      rulesEl,
-      el('label', null, 'Players (comma-separated)', namesInput),
-      startBtn)));
+    el('div', { class: 'tagline' }, 'Build and play card games'),
+    menuCard));
 }
 
-function renderPass(root) {
-  const game = GAMES[G.scriptId];
-  const onContinue = () => { SCREEN = 'game'; render(); };
+// ============================================================
+// Editor
+// ============================================================
 
+function defaultCustomGame() {
+  const cards = [
+    { id: newCardId(), label: 'Red 0', color: 'red', group: 'red', rank: '0', value: 0, count: 1, isWild: false, actionType: 'none' },
+    { id: newCardId(), label: 'Red 1', color: 'red', group: 'red', rank: '1', value: 1, count: 2, isWild: false, actionType: 'none' },
+    { id: newCardId(), label: 'Red Skip', color: 'red', group: 'red', rank: 'skip', value: 0, count: 2, isWild: false, actionType: 'skip' },
+    { id: newCardId(), label: 'Red +2', color: 'red', group: 'red', rank: 'draw2', value: 0, count: 2, isWild: false, actionType: 'draw2' },
+    { id: newCardId(), label: 'Blue 0', color: 'blue', group: 'blue', rank: '0', value: 0, count: 1, isWild: false, actionType: 'none' },
+    { id: newCardId(), label: 'Blue 1', color: 'blue', group: 'blue', rank: '1', value: 1, count: 2, isWild: false, actionType: 'none' },
+    { id: newCardId(), label: 'Blue Skip', color: 'blue', group: 'blue', rank: 'skip', value: 0, count: 2, isWild: false, actionType: 'skip' },
+    { id: newCardId(), label: 'Blue +2', color: 'blue', group: 'blue', rank: 'draw2', value: 0, count: 2, isWild: false, actionType: 'draw2' },
+    { id: newCardId(), label: 'Wild', color: 'wild', group: '', rank: 'wild', value: 0, count: 4, isWild: true, actionType: 'none' },
+  ];
+  return {
+    id: 'custom_' + Date.now(),
+    name: 'My game',
+    minPlayers: 2, maxPlayers: 4,
+    deal: 5, flipStart: true,
+    matchBy: ['group', 'rank'],
+    wildChoosesGroup: true,
+    turnMode: 'standard',
+    winCondition: 'emptyHand',
+    setSize: 4,
+    cards,
+    description: '',
+  };
+}
+
+const DECK_PRESETS = {
+  standard52: () => {
+    const cards = [];
+    for (const suit of STD_SUITS) {
+      const group = { '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' }[suit];
+      const color = (suit === '♥' || suit === '♦') ? 'red' : 'black';
+      for (const rank of STD_RANKS) {
+        cards.push({
+          id: newCardId(), label: rank + suit, color, group, rank,
+          value: rank === 'A' ? 1 : rank === 'J' ? 11 : rank === 'Q' ? 12 : rank === 'K' ? 13 : parseInt(rank, 10),
+          count: 1, isWild: false, actionType: 'none',
+        });
+      }
+    }
+    return cards;
+  },
+  uno: () => {
+    const cards = [];
+    for (const color of ['red', 'yellow', 'green', 'blue']) {
+      cards.push({ id: newCardId(), label: color[0].toUpperCase() + '0', color, group: color, rank: '0', value: 0, count: 1, isWild: false, actionType: 'none' });
+      for (let n = 1; n <= 9; n++) {
+        cards.push({ id: newCardId(), label: color[0].toUpperCase() + n, color, group: color, rank: String(n), value: n, count: 2, isWild: false, actionType: 'none' });
+      }
+      cards.push({ id: newCardId(), label: color[0].toUpperCase() + ' Skip', color, group: color, rank: 'skip', value: 0, count: 2, isWild: false, actionType: 'skip' });
+      cards.push({ id: newCardId(), label: color[0].toUpperCase() + ' Rev', color, group: color, rank: 'reverse', value: 0, count: 2, isWild: false, actionType: 'reverse' });
+      cards.push({ id: newCardId(), label: color[0].toUpperCase() + ' +2', color, group: color, rank: 'draw2', value: 0, count: 2, isWild: false, actionType: 'draw2' });
+    }
+    cards.push({ id: newCardId(), label: 'Wild', color: 'wild', group: '', rank: 'wild', value: 0, count: 4, isWild: true, actionType: 'none' });
+    cards.push({ id: newCardId(), label: 'Wild +4', color: 'wild', group: '', rank: 'wild4', value: 0, count: 4, isWild: true, actionType: 'draw4' });
+    return cards;
+  },
+  numberCards: () => {
+    const cards = [];
+    for (let n = 1; n <= 10; n++) {
+      cards.push({
+        id: newCardId(), label: 'N' + n, color: 'white', group: 'num', rank: String(n),
+        value: n, count: 4, isWild: false, actionType: 'none',
+      });
+    }
+    return cards;
+  },
+  empty: () => [],
+};
+
+function newCustomGame() {
+  editingGame = defaultCustomGame();
+  editorTab = 'cards';
+  SCREEN = 'editor';
+  render();
+}
+
+function editCustomGame(id) {
+  const def = CUSTOM_GAMES[id];
+  if (!def) return;
+  editingGame = JSON.parse(JSON.stringify({
+    id: def.id, name: def.name, minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
+    cards: def.cards, deal: def.deal, flipStart: def.flipStart,
+    matchBy: def.matchBy, wildChoosesGroup: def.wildChoosesGroup,
+    turnMode: def.turnMode, winCondition: def.winCondition, setSize: def.setSize,
+    description: def.description,
+  }));
+  editorTab = 'cards';
+  SCREEN = 'editor';
+  render();
+}
+
+function deleteCustomGame(id) {
+  if (!confirm('Delete "' + CUSTOM_GAMES[id].name + '"?')) return;
+  unregisterCustomGame(id);
+  if (MENU.scriptId === id) MENU.scriptId = Object.keys(GAMES)[0];
+  render();
+}
+
+function renderEditor(root) {
+  const def = editingGame;
+  const header = el('div', { class: 'editor-header' },
+    el('h2', null, def.name || 'Untitled game'),
+    el('div', { class: 'actions' },
+      el('button', { class: 'ghost', onclick: () => { SCREEN = 'menu'; render(); } }, 'Cancel'),
+      el('button', { class: 'primary', onclick: saveEditor }, 'Save')));
+
+  const tabs = el('div', { class: 'tabs' },
+    el('button', { class: 'tab' + (editorTab === 'cards' ? ' active' : ''), onclick: () => { editorTab = 'cards'; render(); } }, 'Cards'),
+    el('button', { class: 'tab' + (editorTab === 'rules' ? ' active' : ''), onclick: () => { editorTab = 'rules'; render(); } }, 'Rules'),
+    el('button', { class: 'tab' + (editorTab === 'preview' ? ' active' : ''), onclick: () => { editorTab = 'preview'; render(); } }, 'Preview & Test'));
+
+  const content = el('div', { class: 'tab-content' });
+  if (editorTab === 'cards') renderCardsTab(content);
+  else if (editorTab === 'rules') renderRulesTab(content);
+  else if (editorTab === 'preview') renderPreviewTab(content);
+
+  root.appendChild(el('div', { class: 'editor' }, header, tabs, content));
+}
+
+function renderCardsTab(container) {
+  const def = editingGame;
+
+  const presetRow = el('div', { class: 'preset-row' },
+    el('span', { class: 'stat', style: { padding: '0.5rem 0.3rem', flex: 'none' } }, 'Load preset:'),
+    el('button', { class: 'ghost', onclick: () => loadPreset('uno') }, 'UNO deck'),
+    el('button', { class: 'ghost', onclick: () => loadPreset('standard52') }, 'Standard 52'),
+    el('button', { class: 'ghost', onclick: () => loadPreset('numberCards') }, 'Number cards'),
+    el('button', { class: 'ghost', onclick: () => loadPreset('empty') }, 'Clear'));
+
+  const tbody = el('tbody');
+  const rows = def.cards.map((c, i) => buildCardRow(c, i));
+  rows.forEach(r => tbody.appendChild(r));
+
+  const table = el('table', { class: 'cards-table' },
+    el('thead', null, el('tr', null,
+      el('th', null, 'Label'),
+      el('th', null, 'Color'),
+      el('th', null, 'Group'),
+      el('th', null, 'Rank'),
+      el('th', null, 'Val'),
+      el('th', null, 'Count'),
+      el('th', null, 'Wild'),
+      el('th', null, 'Action'),
+      el('th', null, ''))),
+    tbody);
+
+  // Wire events
+  tbody.addEventListener('change', e => {
+    const t = e.target;
+    const idx = parseInt(t.dataset.idx, 10);
+    const field = t.dataset.field;
+    if (!field || isNaN(idx)) return;
+    const card = def.cards[idx];
+    if (!card) return;
+    let v = t.value;
+    if (t.type === 'checkbox') v = t.checked;
+    if (t.type === 'number') v = parseInt(v, 10) || 0;
+    if (field === 'count') v = Math.max(1, v);
+    if (field === 'value') v = Math.max(0, v);
+    card[field] = v;
+    if (field === 'count') repopulateTable();
+  });
+  tbody.addEventListener('click', e => {
+    const t = e.target;
+    if (!t.classList.contains('del-card')) return;
+    const idx = parseInt(t.dataset.idx, 10);
+    def.cards.splice(idx, 1);
+    repopulateTable();
+  });
+
+  function repopulateTable() {
+    tbody.innerHTML = '';
+    def.cards.forEach((c, i) => tbody.appendChild(buildCardRow(c, i)));
+  }
+
+  const addBtn = el('button', { class: 'ghost', onclick: () => {
+    def.cards.push({
+      id: newCardId(), label: 'New card', color: 'red', group: 'red', rank: '1',
+      value: 0, count: 1, isWild: false, actionType: 'none',
+    });
+    repopulateTable();
+  } }, '+ Add card');
+
+  const stats = el('div', { class: 'stat' },
+    def.cards.reduce((n, c) => n + c.count, 0) + ' total cards across '
+    + def.cards.length + ' card types');
+
+  container.appendChild(presetRow);
+  container.appendChild(el('div', { class: 'table-scroll' }, table));
+  container.appendChild(el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' } }, addBtn, stats));
+}
+
+function buildCardRow(card, idx) {
+  const colorSelect = el('select', { 'data-idx': idx, 'data-field': 'color' });
+  for (const c of Object.keys(COLOR_HEX)) {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c; colorSelect.appendChild(opt);
+  }
+  const wildOpt = document.createElement('option');
+  wildOpt.value = 'wild'; wildOpt.textContent = 'wild'; colorSelect.appendChild(wildOpt);
+  colorSelect.value = card.color || 'red';
+
+  const actionSelect = el('select', { 'data-idx': idx, 'data-field': 'actionType' });
+  for (const a of ['none', 'skip', 'reverse', 'draw2', 'draw4']) {
+    const opt = document.createElement('option');
+    opt.value = a; opt.textContent = a; actionSelect.appendChild(opt);
+  }
+  actionSelect.value = card.actionType || 'none';
+
+  return el('tr', null,
+    el('td', null, el('input', {
+      type: 'text', value: card.label || '',
+      'data-idx': idx, 'data-field': 'label',
+    })),
+    el('td', null, colorSelect),
+    el('td', null, el('input', {
+      type: 'text', value: card.group || '',
+      'data-idx': idx, 'data-field': 'group',
+    })),
+    el('td', null, el('input', {
+      type: 'text', value: card.rank || '',
+      'data-idx': idx, 'data-field': 'rank',
+    })),
+    el('td', null, el('input', {
+      type: 'number', value: card.value ?? 0, min: 0,
+      'data-idx': idx, 'data-field': 'value',
+    })),
+    el('td', null, el('input', {
+      type: 'number', value: card.count ?? 1, min: 1,
+      'data-idx': idx, 'data-field': 'count',
+    })),
+    el('td', null, el('input', {
+      type: 'checkbox', checked: !!card.isWild,
+      'data-idx': idx, 'data-field': 'isWild',
+    })),
+    el('td', null, actionSelect),
+    el('td', null, el('button', {
+      class: 'del-card', 'data-idx': idx, title: 'Delete',
+    }, '×')));
+}
+
+function loadPreset(name) {
+  if (!confirm('Replace the current card list?')) return;
+  editingGame.cards = DECK_PRESETS[name]();
+  render();
+}
+
+function renderRulesTab(container) {
+  const def = editingGame;
+
+  container.appendChild(el('div', { class: 'form-section' },
+    el('h3', null, 'Basics'),
+    el('div', { class: 'form-row' },
+      el('label', null, 'Name',
+        el('input', { type: 'text', value: def.name,
+          oninput: e => { def.name = e.target.value; } })),
+    ),
+    el('div', { class: 'form-row' },
+      el('label', null, 'Min players',
+        el('input', { type: 'number', min: 2, max: 12, value: def.minPlayers,
+          oninput: e => { def.minPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } })),
+      el('label', null, 'Max players',
+        el('input', { type: 'number', min: 2, max: 12, value: def.maxPlayers,
+          oninput: e => { def.maxPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } })),
+      el('label', null, 'Cards dealt',
+        el('input', { type: 'number', min: 1, value: def.deal,
+          oninput: e => { def.deal = Math.max(1, parseInt(e.target.value, 10) || 1); } })),
+    ),
+    el('div', { class: 'check-row' },
+      el('label', null,
+        el('input', { type: 'checkbox', checked: def.flipStart,
+          onchange: e => { def.flipStart = e.target.checked; } }),
+        'Flip a starting card'),
+    ),
+  ));
+
+  container.appendChild(el('div', { class: 'form-section' },
+    el('h3', null, 'Turn structure'),
+    el('div', { class: 'form-row' },
+      el('label', null, 'Turn mode',
+        (() => {
+          const sel = el('select', { onchange: e => { def.turnMode = e.target.value; } });
+          for (const [v, l] of [
+            ['standard', 'Draw when you cannot play'],
+            ['drawFirst', 'Always draw first'],
+            ['playOnly', 'No drawing allowed'],
+          ]) {
+            const opt = document.createElement('option');
+            opt.value = v; opt.textContent = l; sel.appendChild(opt);
+          }
+          sel.value = def.turnMode;
+          return sel;
+        })()),
+    ),
+  ));
+
+  container.appendChild(el('div', { class: 'form-section' },
+    el('h3', null, 'Matching'),
+    el('div', { class: 'check-row' },
+      el('label', null,
+        el('input', { type: 'checkbox', checked: def.matchBy.includes('color'),
+          onchange: e => {
+            def.matchBy = e.target.checked
+              ? [...new Set([...def.matchBy, 'color'])]
+              : def.matchBy.filter(x => x !== 'color');
+          } }),
+        'Match by color'),
+      el('label', null,
+        el('input', { type: 'checkbox', checked: def.matchBy.includes('group'),
+          onchange: e => {
+            def.matchBy = e.target.checked
+              ? [...new Set([...def.matchBy, 'group'])]
+              : def.matchBy.filter(x => x !== 'group');
+          } }),
+        'Match by group'),
+      el('label', null,
+        el('input', { type: 'checkbox', checked: def.matchBy.includes('rank'),
+          onchange: e => {
+            def.matchBy = e.target.checked
+              ? [...new Set([...def.matchBy, 'rank'])]
+              : def.matchBy.filter(x => x !== 'rank');
+          } }),
+        'Match by rank'),
+    ),
+    el('div', { class: 'stat' }, 'A card is playable if it matches ANY selected attribute.'),
+    el('div', { class: 'check-row' },
+      el('label', null,
+        el('input', { type: 'checkbox', checked: def.wildChoosesGroup,
+          onchange: e => { def.wildChoosesGroup = e.target.checked; } }),
+        'Wild cards let player choose new group'),
+    ),
+  ));
+
+  container.appendChild(el('div', { class: 'form-section' },
+    el('h3', null, 'Win condition'),
+    el('div', { class: 'form-row' },
+      el('label', null, 'When does the game end?',
+        (() => {
+          const sel = el('select', { onchange: e => { def.winCondition = e.target.value; render(); } });
+          for (const [v, l] of [
+            ['emptyHand', 'First to empty their hand'],
+            ['mostSets', 'Most sets of matching rank'],
+          ]) {
+            const opt = document.createElement('option');
+            opt.value = v; opt.textContent = l; sel.appendChild(opt);
+          }
+          sel.value = def.winCondition;
+          return sel;
+        })()),
+    ),
+    def.winCondition === 'mostSets' ? el('div', { class: 'form-row' },
+      el('label', null, 'Cards per set',
+        el('input', { type: 'number', min: 2, max: 8, value: def.setSize,
+          oninput: e => { def.setSize = Math.max(2, parseInt(e.target.value, 10) || 4); } })),
+    ) : null,
+  ));
+}
+
+function renderPreviewTab(container) {
+  const def = editingGame;
+  const jsonClean = {
+    id: def.id, name: def.name, minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
+    deal: def.deal, flipStart: def.flipStart,
+    matchBy: def.matchBy, wildChoosesGroup: def.wildChoosesGroup,
+    turnMode: def.turnMode, winCondition: def.winCondition, setSize: def.setSize,
+    cards: def.cards,
+  };
+
+  const total = def.cards.reduce((n, c) => n + c.count, 0);
+  const stats = el('div', { class: 'stat' },
+    `${def.cards.length} card types · ${total} total cards · `
+    + `deal ${def.deal} each to ${def.minPlayers}–${def.maxPlayers} players`);
+
+  // Card preview
+  const previewCards = el('div', { class: 'preview-cards' });
+  const defsForPreview = {};
+  for (const c of def.cards) defsForPreview[c.id] = { ...c, kind: 'custom' };
+  for (const c of def.cards.slice(0, 12)) {
+    previewCards.appendChild(renderCustomCard(defsForPreview[c.id]));
+  }
+  if (def.cards.length > 12) {
+    previewCards.appendChild(el('span', { class: 'stat', style: { alignSelf: 'center' } },
+      '+' + (def.cards.length - 12) + ' more'));
+  }
+
+  const testBtn = el('button', { class: 'primary', onclick: () => testCustomGame() }, 'Save & test');
+  const saveBtn = el('button', { class: 'ghost', onclick: saveEditor }, 'Save & close');
+
+  container.appendChild(stats);
+  container.appendChild(previewCards);
+  container.appendChild(el('div', { class: 'editor-actions' }, testBtn, saveBtn));
+  container.appendChild(el('h3', { style: { margin: '0.5rem 0 0', fontSize: '0.78rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' } }, 'JSON definition'));
+  container.appendChild(el('pre', { class: 'json-view' }, JSON.stringify(jsonClean, null, 2)));
+}
+
+function validateEditor() {
+  const def = editingGame;
+  if (!def.name || !def.name.trim()) { alert('Give your game a name'); return false; }
+  if (def.cards.length === 0) { alert('Add at least one card'); return false; }
+  if (def.matchBy.length === 0) { alert('Pick at least one match attribute'); return false; }
+  if (def.minPlayers < 2) { alert('Need at least 2 players'); return false; }
+  if (def.maxPlayers < def.minPlayers) { alert('Max players cannot be less than min'); return false; }
+  const total = def.cards.reduce((n, c) => n + c.count, 0);
+  if (total < def.deal * def.minPlayers) {
+    alert('Not enough cards: dealing ' + def.deal + ' to ' + def.minPlayers
+      + ' players needs at least ' + (def.deal * def.minPlayers));
+    return false;
+  }
+  // Auto-fill description
+  if (!def.description) {
+    def.description = 'Custom game: ' + def.name;
+  }
+  return true;
+}
+
+function saveEditor() {
+  if (!validateEditor()) return;
+  registerCustomGame(editingGame);
+  persistCustomGames();
+  MENU.scriptId = editingGame.id;
+  SCREEN = 'menu';
+  render();
+}
+
+function testCustomGame() {
+  if (!validateEditor()) return;
+  registerCustomGame(editingGame);
+  persistCustomGames();
+
+  const names = MENU.namesInput.split(',').map(s => s.trim()).filter(Boolean);
+  if (names.length < editingGame.minPlayers || names.length > editingGame.maxPlayers) {
+    // Fill in defaults for testing
+    while (names.length < editingGame.minPlayers) names.push('Player ' + (names.length + 1));
+    while (names.length > editingGame.maxPlayers) names.pop();
+  }
+
+  seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
+  G = createCustomState(CUSTOM_GAMES[editingGame.id], names);
+  VIEWER = 0;
+  SCREEN = 'pass';
+  undoStack = [];
+  pendingRank = null;
+  render();
+}
+
+// ============================================================
+// Play screens (pass / game) — shared for all games
+// ============================================================
+
+function renderPass(root) {
+  const onContinue = () => { SCREEN = 'game'; render(); };
   const content = el('div', { class: 'pass', onclick: onContinue },
     el('div', { class: 'icon' }, '👋'),
     el('h2', null, 'Pass to ' + G.players[VIEWER].name),
     el('p', { class: 'hint' }, 'Tap anywhere when ready'));
   root.appendChild(content);
-
   if (undoStack.length > 0) {
-    const btn = el('button', { class: 'undo-link', onclick: e => { e.stopPropagation(); undo(); } },
-      'Undo last move');
-    root.appendChild(btn);
+    root.appendChild(el('button', { class: 'undo-link', onclick: e => { e.stopPropagation(); undo(); } },
+      'Undo last move'));
   }
 }
 
@@ -1197,18 +1622,16 @@ function renderGame(root) {
   const game = GAMES[G.scriptId];
   const isMyTurn = !G.ended && G.current === VIEWER;
   const actions = isMyTurn ? game.legal(G, VIEWER) : [];
-  const hasPendingChoice = G.phase === 'chooseColor';
+  const hasPendingChoice = G.phase === 'chooseColor' || G.phase === 'chooseGroup';
 
-  // Header
   const header = el('header', null,
     el('span', { class: 'game-name' }, game.name),
     el('span', { class: 'turn-info' },
       'Turn ', el('strong', null, String(G.turn)),
-      ' \u00b7 ', el('strong', null, G.players[G.current].name)),
+      ' · ', el('strong', null, G.players[G.current].name)),
     el('div', { class: 'controls' },
       undoStack.length > 0 ? el('button', { class: 'ghost', onclick: undo }, 'Undo') : null));
 
-  // Opponents
   const opponents = el('section', { class: 'opponents' });
   for (const p of G.players) {
     if (p.id === VIEWER) continue;
@@ -1219,10 +1642,9 @@ function renderGame(root) {
     },
       el('strong', null, p.name),
       el('span', null, hand.cards.length + ' card' + (hand.cards.length === 1 ? '' : 's')),
-      sets ? el('span', null, (sets.cards.length / 4) + ' set' + (sets.cards.length === 4 ? '' : 's')) : null));
+      sets ? el('span', null, (sets.cards.length / (GAMES[G.scriptId]._setSize || 4)) + ' sets') : null));
   }
 
-  // Table
   const table = el('section', { class: 'table' });
   table.appendChild(el('div', { class: 'zone' },
     el('span', null, 'Deck'),
@@ -1231,57 +1653,65 @@ function renderGame(root) {
   const discard = G.zones.discard;
   if (discard && discard.cards.length > 0) {
     table.appendChild(el('div', { class: 'zone' },
-      el('span', null, 'Discard'),
-      renderCardEl(topOf(discard))));
+      el('span', null, 'Discard'), renderCardEl(topOf(discard))));
   } else {
     table.appendChild(el('div', { class: 'zone' },
-      el('span', null, 'Discard'),
-      el('div', { class: 'empty' }, 'empty')));
+      el('span', null, 'Discard'), el('div', { class: 'empty' }, 'empty')));
   }
 
-  // Active color/suit indicator
-  if (G.flags.activeColor && (G.scriptId === 'uno' || G.scriptId === 'crazy-eights')) {
-    let cls = 'active-color';
-    let text = G.flags.activeColor;
-    if (G.scriptId === 'uno') {
-      cls += ' ' + G.flags.activeColor;
-      text = G.flags.activeColor.toUpperCase();
-    } else {
-      const isRed = G.flags.activeColor === '♥' || G.flags.activeColor === '♦';
-      cls += ' suit-' + (isRed ? 'red' : 'black');
-    }
+  // Active color/group pill
+  const activeKey = G.flags.activeColor || G.flags.activeGroup;
+  if (activeKey && !G.ended) {
+    const game = GAMES[G.scriptId];
+    let bg = '#6b7280', textColor = 'white', label = String(activeKey);
+    // Try to find a color matching the active key
+    if (COLOR_HEX[activeKey]) { bg = COLOR_HEX[activeKey]; }
+    if (LIGHT_COLORS.has(activeKey)) textColor = '#111';
+    // Suit mapping (Crazy Eights)
+    if (activeKey === '♥' || activeKey === '♦') { bg = '#dc2626'; }
+    else if (activeKey === '♠' || activeKey === '♣') { bg = '#111827'; }
     table.appendChild(el('div', { class: 'zone' },
       el('span', null, 'Active'),
-      el('span', { class: cls }, text)));
+      el('span', { class: 'active-color', style: { background: bg, color: textColor } }, label)));
   }
 
-  // My sets (Go Fish)
   if (G.zones['sets:' + VIEWER]) {
-    const sets = G.zones['sets:' + VIEWER].cards.length / 4;
+    const sets = G.zones['sets:' + VIEWER].cards.length;
+    const size = GAMES[G.scriptId]._setSize || 4;
     table.appendChild(el('div', { class: 'zone' },
       el('span', null, 'Your sets'),
-      el('span', null, String(sets))));
+      el('span', null, String(Math.floor(sets / size)))));
   }
 
-  // Actions / status
   const actionsEl = el('section', { class: 'actions' });
   if (hasPendingChoice && isMyTurn) {
     actionsEl.appendChild(el('span', { class: 'label' }, 'Choose:'));
     for (const a of actions) {
-      if (a.cmd.type === 'CHOOSE_COLOR') {
-        const color = a.cmd.color;
-        const cls = G.scriptId === 'uno' ? 'color-btn-mini ' + color : 'suit-btn-mini';
-        actionsEl.appendChild(el('button', {
-          class: 'rank-chip',
-          onclick: () => takeAction(a.cmd),
-        }, G.scriptId === 'uno' ? color.toUpperCase() : color));
+      if (a.cmd.type === 'CHOOSE_COLOR' || a.cmd.type === 'CHOOSE_GROUP') {
+        const v = a.cmd.color || a.cmd.group;
+        const btn = el('button', { class: 'rank-chip', onclick: () => takeAction(a.cmd) });
+        const hex = COLOR_HEX[v];
+        if (hex) { btn.style.background = hex; btn.style.color = LIGHT_COLORS.has(v) ? '#111' : 'white'; }
+        else { btn.style.background = (v === '♠' || v === '♣') ? '#111827' : '#dc2626'; btn.style.color = 'white'; }
+        btn.textContent = v;
+        actionsEl.appendChild(btn);
       }
     }
   } else if (isMyTurn) {
-    if (game.uiMode === 'play') {
-      renderPlayActions(actionsEl, actions);
-    } else if (game.uiMode === 'ask') {
-      renderAskActions(actionsEl, actions);
+    const drawAction = actions.find(a => a.cmd.type === 'DRAW');
+    const passAction = actions.find(a => a.cmd.type === 'PASS');
+    const playActions = actions.filter(a => a.cmd.type === 'PLAY_CARD');
+    if (playActions.length > 0) {
+      actionsEl.appendChild(el('span', { class: 'label' }, 'Tap a card to play'));
+    }
+    if (drawAction) actionsEl.appendChild(el('button', {
+      class: 'primary', onclick: () => takeAction(drawAction.cmd),
+    }, 'Draw a card'));
+    if (passAction) actionsEl.appendChild(el('button', {
+      class: 'ghost', onclick: () => takeAction(passAction.cmd),
+    }, 'Pass'));
+    if (!drawAction && !passAction && playActions.length === 0) {
+      actionsEl.appendChild(el('span', { class: 'label' }, 'No moves available'));
     }
   } else if (G.ended) {
     actionsEl.appendChild(el('span', { class: 'label' }, 'Game over'));
@@ -1289,25 +1719,18 @@ function renderGame(root) {
     actionsEl.appendChild(el('span', { class: 'label' }, 'Waiting for ' + G.players[G.current].name));
   }
 
-  // Log
   const logEl = el('section', { class: 'log' });
-  const recent = G.log.slice(-5);
-  for (const line of recent) logEl.appendChild(el('div', null, line));
+  for (const line of G.log.slice(-5)) logEl.appendChild(el('div', null, line));
 
-  // Hand
   const hand = G.zones['hand:' + VIEWER];
   const playableIds = new Set();
-  if (isMyTurn && game.uiMode === 'play') {
-    for (const a of actions) {
-      if (a.cmd.type === 'PLAY_CARD') playableIds.add(a.cmd.cardId);
-    }
-  }
+  if (isMyTurn) for (const a of actions)
+    if (a.cmd.type === 'PLAY_CARD') playableIds.add(a.cmd.cardId);
   const sortedHand = hand ? sortHand(hand.cards, game.defs) : [];
   const handEl = el('section', { class: 'hand' });
   for (const c of sortedHand) {
     const cardEl = renderCardEl(c);
-    const isPlayable = playableIds.has(c.id);
-    if (isPlayable) {
+    if (playableIds.has(c.id)) {
       cardEl.classList.add('playable');
       cardEl.addEventListener('click', () => {
         const action = actions.find(a => a.cmd.type === 'PLAY_CARD' && a.cmd.cardId === c.id);
@@ -1322,88 +1745,7 @@ function renderGame(root) {
   root.appendChild(el('div', { class: 'game' },
     header, opponents, table, actionsEl, logEl, handEl));
 
-  // Modals
-  if (G.ended) {
-    root.appendChild(renderGameOver());
-  } else if (hasPendingChoice && isMyTurn) {
-    root.appendChild(renderColorPicker(actions));
-  }
-}
-
-function renderPlayActions(container, actions) {
-  const playActions = actions.filter(a => a.cmd.type === 'PLAY_CARD');
-  const drawAction = actions.find(a => a.cmd.type === 'DRAW');
-  const passAction = actions.find(a => a.cmd.type === 'PASS');
-
-  if (playActions.length > 0) {
-    container.appendChild(el('span', { class: 'label' }, 'Tap a card to play'));
-  }
-  if (drawAction) {
-    container.appendChild(el('button', {
-      class: 'primary',
-      onclick: () => takeAction(drawAction.cmd),
-    }, 'Draw a card'));
-  }
-  if (passAction) {
-    container.appendChild(el('button', {
-      class: 'ghost',
-      onclick: () => takeAction(passAction.cmd),
-    }, 'Pass'));
-  }
-}
-
-function renderAskActions(container, actions) {
-  const ranks = [...new Set(actions.map(a => a.rank))].sort((a, b) => RANK_ORDER[a] - RANK_ORDER[b]);
-
-  if (pendingRank === null) {
-    container.appendChild(el('span', { class: 'label' }, 'Ask for rank:'));
-    for (const rank of ranks) {
-      container.appendChild(el('button', {
-        class: 'rank-chip',
-        onclick: () => { pendingRank = rank; render(); },
-      }, rank));
-    }
-    return;
-  }
-
-  container.appendChild(el('span', { class: 'label' }, 'Ask for ' + pendingRank + ' from:'));
-  for (const a of actions) {
-    if (a.rank !== pendingRank) continue;
-    container.appendChild(el('button', {
-      class: 'target-chip',
-      onclick: () => { pendingRank = null; takeAction(a.cmd); },
-    }, G.players[a.target].name));
-  }
-  container.appendChild(el('button', {
-    class: 'ghost',
-    onclick: () => { pendingRank = null; render(); },
-  }, 'Cancel'));
-}
-
-function renderColorPicker(actions) {
-  const colors = actions.filter(a => a.cmd.type === 'CHOOSE_COLOR');
-  const isUno = G.scriptId === 'uno';
-  const grid = el('div', { class: 'color-grid' });
-  for (const a of colors) {
-    const color = a.cmd.color;
-    let label, cls;
-    if (isUno) {
-      label = color.toUpperCase();
-      cls = 'color-btn ' + color;
-    } else {
-      label = color;
-      const isRed = color === '♥' || color === '♦';
-      cls = 'color-btn suit' + (isRed ? ' red' : '');
-    }
-    grid.appendChild(el('button', {
-      class: cls,
-      onclick: () => takeAction(a.cmd),
-    }, label));
-  }
-  return el('div', { class: 'overlay' },
-    el('div', { class: 'modal' },
-      el('h3', null, isUno ? 'Choose a color' : 'Choose a suit'),
-      grid));
+  if (G.ended) root.appendChild(renderGameOver());
 }
 
 function renderGameOver() {
@@ -1423,20 +1765,11 @@ function renderGameOver() {
 function startGame() {
   const names = MENU.namesInput.split(',').map(s => s.trim()).filter(Boolean);
   const game = GAMES[MENU.scriptId];
-  if (names.length < game.minPlayers) {
-    alert('Need at least ' + game.minPlayers + ' player' + (game.minPlayers === 1 ? '' : 's'));
-    return;
-  }
-  if (names.length > game.maxPlayers) {
-    alert('At most ' + game.maxPlayers + ' players');
-    return;
-  }
+  if (names.length < game.minPlayers) { alert('Need at least ' + game.minPlayers + ' players'); return; }
+  if (names.length > game.maxPlayers) { alert('At most ' + game.maxPlayers + ' players'); return; }
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = game.create(names);
-  VIEWER = 0;
-  SCREEN = 'pass';
-  undoStack = [];
-  pendingRank = null;
+  VIEWER = 0; SCREEN = 'pass'; undoStack = []; pendingRank = null;
   render();
 }
 
@@ -1445,34 +1778,22 @@ function takeAction(cmd) {
   const prev = { state: structuredClone(G), viewer: VIEWER };
   const prevCurrent = G.current;
   let next;
-  try {
-    next = game.apply(G, cmd);
-  } catch (e) {
-    alert(e.message);
-    return;
-  }
+  try { next = game.apply(G, cmd); }
+  catch (e) { alert(e.message); return; }
   undoStack.push(prev);
-  G = next;
-  pendingRank = null;
+  G = next; pendingRank = null;
 
-  if (G.ended) {
-    SCREEN = 'game';
-  } else if (G.current !== prevCurrent) {
-    VIEWER = G.current;
-    SCREEN = 'pass';
-  } else {
-    SCREEN = 'game';
-  }
+  if (G.ended) SCREEN = 'game';
+  else if (G.current !== prevCurrent) { VIEWER = G.current; SCREEN = 'pass'; }
+  else SCREEN = 'game';
   render();
 }
 
 function undo() {
   if (undoStack.length === 0) return;
   const entry = undoStack.pop();
-  G = entry.state;
-  VIEWER = entry.viewer;
-  SCREEN = 'game';
-  pendingRank = null;
+  G = entry.state; VIEWER = entry.viewer;
+  SCREEN = 'game'; pendingRank = null;
   render();
 }
 
@@ -1481,10 +1802,7 @@ function playAgain() {
   const game = GAMES[G.scriptId];
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = game.create(names);
-  VIEWER = 0;
-  SCREEN = 'pass';
-  undoStack = [];
-  pendingRank = null;
+  VIEWER = 0; SCREEN = 'pass'; undoStack = []; pendingRank = null;
   render();
 }
 
