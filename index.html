@@ -10,7 +10,6 @@
 <style>
   :root {
     --bg-deep: #061510;
-    --bg: #0c1e16;
     --surface: #132419;
     --surface-hi: #1c3226;
     --surface-glow: #24402f;
@@ -47,8 +46,7 @@
       var(--bg-deep);
     color: var(--text);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-feature-settings: 'ss01', 'cv11';
-    min-height: 100vh; min-height: 100dvh;
+    min-height: 100dvh;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
   }
@@ -58,43 +56,34 @@
     font-family: inherit; cursor: pointer; border: none;
     background: linear-gradient(180deg, var(--surface-glow), var(--surface-hi));
     color: var(--text); padding: 0.7rem 1.1rem; border-radius: 0.6rem;
-    font-size: 0.95rem; font-weight: 600; letter-spacing: -0.005em;
-    transition: transform 0.12s var(--ease-spring), background 0.15s, box-shadow 0.15s, opacity 0.15s;
+    font-size: 0.95rem; font-weight: 600;
+    transition: transform 0.12s var(--ease-spring), background 0.15s, box-shadow 0.15s;
     min-height: 2.6rem;
     box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 2px 6px rgba(0,0,0,0.2);
   }
-  button:hover {
-    background: linear-gradient(180deg, var(--surface-glow), var(--surface-glow));
-    box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 4px 12px rgba(0,0,0,0.3);
-  }
+  button:hover { background: var(--surface-glow); }
   button:active { transform: scale(0.96); }
   button:disabled { opacity: 0.4; cursor: not-allowed; }
-  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   button.primary {
     background: linear-gradient(180deg, #22c55e, #15803d);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 2px 8px rgba(34,197,94,0.35);
     color: #052e16;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 2px 8px rgba(34,197,94,0.35);
   }
-  button.primary:hover {
-    background: linear-gradient(180deg, #34d56e, #15803d);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 4px 16px rgba(34,197,94,0.5);
-  }
+  button.primary:hover { background: #22c55e; }
   button.ghost { background: transparent; border: 1px solid var(--border-hi); box-shadow: none; }
   button.ghost:hover { background: rgba(255,255,255,0.04); }
   button.danger { background: linear-gradient(180deg, #b91c1c, #7f1d1d); color: white; }
-  button.danger:hover { background: linear-gradient(180deg, #dc2626, #991b1b); }
+  button.danger:hover { background: #b91c1c; }
   button.tiny { padding: 0.4rem 0.7rem; font-size: 0.78rem; min-height: auto; }
 
   input, select, textarea {
     font-family: inherit; padding: 0.65rem 0.85rem; border-radius: 0.55rem;
     border: 1px solid var(--border-hi); background: rgba(0,0,0,0.25);
     color: var(--text); font-size: 0.95rem; width: 100%;
-    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    transition: border-color 0.15s;
   }
-  input:focus, select:focus, textarea:focus {
-    outline: none; border-color: var(--accent-dim);
-    background: rgba(0,0,0,0.35); box-shadow: 0 0 0 3px var(--accent-glow);
-  }
+  input:focus, select:focus { outline: none; border-color: var(--accent-dim); }
+  input[type="range"] { padding: 0; }
 
   /* ===== Cards ===== */
   .card {
@@ -146,8 +135,8 @@
   .card--uno { color: white; overflow: hidden; }
   .card--uno .card__uno-corner {
     position: absolute; font-size: calc(var(--card-w) * 0.22);
-    font-weight: 900; letter-spacing: -0.03em;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4); z-index: 2; line-height: 1;
+    font-weight: 900; text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    z-index: 2; line-height: 1;
   }
   .card--uno .card__uno-corner--tl { top: 0.24rem; left: 0.32rem; }
   .card--uno .card__uno-corner--br { bottom: 0.24rem; right: 0.32rem; transform: rotate(180deg); }
@@ -162,7 +151,7 @@
     font-weight: 900; letter-spacing: -0.04em; line-height: 1;
     display: inline-block; text-align: center; padding: 0 0.15rem;
   }
-  .card__uno-val--wild { font-size: calc(var(--card-w) * 0.24); letter-spacing: 0.02em; color: #111; font-weight: 800; }
+  .card__uno-val--wild { font-size: calc(var(--card-w) * 0.24); color: #111; letter-spacing: 0.02em; }
   .card--wild {
     background: conic-gradient(from 45deg, #e4222e 0deg 90deg, #f5c518 90deg 180deg, #2da54a 180deg 270deg, #0d6efd 270deg 360deg);
   }
@@ -176,14 +165,13 @@
     position: absolute; inset: 22% 12%;
     background: rgba(255,255,255,0.94); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    padding: 0.15rem 0.4rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+    padding: 0.15rem 0.4rem;
   }
   .card__custom-val {
     font-size: calc(var(--card-w) * 0.26); font-weight: 800;
     letter-spacing: -0.02em; line-height: 1; text-align: center;
     word-break: break-word; color: #111;
   }
-
   .card--back {
     background: repeating-linear-gradient(45deg, #2d4a7a 0 5px, #1c2d52 5px 10px);
     border: 1.5px solid #e5e7eb;
@@ -197,8 +185,8 @@
     box-shadow: 0 0 0 2px var(--accent), 0 0 20px var(--accent-glow), 0 6px 16px rgba(0,0,0,0.4);
   }
   .hand .card--playable:hover { transform: translateY(-0.85rem) scale(1.03); }
-  .hand .card--playable:active { transform: translateY(-0.6rem) scale(0.98); }
   .hand .card--dimmed { opacity: 0.4; filter: saturate(0.4); }
+  .card--small { --card-w: 2rem; --card-h: calc(var(--card-w) * 1.4); }
 
   /* ===== Menu ===== */
   .menu { display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -208,21 +196,20 @@
   .menu__cards { position: relative; width: 8rem; height: 6rem; margin-bottom: 0.75rem; }
   .menu__cards .card { position: absolute; top: 0; left: 50%; transform-origin: center 110%; }
   .menu__cards .card:nth-child(1) { transform: translateX(-85%) rotate(-16deg); z-index: 1; }
-  .menu__cards .card:nth-child(2) { transform: translateX(-50%) rotate(0deg) translateY(-4px); z-index: 3;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.5), 0 0 30px rgba(110,231,167,0.15); }
+  .menu__cards .card:nth-child(2) { transform: translateX(-50%) rotate(0deg) translateY(-4px); z-index: 3; }
   .menu__cards .card:nth-child(3) { transform: translateX(-15%) rotate(16deg); z-index: 2; }
   .menu h1 { margin: 0; font-family: 'Fraunces', Georgia, serif;
     font-size: clamp(2.4rem, 7vw, 3.6rem); font-weight: 900;
-    letter-spacing: -0.04em; line-height: 0.95; font-variation-settings: 'SOFT' 40, 'WONK' 1; }
+    letter-spacing: -0.04em; line-height: 0.95; }
   .menu h1 em { font-style: italic; color: var(--accent); font-weight: 600; }
-  .menu__tagline { color: var(--muted); margin: 0; font-size: 0.95rem; letter-spacing: 0.01em; }
+  .menu__tagline { color: var(--muted); margin: 0; font-size: 0.95rem; }
   .menu__panel {
     background: linear-gradient(180deg, rgba(28,50,38,0.8) 0%, rgba(19,36,25,0.9) 100%);
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border-hi); border-radius: 1.1rem;
     padding: 1.35rem; width: 100%; max-width: 26rem;
     display: flex; flex-direction: column; gap: 1rem;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 20px 50px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
   }
   .field { display: flex; flex-direction: column; gap: 0.4rem; }
   .field label { font-size: 0.72rem; color: var(--muted); font-weight: 600;
@@ -253,14 +240,14 @@
   .pass__label { font-size: 0.75rem; color: var(--muted);
     text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
   .pass h2 { margin: 0; font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 900; letter-spacing: -0.02em; }
+    font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 900; }
   .pass__hint { color: var(--muted); margin: 0; font-size: 0.9rem;
     animation: pulseHint 2s ease-in-out infinite; }
   @keyframes pulseHint { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
   .pass__undo { position: absolute; bottom: 1.5rem; left: 50%;
     transform: translateX(-50%); color: var(--muted); font-size: 0.8rem;
     background: none; border: none; padding: 0.5rem 1rem;
-    text-decoration: underline; cursor: pointer; box-shadow: none; }
+    text-decoration: underline; cursor: pointer; }
 
   /* ===== Game ===== */
   .game { display: flex; flex-direction: column; min-height: 100dvh;
@@ -269,45 +256,49 @@
     gap: 0.5rem; padding: 0.7rem 0.9rem;
     background: rgba(20,44,32,0.7); backdrop-filter: blur(20px);
     border: 1px solid var(--border); border-radius: 0.75rem;
-    font-size: 0.82rem; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset; }
+    font-size: 0.82rem; }
   .game__header-title { font-family: 'Fraunces', Georgia, serif;
-    font-weight: 700; font-size: 1rem; color: var(--accent); letter-spacing: -0.02em; }
+    font-weight: 700; font-size: 1rem; color: var(--accent); }
   .game__header-info { color: var(--muted); font-size: 0.78rem;
     display: flex; gap: 0.5rem; align-items: center; }
   .game__header-info strong { color: var(--text); font-weight: 600; }
   .game__header-btn { padding: 0.4rem 0.75rem; font-size: 0.78rem; min-height: auto; }
+
   .opponents { display: flex; gap: 0.4rem; overflow-x: auto;
     padding-bottom: 0.15rem; scrollbar-width: none; }
   .opponents::-webkit-scrollbar { display: none; }
   .opponent { display: flex; flex-direction: column; padding: 0.6rem 0.85rem;
-    background: rgba(20,44,32,0.7); backdrop-filter: blur(10px);
+    background: rgba(20,44,32,0.7);
     border: 1px solid var(--border); border-radius: 0.7rem;
     font-size: 0.78rem; min-width: 6rem; flex-shrink: 0; gap: 0.15rem;
-    transition: border-color 0.2s, box-shadow 0.2s; }
+    transition: border-color 0.2s; }
   .opponent.current { border-color: var(--accent-dim);
-    box-shadow: 0 0 0 1px var(--accent-dim), 0 0 20px rgba(110,231,167,0.15); }
-  .opponent strong { font-size: 0.85rem; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+    box-shadow: 0 0 0 1px var(--accent-dim); }
+  .opponent.folded { opacity: 0.4; }
+  .opponent strong { font-size: 0.85rem; font-weight: 600; }
   .opponent .meta { color: var(--muted); font-size: 0.72rem; }
+  .opponent .meta strong { color: var(--gold); }
 
-  .felt { flex: 1; display: flex; align-items: center; justify-content: center;
-    gap: 0.9rem; padding: 1.2rem 0.75rem; margin: 0.25rem 0;
+  .felt { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.75rem; padding: 1rem 0.75rem; margin: 0.25rem 0;
     border-radius: 1rem;
     background: radial-gradient(ellipse 70% 50% at 50% 45%, rgba(255,255,255,0.05), transparent 65%),
       radial-gradient(ellipse 100% 90% at 50% 40%, var(--felt-top) 0%, var(--felt-bottom) 100%);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 0 0 1px rgba(0,0,0,0.3), 0 20px 50px rgba(0,0,0,0.4) inset;
-    position: relative; overflow: hidden; min-height: 9rem; flex-wrap: wrap; }
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3), 0 20px 50px rgba(0,0,0,0.4) inset;
+    position: relative; overflow: hidden; min-height: 9rem; }
   .felt::before { content: ''; position: absolute; inset: 0;
     background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.03) 3px 4px),
       repeating-linear-gradient(90deg, transparent 0 3px, rgba(0,0,0,0.03) 3px 4px);
     opacity: 0.6; pointer-events: none; }
-  .pile { display: flex; flex-direction: column; align-items: center;
-    gap: 0.45rem; position: relative; z-index: 1; }
+  .felt > * { position: relative; z-index: 1; }
+
+  .pile { display: flex; flex-direction: column; align-items: center; gap: 0.45rem; }
   .pile__label { font-size: 0.65rem; color: rgba(255,255,255,0.55);
     text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
   .pile__empty { width: var(--card-w); height: var(--card-h);
     border: 2px dashed rgba(255,255,255,0.15); border-radius: var(--card-radius);
     display: flex; align-items: center; justify-content: center;
-    color: rgba(255,255,255,0.25); font-size: 0.7rem; font-weight: 500; }
+    color: rgba(255,255,255,0.25); font-size: 0.7rem; }
   .deck { position: relative; width: var(--card-w); height: var(--card-h); }
   .deck .card { position: absolute; top: 0; left: 0; }
   .deck .card:nth-child(1) { transform: translate(2px, -2px) rotate(2deg); }
@@ -315,42 +306,63 @@
   .deck__count { position: absolute; bottom: -0.5rem; right: -0.5rem;
     background: var(--accent-bg); color: white; font-size: 0.7rem; font-weight: 700;
     padding: 0.2rem 0.45rem; border-radius: 99px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4); z-index: 5;
-    min-width: 1.4rem; text-align: center; line-height: 1.2; }
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4); z-index: 5; min-width: 1.4rem; text-align: center; }
+
+  .row { display: flex; gap: 0.75rem; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+
+  .pot-display { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; }
+  .pot-display__label { font-size: 0.65rem; color: rgba(255,255,255,0.6);
+    text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
+  .pot-display__amount { font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.4rem; font-weight: 900; color: var(--gold); text-shadow: 0 2px 8px rgba(240,180,41,0.4); }
+
   .color-badge { display: inline-flex; align-items: center; justify-content: center;
     padding: 0.3rem 0.75rem; border-radius: 99px;
     font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
     color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 2px 6px rgba(0,0,0,0.25); min-width: 3rem; }
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25); min-width: 3rem; }
 
   .actions-bar { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
     padding: 0.55rem 0.7rem; background: rgba(20,44,32,0.7); backdrop-filter: blur(20px);
     border: 1px solid var(--border); border-radius: 0.7rem;
-    min-height: 3.5rem; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset; }
+    min-height: 3.5rem; }
   .actions-bar__label { font-size: 0.72rem; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-right: 0.15rem; }
+    text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
   .chip { padding: 0.5rem 0.9rem; border-radius: 0.5rem; background: var(--surface-hi);
     border: 1px solid var(--border-hi); color: var(--text); font-weight: 600;
-    font-family: inherit; font-size: 0.9rem; cursor: pointer; min-height: 2.4rem;
-    transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset; }
+    font-family: inherit; font-size: 0.9rem; cursor: pointer; min-height: 2.4rem; }
   .chip:hover { background: var(--surface-glow); }
-  .chip:active { transform: scale(0.96); }
+  .chip.selected { background: var(--accent-bg); border-color: var(--accent); color: white; }
+
   .log { font-size: 0.72rem; max-height: 4.2rem; overflow-y: auto;
     padding: 0.5rem 0.75rem; background: rgba(0,0,0,0.3);
     border: 1px solid var(--border); border-radius: 0.6rem;
     color: var(--muted); line-height: 1.55; flex-shrink: 0; }
-  .log > div { padding: 0.08rem 0; }
   .log > div:last-child { color: var(--text-dim); }
+
   .hand-wrap { margin-top: auto; padding: 0.5rem 0.15rem 0; }
   .hand { display: flex; gap: 0.3rem; overflow-x: auto;
     padding: 0.85rem 0.15rem 0.5rem; scrollbar-width: none; align-items: flex-end;
     min-height: calc(var(--card-h) + 1.35rem); }
   .hand::-webkit-scrollbar { display: none; }
 
-  /* ===== Modals ===== */
+  /* Trash slots */
+  .slot-grid { display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 0.35rem; max-width: 24rem; margin: 0 auto; padding: 0.5rem 0; }
+  .slot { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; }
+  .slot__target { font-size: 0.6rem; color: var(--muted); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; }
+  .slot--clickable { cursor: pointer; }
+  .slot--clickable:hover .card { transform: translateY(-0.25rem); }
+  .slot--clickable .card { box-shadow: 0 0 0 2px var(--accent); }
+  .slot--revealed .card { box-shadow: 0 0 0 2px var(--accent-dim); }
+
+  /* Poker slider */
+  .bet-slider { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; }
+
+  /* Modals */
   .overlay { position: fixed; inset: 0; background: rgba(6,21,16,0.8);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     display: flex; align-items: center; justify-content: center;
     padding: 1.25rem; z-index: 100; animation: fadeIn 0.22s var(--ease-out); }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -358,63 +370,51 @@
     border: 1px solid var(--border-hi); border-radius: 1rem; padding: 1.5rem;
     width: 100%; max-width: 24rem; display: flex; flex-direction: column;
     gap: 1rem; text-align: center;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 30px 60px rgba(0,0,0,0.6);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
     animation: modalIn 0.3s var(--ease-spring); }
   @keyframes modalIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .modal--wide { max-width: 30rem; }
+  .modal--scroll { max-height: 90vh; overflow-y: auto; text-align: left; }
   .modal h3 { margin: 0; font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.3rem; font-weight: 900; letter-spacing: -0.02em; }
+    font-size: 1.3rem; font-weight: 900; }
   .modal p { margin: 0; color: var(--muted); font-size: 0.9rem; }
   .modal__actions { display: flex; gap: 0.5rem; margin-top: 0.25rem; }
   .modal__actions button { flex: 1; }
-  .modal--scroll { max-height: 90vh; overflow-y: auto; text-align: left; }
-  .modal--scroll h3, .modal--scroll p { text-align: left; }
   .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-  .color-btn { padding: 1.15rem; border-radius: 0.7rem; font-weight: 800;
-    font-size: 1rem; letter-spacing: 0.02em; color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.4); min-height: 4rem;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 4px 12px rgba(0,0,0,0.3);
-    transition: transform 0.15s var(--ease-spring); }
-  .color-btn:hover { filter: brightness(1.1); }
-  .color-btn:active { transform: scale(0.94); }
   .game-over { text-align: center; }
   .game-over .trophy { font-size: 3rem; margin: 0;
     filter: drop-shadow(0 4px 20px rgba(240,180,41,0.6)); }
   .game-over h2 { margin: 0; font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.8rem; font-weight: 900; letter-spacing: -0.02em; color: var(--gold);
-    text-shadow: 0 2px 20px rgba(240,180,41,0.4); }
-  .game-over .winners { font-size: 1rem; color: var(--text); font-weight: 500; margin: 0.35rem 0; }
+    font-size: 1.8rem; font-weight: 900; color: var(--gold); }
+  .game-over .winners { font-size: 1rem; color: var(--text); margin: 0.35rem 0; }
 
-  /* ===== Editor ===== */
+  /* Editor */
   .editor { min-height: 100dvh; max-width: 64rem; margin: 0 auto;
     padding: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
   .editor__header { display: flex; align-items: center; justify-content: space-between;
     gap: 0.5rem; padding: 0.75rem 0.9rem;
-    background: rgba(20,44,32,0.7); backdrop-filter: blur(20px);
-    border: 1px solid var(--border); border-radius: 0.75rem; }
+    background: rgba(20,44,32,0.7); border: 1px solid var(--border);
+    border-radius: 0.75rem; }
   .editor__header h2 { margin: 0; font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.15rem; font-weight: 900; letter-spacing: -0.02em; }
+    font-size: 1.15rem; font-weight: 900; }
   .editor__header-actions { display: flex; gap: 0.4rem; }
   .editor__header-actions button { padding: 0.45rem 0.85rem; font-size: 0.85rem; min-height: auto; }
-
   .tabs { display: flex; gap: 0.15rem; padding: 0.25rem;
     background: rgba(0,0,0,0.25); border-radius: 0.6rem; border: 1px solid var(--border); }
   .tab { flex: 1; padding: 0.55rem 0.9rem; background: transparent; border: none;
     border-radius: 0.4rem; color: var(--muted); font-size: 0.85rem; font-weight: 600;
-    cursor: pointer; min-height: auto; box-shadow: none;
-    transition: background 0.15s, color 0.15s; }
+    cursor: pointer; min-height: auto; box-shadow: none; }
   .tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-  .tab.active { background: var(--surface-glow); color: var(--text);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 2px 6px rgba(0,0,0,0.2); }
+  .tab.active { background: var(--surface-glow); color: var(--text); }
   .tab-content { flex: 1; display: flex; flex-direction: column; gap: 0.9rem; }
 
   .panel { background: rgba(20,44,32,0.7); border: 1px solid var(--border);
     border-radius: 0.75rem; padding: 1rem; display: flex;
-    flex-direction: column; gap: 0.85rem; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset; }
+    flex-direction: column; gap: 0.85rem; }
   .panel h3 { margin: 0; font-size: 0.72rem; color: var(--muted);
     text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
-    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
-  .panel h3 button { padding: 0.25rem 0.6rem; font-size: 0.7rem; min-height: auto; font-weight: 600; }
+    display: flex; align-items: center; justify-content: space-between; }
+  .panel h3 button { padding: 0.25rem 0.6rem; font-size: 0.7rem; min-height: auto; }
 
   .form-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .form-row > * { flex: 1; min-width: 8rem; }
@@ -424,95 +424,70 @@
   .check-row input[type="checkbox"] { width: 1.05rem; height: 1.05rem;
     accent-color: var(--accent-dim); cursor: pointer; }
 
-  /* Card grid */
   .card-grid { display: grid;
     grid-template-columns: repeat(auto-fill, minmax(calc(var(--card-w) + 0.6rem), 1fr));
     gap: 0.6rem; padding: 0.15rem; }
   .card-grid__item { display: flex; flex-direction: column; align-items: center;
     gap: 0.3rem; cursor: pointer; padding: 0.35rem; border-radius: 0.5rem;
-    transition: background 0.15s; position: relative; }
+    position: relative; }
   .card-grid__item:hover { background: rgba(255,255,255,0.04); }
-  .card-grid__item .card { transform: scale(0.9); transform-origin: center bottom; }
   .card-grid__item .count-badge { position: absolute; top: 0.2rem; right: 0.2rem;
     background: var(--accent-bg); color: white; font-size: 0.6rem; font-weight: 700;
-    padding: 0.05rem 0.3rem; border-radius: 99px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.5); z-index: 10; }
+    padding: 0.05rem 0.3rem; border-radius: 99px; z-index: 10; }
   .card-grid__item .card-name { font-size: 0.65rem; color: var(--muted);
     text-align: center; max-width: 100%; overflow: hidden;
     text-overflow: ellipsis; white-space: nowrap; }
   .card-grid__add { display: flex; align-items: center; justify-content: center;
     min-height: var(--card-h); border: 2px dashed var(--border-hi);
     border-radius: 0.5rem; color: var(--muted); font-size: 1.4rem;
-    cursor: pointer; transition: border-color 0.15s, color 0.15s;
-    min-width: calc(var(--card-w) * 0.9); }
+    cursor: pointer; }
   .card-grid__add:hover { border-color: var(--accent-dim); color: var(--accent); }
 
-  /* Property chips */
   .prop-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
   .prop-chip { display: flex; align-items: center; gap: 0.4rem;
     padding: 0.35rem 0.65rem; background: var(--surface-hi);
     border: 1px solid var(--border-hi); border-radius: 99px;
-    font-size: 0.8rem; font-weight: 600; color: var(--text); }
+    font-size: 0.8rem; font-weight: 600; }
   .prop-chip .prop-type { color: var(--muted); font-size: 0.7rem;
-    text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+    text-transform: uppercase; font-weight: 700; }
   .prop-chip button { padding: 0; background: transparent; border: none;
-    color: var(--muted); font-size: 0.9rem; min-height: auto; box-shadow: none;
-    line-height: 1; }
-  .prop-chip button:hover { color: var(--danger); background: none; }
+    color: var(--muted); font-size: 0.9rem; min-height: auto; box-shadow: none; }
 
-  /* Effects */
   .effects-list { display: flex; flex-direction: column; gap: 0.4rem; }
   .effect-item { display: flex; align-items: center; gap: 0.4rem;
     padding: 0.4rem 0.6rem; background: rgba(0,0,0,0.2);
     border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.82rem; }
   .effect-item select, .effect-item input { padding: 0.3rem 0.5rem;
-    font-size: 0.82rem; min-height: auto; }
-  .effect-item input[type="number"] { width: 4rem; flex-shrink: 0; }
+    font-size: 0.82rem; min-height: auto; width: auto; }
+  .effect-item input[type="number"] { width: 4rem; }
   .effect-item .eff-label { font-weight: 600; flex: 1; }
-  .effect-item .eff-label small { color: var(--muted); font-weight: 400; }
+  .effect-item .eff-label small { color: var(--muted); font-weight: 400; display: block; }
   .effect-item button { padding: 0.25rem 0.5rem; min-height: auto;
     background: transparent; color: var(--danger); box-shadow: none; font-size: 1rem; }
-  .effect-item button:hover { background: var(--danger-bg); color: white; }
 
-  .preview-deck { display: flex; flex-wrap: wrap; gap: 0.4rem;
-    padding: 0.9rem; background: radial-gradient(ellipse at 50% 40%, var(--felt-top), var(--felt-bottom));
-    border-radius: 0.7rem; min-height: 5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3) inset; }
   .stat { color: var(--muted); font-size: 0.78rem; padding: 0.2rem 0; }
+  .hint { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
   .json-view { background: rgba(0,0,0,0.35); color: #8fe5b1;
     padding: 0.9rem; border-radius: 0.6rem;
     font-family: ui-monospace, 'SF Mono', Menlo, monospace;
     font-size: 0.72rem; overflow-x: auto; max-height: 24rem;
     line-height: 1.5; border: 1px solid var(--border); }
-  .editor-footer { display: flex; gap: 0.5rem; flex-wrap: wrap; padding-top: 0.3rem; }
-  .editor-footer button { flex: 1; min-width: 8rem; }
-
-  .preset-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-
-  .modal-card-preview { display: flex; justify-content: center; padding: 0.5rem 0; }
-  .modal-card-preview .card { --card-w: 5rem; }
-
+  .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: 0.5rem; }
+  .preset-card { padding: 0.9rem; background: var(--surface-hi);
+    border: 1px solid var(--border-hi); border-radius: 0.7rem;
+    text-align: left; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+  .preset-card:hover { background: var(--surface-glow); border-color: var(--accent-dim); }
+  .preset-card strong { display: block; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .preset-card span { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
   .divider { height: 1px; background: var(--border); margin: 0.35rem 0; }
-
-  .hint { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
 
   @media (max-width: 560px) {
     .menu { padding: 1.5rem 1rem; }
-    .menu__cards { width: 6.5rem; height: 5rem; }
     .game { padding: 0.4rem; }
     .game__header { padding: 0.55rem 0.7rem; font-size: 0.75rem; }
     .game__header-title { font-size: 0.9rem; }
-    .felt { padding: 0.9rem 0.5rem; min-height: 7.5rem; gap: 0.6rem; }
-    .log { max-height: 3.5rem; }
-    .editor__header h2 { font-size: 1rem; }
-    .modal { padding: 1.25rem; }
-    .modal--wide { max-width: 100%; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
+    .felt { padding: 0.7rem 0.4rem; min-height: 7rem; }
+    .log { max-height: 3.2rem; }
   }
 </style>
 </head>
@@ -532,9 +507,9 @@ function el(tag, props, ...children) {
     if (v == null || v === false) continue;
     if (k === 'class') n.className = v;
     else if (k === 'style' && typeof v === 'object') Object.assign(n.style, v);
-    else if (k.startsWith('on') && typeof v === 'function') {
+    else if (k.startsWith('on') && typeof v === 'function')
       n.addEventListener(k.slice(2).toLowerCase(), v);
-    } else if (k in n) n[k] = v;
+    else if (k in n) n[k] = v;
     else n.setAttribute(k, v);
   }
   for (const c of children.flat()) {
@@ -559,23 +534,25 @@ function shuffle(arr) {
   }
   return a;
 }
+function clone(o) { return structuredClone(o); }
 
 // ============================================================
 // Constants
 // ============================================================
 
 const COLOR_HEX = {
-  red: '#e4222e', orange: '#ea580c', yellow: '#f5c518',
-  green: '#2da54a', teal: '#0d9488', blue: '#0d6efd',
-  purple: '#9333ea', pink: '#ec4899', brown: '#78350f',
-  gray: '#6b7280', black: '#1c1c20', white: '#f3f4f6',
+  red: '#e4222e', orange: '#ea580c', yellow: '#f5c518', green: '#2da54a',
+  teal: '#0d9488', blue: '#0d6efd', purple: '#9333ea', pink: '#ec4899',
+  brown: '#78350f', gray: '#6b7280', black: '#1c1c20', white: '#f3f4f6',
 };
 const LIGHT_COLORS = new Set(['yellow', 'white']);
+const COLOR_ORDER = Object.fromEntries(Object.keys(COLOR_HEX).map((c, i) => [c, i]));
 const SUITS = ['♠', '♥', '♦', '♣'];
 const SUIT_ORDER = { '♠': 0, '♥': 1, '♦': 2, '♣': 3 };
-const STD_SUITS = SUITS;
 const STD_RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
 const RANK_ORDER = Object.fromEntries(STD_RANKS.map((r, i) => [r, i]));
+const POKER_RANKS = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+const POKER_RANK_VALUES = Object.fromEntries(POKER_RANKS.map((r, i) => [r, i + 2]));
 
 const PIP_LAYOUTS = {
   '2': [[50, 22], [50, 78]],
@@ -590,12 +567,12 @@ const PIP_LAYOUTS = {
 };
 
 // ============================================================
-// Built-in games (UNO, Crazy Eights) — hardcoded for polish
+// Standard deck
 // ============================================================
 
 function buildStdDeck() {
   const defs = {}; const cards = [];
-  for (const suit of STD_SUITS) for (const rank of STD_RANKS) {
+  for (const suit of SUITS) for (const rank of STD_RANKS) {
     const id = 'std:' + suit + rank;
     defs[id] = { id, kind: 'std', suit, rank, name: rank + suit,
       color: (suit === '♥' || suit === '♦') ? 'red' : 'black' };
@@ -603,802 +580,11 @@ function buildStdDeck() {
   }
   return { defs, cards };
 }
-
-function buildUnoDeck() {
-  const defs = {}; const cards = [];
-  for (const color of ['red', 'yellow', 'green', 'blue']) {
-    const zid = `uno:${color}:0`;
-    defs[zid] = { id: zid, kind: 'uno', color, value: '0' };
-    cards.push({ id: zid + ':0', defId: zid });
-    for (let n = 1; n <= 9; n++) {
-      const nid = `uno:${color}:${n}`;
-      defs[nid] = { id: nid, kind: 'uno', color, value: String(n) };
-      cards.push({ id: nid + ':0', defId: nid });
-      cards.push({ id: nid + ':1', defId: nid });
-    }
-    for (const v of ['skip', 'reverse', 'draw2']) {
-      const vid = `uno:${color}:${v}`;
-      defs[vid] = { id: vid, kind: 'uno', color, value: v };
-      cards.push({ id: vid + ':0', defId: vid });
-      cards.push({ id: vid + ':1', defId: vid });
-    }
-  }
-  for (const v of ['wild', 'wild4']) {
-    const wid = `uno:wild:${v}`;
-    defs[wid] = { id: wid, kind: 'uno', color: 'wild', value: v };
-    for (let i = 0; i < 4; i++) cards.push({ id: wid + ':' + i, defId: wid });
-  }
-  return { defs, cards };
-}
-
 const STD_DECK = buildStdDeck();
-const UNO_DECK = buildUnoDeck();
 
-// ============================================================
-// Shared helpers
-// ============================================================
-
-function topOf(zone) { return zone.cards[zone.cards.length - 1]; }
-function makeBaseState(scriptId, names) {
-  return {
-    scriptId,
-    players: names.map((name, id) => ({ id, name })),
-    zones: {},
-    current: 0, turn: 1, phase: 'play',
-    flags: { direction: 1 },
-    log: [], ended: false, winners: [],
-  };
+function stdCardInstances() {
+  return STD_DECK.cards.map(c => ({ id: c.id + ':' + Math.random(), defId: c.defId, faceUp: false }));
 }
-function advanceTurn(s) {
-  const n = s.players.length;
-  const dir = s.flags.direction ?? 1;
-  s.current = (s.current + dir + n) % n;
-  s.turn++;
-  s.flags.drewThisTurn = false;
-  s.flags.drawnCardId = undefined;
-}
-function drawTo(s, playerId) {
-  if (s.zones.draw.cards.length === 0) reshuffleDiscard(s);
-  if (s.zones.draw.cards.length === 0) return null;
-  const c = s.zones.draw.cards.pop();
-  s.zones['hand:' + playerId].cards.push(c);
-  return c;
-}
-function reshuffleDiscard(s) {
-  const discard = s.zones.discard;
-  if (!discard || discard.cards.length <= 1) return;
-  const top = discard.cards.pop();
-  s.zones.draw.cards = shuffle(discard.cards).map(c => ({ ...c, faceUp: false }));
-  discard.cards = [top];
-  s.log.push('Discard pile reshuffled into draw pile');
-}
-
-// ============================================================
-// Built-in: UNO
-// ============================================================
-
-function createUno(names) {
-  const s = makeBaseState('uno', names);
-  s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
-  for (const p of s.players) s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-  const cards = UNO_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
-  s.zones.draw.cards = shuffle(cards);
-  for (const p of s.players) for (let i = 0; i < 7; i++)
-    s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
-  let top = s.zones.draw.cards.pop();
-  while (UNO_DECK.defs[top.defId].color === 'wild') {
-    s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
-  }
-  top.faceUp = true; s.zones.discard.cards.push(top);
-  s.flags.activeColor = UNO_DECK.defs[top.defId].color;
-  s.log.push('Top card: ' + unoLabel(UNO_DECK.defs[top.defId]) + '. ' + names[0] + ' starts.');
-  return s;
-}
-function unoLabel(def) {
-  const names = { skip: 'Skip', reverse: 'Reverse', draw2: 'Draw Two', wild: 'Wild', wild4: 'Wild Draw Four' };
-  if (def.color === 'wild') return names[def.value] || def.value;
-  return def.color + ' ' + (names[def.value] || def.value);
-}
-function isPlayableUno(s, def) {
-  if (def.color === 'wild') return true;
-  const top = topOf(s.zones.discard);
-  if (!top) return true;
-  const topDef = UNO_DECK.defs[top.defId];
-  return def.color === s.flags.activeColor || def.value === topDef.value;
-}
-function legalUno(s, player) {
-  if (s.ended || player !== s.current) return [];
-  if (s.phase === 'chooseColor') return ['red','yellow','green','blue'].map(c => ({
-    id: 'color-' + c, cmd: { type: 'CHOOSE_COLOR', color: c },
-  }));
-  const hand = s.zones['hand:' + player]; const out = [];
-  if (s.flags.drewThisTurn) {
-    const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
-    if (drawn && isPlayableUno(s, UNO_DECK.defs[drawn.defId]))
-      out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
-    out.push({ id: 'pass', cmd: { type: 'PASS' } }); return out;
-  }
-  for (const c of hand.cards) if (isPlayableUno(s, UNO_DECK.defs[c.defId]))
-    out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
-  if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
-  return out;
-}
-function applyUno(state, cmd) {
-  const s = structuredClone(state); const actor = s.current;
-  const n = s.players.length;
-  if (cmd.type === 'PLAY_CARD') {
-    const hand = s.zones['hand:' + actor];
-    const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
-    if (idx < 0) throw new Error('Card not in hand');
-    const card = hand.cards[idx]; const def = UNO_DECK.defs[card.defId];
-    if (!isPlayableUno(s, def)) throw new Error('Not playable');
-    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId)
-      throw new Error('You can only play the card you drew');
-    hand.cards.splice(idx, 1); card.faceUp = true;
-    s.zones.discard.cards.push(card);
-    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' played ' + unoLabel(def));
-    if (hand.cards.length === 0) {
-      s.ended = true; s.winners = [actor];
-      s.log.push(s.players[actor].name + ' wins!'); return s;
-    }
-    if (def.color === 'wild') {
-      s.phase = 'chooseColor';
-      s.flags.pendingWild4 = def.value === 'wild4'; return s;
-    }
-    s.flags.activeColor = def.color;
-    if (def.value === 'skip') { advanceTurn(s); advanceTurn(s); }
-    else if (def.value === 'reverse') {
-      s.flags.direction *= -1; advanceTurn(s);
-      if (n === 2) advanceTurn(s);
-    } else if (def.value === 'draw2') {
-      advanceTurn(s); const target = s.current;
-      for (let i = 0; i < 2; i++) drawTo(s, target);
-      s.log.push(s.players[target].name + ' draws 2 and is skipped'); advanceTurn(s);
-    } else advanceTurn(s);
-    return s;
-  }
-  if (cmd.type === 'CHOOSE_COLOR') {
-    s.flags.activeColor = cmd.color; s.phase = 'play';
-    const wasWild4 = s.flags.pendingWild4; s.flags.pendingWild4 = false;
-    s.log.push(s.players[actor].name + ' chose ' + cmd.color);
-    if (wasWild4) {
-      advanceTurn(s); const t = s.current;
-      for (let i = 0; i < 4; i++) drawTo(s, t);
-      s.log.push(s.players[t].name + ' draws 4 and is skipped'); advanceTurn(s);
-    } else advanceTurn(s);
-    return s;
-  }
-  if (cmd.type === 'DRAW') {
-    if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
-    const c = drawTo(s, actor);
-    if (!c) { s.log.push('No cards left to draw'); advanceTurn(s); return s; }
-    s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
-    s.log.push(s.players[actor].name + ' drew a card'); return s;
-  }
-  if (cmd.type === 'PASS') {
-    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' passed'); advanceTurn(s); return s;
-  }
-  throw new Error('Unknown command: ' + cmd.type);
-}
-
-// ============================================================
-// Built-in: Crazy Eights
-// ============================================================
-
-function createCE(names) {
-  const s = makeBaseState('crazy-eights', names);
-  s.zones.draw = { cards: [] }; s.zones.discard = { cards: [] };
-  for (const p of s.players) s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-  const cards = STD_DECK.cards.map(c => ({ id: c.id, defId: c.defId, faceUp: false }));
-  s.zones.draw.cards = shuffle(cards);
-  for (const p of s.players) for (let i = 0; i < 5; i++)
-    s.zones['hand:' + p.id].cards.push(s.zones.draw.cards.pop());
-  let top = s.zones.draw.cards.pop();
-  while (STD_DECK.defs[top.defId].rank === '8') {
-    s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
-  }
-  top.faceUp = true; s.zones.discard.cards.push(top);
-  s.flags.activeColor = STD_DECK.defs[top.defId].suit;
-  s.log.push('Top card: ' + STD_DECK.defs[top.defId].name + '. ' + names[0] + ' starts.');
-  return s;
-}
-function isPlayableCE(s, def) {
-  const top = topOf(s.zones.discard);
-  if (!top) return true;
-  const topDef = STD_DECK.defs[top.defId];
-  if (def.rank === '8') return true;
-  return def.suit === s.flags.activeColor || def.rank === topDef.rank;
-}
-function legalCE(s, player) {
-  if (s.ended || player !== s.current) return [];
-  if (s.phase === 'chooseColor') return STD_SUITS.map(suit => ({
-    id: 'suit-' + suit, cmd: { type: 'CHOOSE_COLOR', color: suit },
-  }));
-  const hand = s.zones['hand:' + player]; const out = [];
-  if (s.flags.drewThisTurn) {
-    const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
-    if (drawn && isPlayableCE(s, STD_DECK.defs[drawn.defId]))
-      out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
-    out.push({ id: 'pass', cmd: { type: 'PASS' } }); return out;
-  }
-  for (const c of hand.cards) if (isPlayableCE(s, STD_DECK.defs[c.defId]))
-    out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
-  if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
-  return out;
-}
-function applyCE(state, cmd) {
-  const s = structuredClone(state); const actor = s.current;
-  if (cmd.type === 'PLAY_CARD') {
-    const hand = s.zones['hand:' + actor];
-    const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
-    if (idx < 0) throw new Error('Card not in hand');
-    const card = hand.cards[idx]; const def = STD_DECK.defs[card.defId];
-    if (!isPlayableCE(s, def)) throw new Error('Not playable');
-    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId)
-      throw new Error('You can only play the card you drew');
-    hand.cards.splice(idx, 1); card.faceUp = true;
-    s.zones.discard.cards.push(card);
-    s.flags.activeColor = def.suit;
-    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' played ' + def.name);
-    if (hand.cards.length === 0) {
-      s.ended = true; s.winners = [actor];
-      s.log.push(s.players[actor].name + ' wins!'); return s;
-    }
-    if (def.rank === '8') { s.phase = 'chooseColor'; return s; }
-    advanceTurn(s); return s;
-  }
-  if (cmd.type === 'CHOOSE_COLOR') {
-    s.flags.activeColor = cmd.color; s.phase = 'play';
-    s.log.push(s.players[actor].name + ' chose ' + cmd.color);
-    advanceTurn(s); return s;
-  }
-  if (cmd.type === 'DRAW') {
-    if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
-    const c = drawTo(s, actor);
-    if (!c) { s.log.push('No cards to draw'); advanceTurn(s); return s; }
-    s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
-    s.log.push(s.players[actor].name + ' drew a card'); return s;
-  }
-  if (cmd.type === 'PASS') {
-    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' passed'); advanceTurn(s); return s;
-  }
-  throw new Error('Unknown command: ' + cmd.type);
-}
-
-// ============================================================
-// Custom game engine
-// ============================================================
-
-let _cardSeq = 1;
-function newCardId() { return 'c' + (_cardSeq++); }
-
-function finalizeCustomGame(def) {
-  const defs = {};
-  for (const c of def.cards) defs[c.id] = { ...c, kind: 'custom' };
-  const instances = [];
-  for (const c of def.cards) for (let i = 0; i < (c.count || 1); i++)
-    instances.push({ id: c.id + '_' + i, defId: c.id });
-  return { ...def, _defs: defs, _instances: instances };
-}
-
-function createCustomState(def, names) {
-  const s = makeBaseState(def.id, names);
-  s.flags.activeProps = {};
-  s.flags.scores = {};
-  for (const p of s.players) s.flags.scores[p.id] = 0;
-  s.zones.draw = { cards: [] };
-  s.zones.discard = { cards: [] };
-  for (const p of s.players) {
-    s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
-    if (def.winCondition === 'mostSets')
-      s.zones['sets:' + p.id] = { owner: p.id, cards: [] };
-  }
-  s.zones.draw.cards = shuffle(def._instances.map(c => ({ id: c.id, defId: c.defId, faceUp: false })));
-  for (const p of s.players) {
-    for (let i = 0; i < def.deal; i++) {
-      const c = s.zones.draw.cards.pop();
-      if (c) s.zones['hand:' + p.id].cards.push(c);
-    }
-  }
-  if (def.flipStart) {
-    let top = s.zones.draw.cards.pop(); let tries = 0;
-    while (top && def._defs[top.defId]?.isWild && tries++ < 30) {
-      s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
-    }
-    if (top) { top.faceUp = true; s.zones.discard.cards.push(top); }
-  }
-  if (def.winCondition === 'mostSets')
-    for (const p of s.players) collectSetsCustom(def, s, p.id);
-  s.log.push((names[0] || 'P1') + ' starts.');
-  return s;
-}
-
-function collectSetsCustom(def, s, playerId) {
-  if (def.winCondition !== 'mostSets') return;
-  const hand = s.zones['hand:' + playerId];
-  if (!hand) return;
-  const rankProp = def.setProp || 'rank';
-  const byKey = {};
-  for (const c of hand.cards) {
-    const key = def._defs[c.defId]?.props?.[rankProp];
-    if (key == null) continue;
-    (byKey[key] = byKey[key] || []).push(c);
-  }
-  for (const [key, cards] of Object.entries(byKey)) {
-    if (cards.length >= def.setSize) {
-      const take = cards.slice(0, def.setSize);
-      for (const c of take) {
-        hand.cards.splice(hand.cards.indexOf(c), 1);
-        c.faceUp = true;
-        s.zones['sets:' + playerId].cards.push(c);
-        s.flags.scores[playerId] = (s.flags.scores[playerId] || 0) + (def._defs[c.defId]?.value || 0);
-      }
-      s.log.push(s.players[playerId].name + ' made a set of ' + key + 's');
-    }
-  }
-}
-
-function isPlayableCustom(def, s, card) {
-  const d = def._defs[card.defId];
-  if (!d) return false;
-  if (d.isWild) return true;
-  if (def.gameMode === 'ask') return false; // ask mode uses different actions
-  const top = topOf(s.zones.discard);
-  if (!top) return true;
-  const topDef = def._defs[top.defId];
-  if (!topDef) return true;
-  for (const prop of def.matchProps) {
-    const myVal = d.props?.[prop];
-    if (myVal == null) continue;
-    const activeVal = s.flags.activeProps?.[prop];
-    const topVal = activeVal != null ? activeVal : topDef.props?.[prop];
-    if (myVal === topVal) return true;
-  }
-  return false;
-}
-
-function legalCustom(def, s, player) {
-  if (s.ended || player !== s.current) return [];
-  if (s.phase === 'chooseProp') {
-    const prop = s.flags.choosePropProp;
-    const propDef = def.properties.find(p => p.name === prop);
-    let values = [];
-    if (propDef?.type === 'color') values = Object.keys(COLOR_HEX);
-    else if (propDef?.type === 'suit') values = SUITS;
-    else {
-      // derive from existing cards
-      const seen = new Set();
-      for (const c of def.cards) {
-        const v = c.props?.[prop];
-        if (v != null && v !== 'wild') seen.add(v);
-      }
-      values = [...seen];
-    }
-    return values.map(v => ({
-      id: 'choose-' + v,
-      cmd: { type: 'CHOOSE_PROP', prop, value: v },
-    }));
-  }
-
-  const hand = s.zones['hand:' + player];
-
-  if (def.gameMode === 'ask') {
-    const out = [];
-    const prop = def.setProp || 'rank';
-    const myValues = new Set(hand.cards.map(c => def._defs[c.defId]?.props?.[prop]).filter(Boolean));
-    for (const v of myValues) {
-      for (const p of s.players) {
-        if (p.id === player) continue;
-        out.push({
-          id: `ask-${p.id}-${v}`, value: v, target: p.id,
-          cmd: { type: 'ASK', target: p.id, value: v },
-        });
-      }
-    }
-    if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
-    return out;
-  }
-
-  // Shed mode
-  const out = [];
-  if (s.flags.drewThisTurn) {
-    const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
-    if (drawn && isPlayableCustom(def, s, drawn))
-      out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
-    out.push({ id: 'pass', cmd: { type: 'PASS' } });
-    return out;
-  }
-  for (const c of hand.cards) if (isPlayableCustom(def, s, c))
-    out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
-  if (def.turnMode !== 'playOnly' && out.length === 0)
-    out.push({ id: 'draw', cmd: { type: 'DRAW' } });
-  return out;
-}
-
-// Effect helpers
-function applyEffect(def, s, actor, eff, tracker) {
-  switch (eff.type) {
-    case 'skip':
-      tracker.advanced = true;
-      advanceTurn(s); advanceTurn(s);
-      s.log.push(s.players[s.current].name + ' is skipped');
-      break;
-    case 'reverse':
-      tracker.advanced = true;
-      s.flags.direction *= -1;
-      advanceTurn(s);
-      if (s.players.length === 2) advanceTurn(s);
-      break;
-    case 'drawAndSkip': {
-      tracker.advanced = true;
-      advanceTurn(s);
-      const target = s.current;
-      for (let i = 0; i < eff.n; i++) drawTo(s, target);
-      s.log.push(s.players[target].name + ' draws ' + eff.n + ' and is skipped');
-      advanceTurn(s);
-      break;
-    }
-    case 'drawSelf':
-      for (let i = 0; i < eff.n; i++) drawTo(s, actor);
-      s.log.push(s.players[actor].name + ' draws ' + eff.n);
-      break;
-    case 'discardSelf': {
-      const hand = s.zones['hand:' + actor];
-      for (let i = 0; i < eff.n && hand.cards.length > 0; i++) {
-        const c = hand.cards.pop();
-        c.faceUp = true;
-        s.zones.discard.cards.push(c);
-      }
-      s.log.push(s.players[actor].name + ' discards ' + eff.n);
-      break;
-    }
-    case 'score':
-      s.flags.scores[actor] = (s.flags.scores[actor] || 0) + eff.n;
-      s.log.push(s.players[actor].name + ' gains ' + eff.n + ' points');
-      break;
-  }
-}
-
-function applyEffects(def, s, actor, effects, tracker) {
-  for (let i = 0; i < effects.length; i++) {
-    const eff = effects[i];
-    if (eff.type === 'chooseProp') {
-      s.flags.choosePropProp = eff.prop;
-      s.flags.pendingEffects = effects.slice(i + 1);
-      s.flags.pendingEffectOwner = actor;
-      s.phase = 'chooseProp';
-      return 'paused';
-    }
-    applyEffect(def, s, actor, eff, tracker);
-  }
-  return 'done';
-}
-
-function applyCustom(def, state, cmd) {
-  const s = structuredClone(state); const actor = s.current;
-
-  if (cmd.type === 'PLAY_CARD') {
-    const hand = s.zones['hand:' + actor];
-    const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
-    if (idx < 0) throw new Error('Card not in hand');
-    const card = hand.cards[idx];
-    const cardDef = def._defs[card.defId];
-    if (!isPlayableCustom(def, s, card)) throw new Error('Not playable');
-    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId)
-      throw new Error('You can only play the card you drew');
-    hand.cards.splice(idx, 1); card.faceUp = true;
-    s.zones.discard.cards.push(card);
-    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-
-    // Set active props from played card
-    for (const prop of def.matchProps) {
-      const v = cardDef.props?.[prop];
-      if (v != null && v !== 'wild') s.flags.activeProps[prop] = v;
-    }
-
-    s.log.push(s.players[actor].name + ' played ' + (cardDef.name || 'a card'));
-
-    // Win check before effects
-    if (def.winCondition === 'emptyHand' && hand.cards.length === 0 && !hasForcedEffectAfterWin(cardDef.effects)) {
-      s.ended = true; s.winners = [actor];
-      s.log.push(s.players[actor].name + ' wins!');
-      return s;
-    }
-
-    const tracker = { advanced: false };
-    const result = applyEffects(def, s, actor, cardDef.effects || [], tracker);
-    if (result === 'done' && !tracker.advanced && !s.ended) advanceTurn(s);
-    if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
-    return s;
-  }
-
-  if (cmd.type === 'CHOOSE_PROP') {
-    s.flags.activeProps[cmd.prop] = cmd.value;
-    s.phase = 'play';
-    s.log.push(s.players[s.flags.pendingEffectOwner].name + ' chose ' + cmd.value);
-    const owner = s.flags.pendingEffectOwner;
-    const pending = s.flags.pendingEffects || [];
-    s.flags.pendingEffects = undefined;
-    s.flags.choosePropProp = undefined;
-    s.flags.pendingEffectOwner = undefined;
-    const tracker = { advanced: false };
-    const result = applyEffects(def, s, owner, pending, tracker);
-    if (result === 'done' && !tracker.advanced && !s.ended) advanceTurn(s);
-    if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
-    return s;
-  }
-
-  if (cmd.type === 'DRAW') {
-    if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
-    const c = drawTo(s, actor);
-    if (!c) { s.log.push('No cards left to draw'); advanceTurn(s); return s; }
-    s.flags.drewThisTurn = true; s.flags.drawnCardId = c.id;
-    s.log.push(s.players[actor].name + ' drew a card');
-    if (def.turnMode === 'playOnly') advanceTurn(s);
-    return s;
-  }
-
-  if (cmd.type === 'PASS') {
-    s.flags.drewThisTurn = false; s.flags.drawnCardId = undefined;
-    s.log.push(s.players[actor].name + ' passed');
-    advanceTurn(s);
-    if (def.winCondition === 'mostSets') checkCustomEnd(def, s);
-    return s;
-  }
-
-  if (cmd.type === 'ASK') {
-    if (def.gameMode !== 'ask') throw new Error('Not in ask mode');
-    const target = cmd.target;
-    const value = cmd.value;
-    const prop = def.setProp || 'rank';
-    const actorHand = s.zones['hand:' + actor];
-    const targetHand = s.zones['hand:' + target];
-    if (!actorHand.cards.some(c => def._defs[c.defId]?.props?.[prop] === value))
-      throw new Error('You must hold that card');
-    const matching = targetHand.cards.filter(c => def._defs[c.defId]?.props?.[prop] === value);
-    let goAgain = false;
-    if (matching.length > 0) {
-      for (const c of matching) {
-        targetHand.cards.splice(targetHand.cards.indexOf(c), 1);
-        actorHand.cards.push(c);
-      }
-      s.log.push(`${s.players[actor].name} got ${matching.length}× ${value} from ${s.players[target].name}`);
-      goAgain = true;
-    } else {
-      const c = drawTo(s, actor);
-      if (c) {
-        const drawnVal = def._defs[c.defId]?.props?.[prop];
-        s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${value}, drew a card`);
-        goAgain = drawnVal === value;
-      } else {
-        s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${value}, got nothing`);
-      }
-    }
-    collectSetsCustom(def, s, actor);
-    checkCustomEnd(def, s);
-    if (!s.ended && !goAgain) advanceTurn(s);
-    return s;
-  }
-
-  throw new Error('Unknown command: ' + cmd.type);
-}
-
-function hasForcedEffectAfterWin(effects) {
-  return effects && effects.some(e => e.type === 'chooseProp');
-}
-
-function checkCustomEnd(def, s) {
-  if (def.winCondition !== 'mostSets') return;
-  for (const p of s.players) collectSetsCustom(def, s, p.id);
-  const allHandsEmpty = s.players.every(p => s.zones['hand:' + p.id].cards.length === 0);
-  const drawEmpty = s.zones.draw.cards.length === 0;
-  if (!allHandsEmpty && !drawEmpty) return;
-  if (drawEmpty && s.players.some(p => s.zones['hand:' + p.id].cards.length > 0)) {
-    // Keep playing until all sets collected
-  }
-  s.ended = true;
-  let best = -1; s.winners = [];
-  for (const p of s.players) {
-    const cnt = s.flags.scores[p.id] || 0;
-    if (cnt > best) { best = cnt; s.winners = [p.id]; }
-    else if (cnt === best) s.winners.push(p.id);
-  }
-  s.log.push('Game over. ' + s.winners.map(w => s.players[w].name).join(', ')
-    + ' win with ' + best + ' point' + (best === 1 ? '' : 's') + '.');
-}
-
-function makeCustomAdapter(def) {
-  return {
-    id: def.id, name: def.name,
-    minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
-    defs: def._defs, uiMode: def.gameMode === 'ask' ? 'ask' : 'play',
-    rules: def.description || ('Custom game: ' + def.name),
-    isCustom: true, _def: def,
-    create: names => createCustomState(def, names),
-    legal: (s, p) => legalCustom(def, s, p),
-    apply: (s, cmd) => applyCustom(def, s, cmd),
-  };
-}
-
-// ============================================================
-// Presets
-// ============================================================
-
-function makeUnoPreset() {
-  const cards = [];
-  for (const color of ['red', 'yellow', 'green', 'blue']) {
-    cards.push({ id: newCardId(), name: 'Red 0'.replace('Red', color[0].toUpperCase() + color.slice(1)), count: 1, props: { color, rank: '0' }, value: 0, isWild: false, effects: [] });
-    for (let n = 1; n <= 9; n++) {
-      cards.push({ id: newCardId(), name: color[0].toUpperCase() + color.slice(1) + ' ' + n, count: 2, props: { color, rank: String(n) }, value: n, isWild: false, effects: [] });
-    }
-    cards.push({ id: newCardId(), name: color[0].toUpperCase() + color.slice(1) + ' Skip', count: 2, props: { color, rank: 'skip' }, value: 20, isWild: false, effects: [{ type: 'skip' }] });
-    cards.push({ id: newCardId(), name: color[0].toUpperCase() + color.slice(1) + ' Reverse', count: 2, props: { color, rank: 'reverse' }, value: 20, isWild: false, effects: [{ type: 'reverse' }] });
-    cards.push({ id: newCardId(), name: color[0].toUpperCase() + color.slice(1) + ' Draw Two', count: 2, props: { color, rank: 'draw2' }, value: 20, isWild: false, effects: [{ type: 'drawAndSkip', n: 2 }] });
-  }
-  cards.push({ id: newCardId(), name: 'Wild', count: 4, props: { color: 'wild', rank: 'wild' }, value: 50, isWild: true, effects: [{ type: 'chooseProp', prop: 'color' }] });
-  cards.push({ id: newCardId(), name: 'Wild Draw Four', count: 4, props: { color: 'wild', rank: 'wild4' }, value: 50, isWild: true, effects: [{ type: 'chooseProp', prop: 'color' }, { type: 'drawAndSkip', n: 4 }] });
-  return {
-    name: 'UNO-style',
-    gameMode: 'shed', minPlayers: 2, maxPlayers: 10,
-    deal: 7, flipStart: true, matchProps: ['color', 'rank'],
-    turnMode: 'drawIfStuck', winCondition: 'emptyHand',
-    properties: [{ name: 'color', type: 'color' }, { name: 'rank', type: 'text' }],
-    cards, description: '',
-  };
-}
-
-function makeStandard52Preset() {
-  const cards = [];
-  const suitGroups = { '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' };
-  for (const suit of SUITS) for (const rank of STD_RANKS) {
-    cards.push({
-      id: newCardId(),
-      name: rank + suit,
-      count: 1,
-      props: { suit, rank },
-      value: rank === 'A' ? 1 : rank === 'J' ? 11 : rank === 'Q' ? 12 : rank === 'K' ? 13 : parseInt(rank, 10),
-      isWild: false, effects: [],
-    });
-  }
-  return {
-    name: 'Standard 52',
-    gameMode: 'shed', minPlayers: 2, maxPlayers: 7,
-    deal: 5, flipStart: true, matchProps: ['suit', 'rank'],
-    turnMode: 'drawIfStuck', winCondition: 'emptyHand',
-    properties: [{ name: 'suit', type: 'suit' }, { name: 'rank', type: 'text' }],
-    cards, description: '',
-  };
-}
-
-function makeNumbersPreset() {
-  const cards = [];
-  for (let n = 1; n <= 10; n++) {
-    cards.push({
-      id: newCardId(),
-      name: String(n),
-      count: 4,
-      props: { number: String(n) },
-      value: n, isWild: false, effects: [],
-    });
-  }
-  return {
-    name: 'Number cards',
-    gameMode: 'shed', minPlayers: 2, maxPlayers: 4,
-    deal: 5, flipStart: true, matchProps: ['number'],
-    turnMode: 'drawIfStuck', winCondition: 'emptyHand',
-    properties: [{ name: 'number', type: 'text' }],
-    cards, description: '',
-  };
-}
-
-function makeGoFishPreset() {
-  const preset = makeStandard52Preset();
-  preset.name = 'Go Fish';
-  preset.gameMode = 'ask';
-  preset.deal = 5;
-  preset.winCondition = 'mostSets';
-  preset.setProp = 'rank';
-  preset.setSize = 4;
-  return preset;
-}
-
-const DECK_PRESETS = {
-  blank: () => ({ name: 'My game', gameMode: 'shed', minPlayers: 2, maxPlayers: 4,
-    deal: 5, flipStart: true, matchProps: ['color', 'rank'],
-    turnMode: 'drawIfStuck', winCondition: 'emptyHand',
-    properties: [{ name: 'color', type: 'color' }, { name: 'rank', type: 'text' }],
-    cards: [], description: '' }),
-  uno: makeUnoPreset,
-  standard52: makeStandard52Preset,
-  numbers: makeNumbersPreset,
-  gofish: makeGoFishPreset,
-};
-
-// ============================================================
-// Persistence
-// ============================================================
-
-const STORAGE_KEY = 'card-table:custom-games';
-
-function loadCustomGames() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    const out = {};
-    for (const id in raw) {
-      out[id] = finalizeCustomGame(raw[id]);
-      for (const c of raw[id].cards || []) {
-        const m = /^c(\d+)$/.exec(c.id || '');
-        if (m) _cardSeq = Math.max(_cardSeq, parseInt(m[1]) + 1);
-      }
-    }
-    return out;
-  } catch (e) { return {}; }
-}
-
-function persistCustomGames() {
-  try {
-    const raw = {};
-    for (const id in CUSTOM_GAMES) {
-      const d = CUSTOM_GAMES[id];
-      raw[id] = {
-        id: d.id, name: d.name, gameMode: d.gameMode,
-        minPlayers: d.minPlayers, maxPlayers: d.maxPlayers,
-        cards: d.cards, deal: d.deal, flipStart: d.flipStart,
-        matchProps: d.matchProps, turnMode: d.turnMode,
-        winCondition: d.winCondition, setProp: d.setProp, setSize: d.setSize,
-        properties: d.properties, description: d.description,
-      };
-    }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(raw));
-  } catch (e) { console.warn('Failed to save custom games', e); }
-}
-
-// ============================================================
-// Game registry
-// ============================================================
-
-const CUSTOM_GAMES = loadCustomGames();
-const GAMES = {
-  'uno': {
-    id: 'uno', name: 'UNO', minPlayers: 2, maxPlayers: 6,
-    defs: UNO_DECK.defs, uiMode: 'play',
-    rules: 'Match color or number. Action cards skip, reverse, or force draws.',
-    create: createUno, legal: legalUno, apply: applyUno,
-  },
-  'crazy-eights': {
-    id: 'crazy-eights', name: 'Crazy Eights', minPlayers: 2, maxPlayers: 7,
-    defs: STD_DECK.defs, uiMode: 'play',
-    rules: 'Match suit or rank. Eights are wild.',
-    create: createCE, legal: legalCE, apply: applyCE,
-  },
-};
-
-function registerCustomGame(def) {
-  CUSTOM_GAMES[def.id] = finalizeCustomGame(def);
-  GAMES[def.id] = makeCustomAdapter(CUSTOM_GAMES[def.id]);
-}
-function unregisterCustomGame(id) {
-  delete CUSTOM_GAMES[id];
-  delete GAMES[id];
-  persistCustomGames();
-}
-for (const id in CUSTOM_GAMES) GAMES[id] = makeCustomAdapter(CUSTOM_GAMES[id]);
-
-// ============================================================
-// App state
-// ============================================================
-
-let G = null;
-let SCREEN = 'menu';
-let VIEWER = 0;
-let undoStack = [];
-const MENU = { scriptId: 'uno', namesInput: 'Alice, Bob' };
-let editingGame = null;
-let editorTab = 'deck';
 
 // ============================================================
 // Card rendering
@@ -1407,11 +593,17 @@ let editorTab = 'deck';
 function renderCardEl(card) {
   if (!card || card.defId === '__hidden__') return el('div', { class: 'card card--back' });
   const game = GAMES[G.scriptId];
-  const def = game && game.defs[card.defId];
+  const def = game && game.defs && game.defs[card.defId];
   if (!def) return el('div', { class: 'card card--back' });
-  if (def.kind === 'uno') return renderUnoCard(def);
   if (def.kind === 'std') return renderStdCard(def);
-  if (def.kind === 'custom') return renderCustomCard(def);
+  if (def.kind === 'custom') {
+    // Auto-detect: if props has color AND rank (but no suit), use UNO style
+    const p = def.props || {};
+    if (p.color && p.rank && !p.suit) return renderUnoStyle(p.color, p.rank, def.name);
+    if (p.suit && SUITS.includes(p.suit)) return renderStdCard({ rank: p.rank || '', suit: p.suit,
+      color: (p.suit === '♥' || p.suit === '♦') ? 'red' : 'black' });
+    return renderCustomCard(def);
+  }
   return el('div', { class: 'card card--back' });
 }
 
@@ -1433,11 +625,8 @@ function renderStdCard(def) {
       el('span', { class: 'card__face-suit' }, def.suit)));
   } else {
     const center = el('div', { class: 'card__center' });
-    const pips = PIP_LAYOUTS[def.rank] || [];
-    for (const [x, y] of pips) {
-      const pip = el('span', {
-        class: 'card__pip' + (y > 50 ? ' card__pip--flipped' : ''),
-      }, def.suit);
+    for (const [x, y] of (PIP_LAYOUTS[def.rank] || [])) {
+      const pip = el('span', { class: 'card__pip' + (y > 50 ? ' card__pip--flipped' : '') }, def.suit);
       pip.style.left = x + '%'; pip.style.top = y + '%';
       center.appendChild(pip);
     }
@@ -1446,9 +635,10 @@ function renderStdCard(def) {
   return card;
 }
 
-function renderUnoCard(def) {
-  if (def.color === 'wild') {
-    const isDraw4 = def.value === 'wild4';
+function renderUnoStyle(color, rank, name) {
+  const isWild = color === 'wild';
+  if (isWild) {
+    const isDraw4 = /4/.test(name || '');
     return el('div', { class: 'card card--uno card--wild' },
       el('div', { class: 'card__uno-corner card__uno-corner--tl' },
         el('span', null, isDraw4 ? '+4' : 'W')),
@@ -1458,13 +648,12 @@ function renderUnoCard(def) {
         el('span', { class: 'card__uno-val card__uno-val--wild' },
           isDraw4 ? '+4' : 'WILD')));
   }
-  let pip;
-  if (def.value === 'skip') pip = '⊘';
-  else if (def.value === 'reverse') pip = '⇄';
-  else if (def.value === 'draw2') pip = '+2';
-  else pip = def.value;
-  const bg = COLOR_HEX[def.color];
-  const fg = def.color === 'yellow' ? '#1a1a1a' : 'white';
+  let pip = rank;
+  if (rank === 'skip') pip = '⊘';
+  else if (rank === 'reverse') pip = '⇄';
+  else if (rank === 'draw2') pip = '+2';
+  const bg = COLOR_HEX[color];
+  const fg = LIGHT_COLORS.has(color) ? '#1a1a1a' : 'white';
   return el('div', { class: 'card card--uno', style: { background: bg } },
     el('div', { class: 'card__uno-corner card__uno-corner--tl', style: { color: fg } },
       el('span', null, pip)),
@@ -1475,64 +664,1243 @@ function renderUnoCard(def) {
 }
 
 function renderCustomCard(def) {
-  const props = def.props || {};
-  const isWild = def.isWild;
-
-  if (isWild) {
+  const p = def.props || {};
+  if (def.isWild) {
     return el('div', { class: 'card card--custom card--wild' },
       el('div', { class: 'card__corner card__corner--tl' }, el('span', null, '★')),
       el('div', { class: 'card__corner card__corner--br' }, el('span', null, '★')),
       el('div', { class: 'card__custom-center' },
         el('span', { class: 'card__custom-val' }, def.name || 'Wild')));
   }
+  const bg = COLOR_HEX[p.color] || '#4b5563';
+  const fg = LIGHT_COLORS.has(p.color) ? '#1a1a1a' : 'white';
+  const short = (def.name || '?').length > 6 ? (def.name.split(' ').pop() || '?') : def.name;
+  return el('div', { class: 'card card--custom', style: { background: bg, color: fg } },
+    el('div', { class: 'card__corner card__corner--tl' }, el('span', null, p.rank || '')),
+    el('div', { class: 'card__corner card__corner--br' }, el('span', null, p.rank || '')),
+    el('div', { class: 'card__custom-center' },
+      el('span', { class: 'card__custom-val', style: { color: bg } }, short)));
+}
 
-  // Standard 52 look if suit prop present
-  if (props.suit && SUITS.includes(props.suit)) {
-    return renderStdCard({ rank: props.rank || '', suit: props.suit,
-      color: (props.suit === '♥' || props.suit === '♦') ? 'red' : 'black' });
+// ============================================================
+// Poker hand evaluation
+// ============================================================
+
+function evaluate5(cards) {
+  const ranks = cards.map(c => POKER_RANK_VALUES[c.rank]).sort((a,b) => b-a);
+  const suits = cards.map(c => c.suit);
+  const flush = suits.every(s => s === suits[0]);
+  const counts = {};
+  for (const r of ranks) counts[r] = (counts[r] || 0) + 1;
+  const cv = Object.values(counts).sort((a,b) => b-a);
+  const uniq = [...new Set(ranks)].sort((a,b) => b-a);
+  const isStraight = uniq.length === 5 && (uniq[0] - uniq[4] === 4);
+  const isWheel = uniq.length === 5 && uniq[0] === 14 && uniq[1] === 5 && uniq[4] === 2;
+  const straightHigh = isWheel ? 5 : uniq[0];
+
+  if ((isStraight || isWheel) && flush) return { rank: 8, tie: [straightHigh], name: straightHigh === 14 ? 'Royal flush' : 'Straight flush' };
+  if (cv[0] === 4) {
+    const q = parseInt(Object.keys(counts).find(k => counts[k] === 4));
+    const k = parseInt(Object.keys(counts).find(x => counts[x] === 1));
+    return { rank: 7, tie: [q, k], name: 'Four of a kind' };
+  }
+  if (cv[0] === 3 && cv[1] === 2) {
+    const t = parseInt(Object.keys(counts).find(k => counts[k] === 3));
+    const p = parseInt(Object.keys(counts).find(k => counts[k] === 2));
+    return { rank: 6, tie: [t, p], name: 'Full house' };
+  }
+  if (flush) return { rank: 5, tie: uniq, name: 'Flush' };
+  if (isStraight || isWheel) return { rank: 4, tie: [straightHigh], name: 'Straight' };
+  if (cv[0] === 3) {
+    const t = parseInt(Object.keys(counts).find(k => counts[k] === 3));
+    const kicks = Object.keys(counts).filter(k => counts[k] === 1).map(Number).sort((a,b) => b-a);
+    return { rank: 3, tie: [t, ...kicks], name: 'Three of a kind' };
+  }
+  if (cv[0] === 2 && cv[1] === 2) {
+    const pairs = Object.keys(counts).filter(k => counts[k] === 2).map(Number).sort((a,b) => b-a);
+    const kick = parseInt(Object.keys(counts).find(k => counts[k] === 1));
+    return { rank: 2, tie: [...pairs, kick], name: 'Two pair' };
+  }
+  if (cv[0] === 2) {
+    const p = parseInt(Object.keys(counts).find(k => counts[k] === 2));
+    const kicks = Object.keys(counts).filter(k => counts[k] === 1).map(Number).sort((a,b) => b-a);
+    return { rank: 1, tie: [p, ...kicks], name: 'Pair' };
+  }
+  return { rank: 0, tie: uniq, name: 'High card' };
+}
+
+function bestHand(cards) {
+  if (cards.length < 5) return { rank: -1, tie: [], name: 'Incomplete' };
+  let best = null;
+  for (let a = 0; a < cards.length; a++)
+    for (let b = a+1; b < cards.length; b++)
+      for (let c = b+1; c < cards.length; c++)
+        for (let d = c+1; d < cards.length; d++)
+          for (let e = d+1; e < cards.length; e++) {
+            const h = evaluate5([cards[a], cards[b], cards[c], cards[d], cards[e]]);
+            if (!best || compareHands(h, best) > 0) best = h;
+          }
+  return best;
+}
+
+function compareHands(h1, h2) {
+  if (h1.rank !== h2.rank) return h1.rank - h2.rank;
+  for (let i = 0; i < Math.max(h1.tie.length, h2.tie.length); i++) {
+    const v1 = h1.tie[i] ?? 0, v2 = h2.tie[i] ?? 0;
+    if (v1 !== v2) return v1 - v2;
+  }
+  return 0;
+}
+
+// ============================================================
+// FAMILY 1: SHEDDING (UNO, Crazy Eights, custom)
+// ============================================================
+
+function createShedState(config, names) {
+  const s = {
+    family: 'shed',
+    scriptId: config.scriptId || 'custom',
+    players: names.map((name, id) => ({ id, name })),
+    current: 0, turn: 1, phase: 'play',
+    flags: { direction: 1, activeProps: {}, scores: {} },
+    zones: {}, log: [], ended: false, winners: [],
+    config,
+  };
+  for (const p of s.players) s.flags.scores[p.id] = 0;
+
+  s.zones.draw = { cards: [] };
+  s.zones.discard = { cards: [] };
+  for (const p of s.players) s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
+
+  const instances = [];
+  for (const c of config.cards) for (let i = 0; i < (c.count || 1); i++)
+    instances.push({ id: c.id + '_' + i, defId: c.id, faceUp: false });
+  s.zones.draw.cards = shuffle(instances);
+
+  for (const p of s.players)
+    for (let i = 0; i < config.deal; i++) {
+      const c = s.zones.draw.cards.pop();
+      if (c) s.zones['hand:' + p.id].cards.push(c);
+    }
+
+  if (config.flipStart) {
+    let top = s.zones.draw.cards.pop(); let tries = 0;
+    while (top && config.defs[top.defId]?.isWild && tries++ < 30) {
+      s.zones.draw.cards.unshift(top); top = s.zones.draw.cards.pop();
+    }
+    if (top) {
+      top.faceUp = true;
+      s.zones.discard.cards.push(top);
+      // Set active props from starting card
+      const d = config.defs[top.defId];
+      for (const prop of config.matchProps) {
+        const v = d?.props?.[prop];
+        if (v != null && v !== 'wild') s.flags.activeProps[prop] = v;
+      }
+    }
+  }
+  s.log.push((names[0] || 'P1') + ' starts.');
+  return s;
+}
+
+function topOf(zone) { return zone.cards[zone.cards.length - 1]; }
+
+function advanceShed(s) {
+  const n = s.players.length;
+  const dir = s.flags.direction ?? 1;
+  s.current = (s.current + dir + n) % n;
+  s.turn++;
+  s.flags.drewThisTurn = false;
+  s.flags.drawnCardId = undefined;
+}
+
+function drawToShed(s, playerId) {
+  if (s.zones.draw.cards.length === 0) {
+    const discard = s.zones.discard;
+    if (!discard || discard.cards.length <= 1) return null;
+    const top = discard.cards.pop();
+    s.zones.draw.cards = shuffle(discard.cards).map(c => ({ ...c, faceUp: false }));
+    discard.cards = [top];
+    s.log.push('Shuffled discard back into deck');
+  }
+  if (s.zones.draw.cards.length === 0) return null;
+  const c = s.zones.draw.cards.pop();
+  s.zones['hand:' + playerId].cards.push(c);
+  return c;
+}
+
+function isPlayableShed(config, s, card) {
+  const d = config.defs[card.defId];
+  if (!d) return false;
+  if (d.isWild) return true;
+  const top = topOf(s.zones.discard);
+  if (!top) return true;
+  const topDef = config.defs[top.defId];
+  if (!topDef) return true;
+  for (const prop of config.matchProps) {
+    const myVal = d.props?.[prop];
+    if (myVal == null) continue;
+    const active = s.flags.activeProps?.[prop];
+    const topVal = active != null ? active : topDef.props?.[prop];
+    if (myVal === topVal) return true;
+  }
+  return false;
+}
+
+function legalShed(config, s, player) {
+  if (s.ended || player !== s.current) return [];
+  if (s.phase === 'chooseProp') {
+    const prop = s.flags.choosePropProp;
+    const propDef = config.properties.find(p => p.name === prop);
+    let values;
+    if (propDef?.type === 'color') values = Object.keys(COLOR_HEX);
+    else if (propDef?.type === 'suit') values = SUITS;
+    else {
+      const seen = new Set();
+      for (const c of config.cards) {
+        const v = c.props?.[prop];
+        if (v != null && v !== 'wild') seen.add(v);
+      }
+      values = [...seen];
+    }
+    return values.map(v => ({ id: 'choose-' + v, prop, value: v,
+      cmd: { type: 'CHOOSE_PROP', prop, value: v } }));
+  }
+  const hand = s.zones['hand:' + player];
+  const out = [];
+  if (s.flags.drewThisTurn) {
+    const drawn = hand.cards.find(c => c.id === s.flags.drawnCardId);
+    if (drawn && isPlayableShed(config, s, drawn))
+      out.push({ id: 'play-' + drawn.id, cmd: { type: 'PLAY_CARD', cardId: drawn.id } });
+    out.push({ id: 'pass', cmd: { type: 'PASS' } });
+    return out;
+  }
+  for (const c of hand.cards)
+    if (isPlayableShed(config, s, c))
+      out.push({ id: 'play-' + c.id, cmd: { type: 'PLAY_CARD', cardId: c.id } });
+  if (config.turnMode !== 'playOnly' && out.length === 0)
+    out.push({ id: 'draw', cmd: { type: 'DRAW' } });
+  return out;
+}
+
+function applyShed(config, state, cmd) {
+  const s = clone(state);
+  const actor = s.current;
+
+  if (cmd.type === 'PLAY_CARD') {
+    const hand = s.zones['hand:' + actor];
+    const idx = hand.cards.findIndex(c => c.id === cmd.cardId);
+    if (idx < 0) throw new Error('Card not in hand');
+    const card = hand.cards[idx];
+    const cd = config.defs[card.defId];
+    if (!isPlayableShed(config, s, card)) throw new Error('Not playable');
+    if (s.flags.drewThisTurn && card.id !== s.flags.drawnCardId)
+      throw new Error('You can only play the card you drew');
+    hand.cards.splice(idx, 1);
+    card.faceUp = true;
+    s.zones.discard.cards.push(card);
+    s.flags.drewThisTurn = false;
+    s.flags.drawnCardId = undefined;
+    for (const prop of config.matchProps) {
+      const v = cd.props?.[prop];
+      if (v != null && v !== 'wild') s.flags.activeProps[prop] = v;
+    }
+    s.log.push(s.players[actor].name + ' played ' + (cd.name || 'a card'));
+
+    if (config.winCondition === 'emptyHand' && hand.cards.length === 0 && !hasChooseEffect(cd.effects))
+      return winShed(s, actor);
+
+    const result = applyShedEffects(config, s, actor, cd.effects || []);
+    if (result === 'done' && !s.flags._adv) {
+      advanceShed(s);
+    }
+    s.flags._adv = false;
+    return s;
   }
 
-  const bg = COLOR_HEX[props.color] || '#4b5563';
-  const fg = LIGHT_COLORS.has(props.color) ? '#1a1a1a' : 'white';
-  const shortVal = shortLabel(def.name);
-  return el('div', { class: 'card card--custom', style: { background: bg, color: fg } },
-    el('div', { class: 'card__corner card__corner--tl' },
-      el('span', null, props.rank || '')),
-    el('div', { class: 'card__corner card__corner--br' },
-      el('span', null, props.rank || '')),
-    el('div', { class: 'card__custom-center' },
-      el('span', { class: 'card__custom-val', style: { color: bg } }, shortVal)));
+  if (cmd.type === 'CHOOSE_PROP') {
+    s.flags.activeProps[cmd.prop] = cmd.value;
+    s.phase = 'play';
+    s.log.push(s.players[s.flags.pendingOwner].name + ' chose ' + cmd.value);
+    const owner = s.flags.pendingOwner;
+    const pending = s.flags.pendingEffects || [];
+    s.flags.pendingEffects = undefined;
+    s.flags.choosePropProp = undefined;
+    s.flags.pendingOwner = undefined;
+    const result = applyShedEffects(config, s, owner, pending);
+    if (result === 'done' && !s.flags._adv) advanceShed(s);
+    s.flags._adv = false;
+    return s;
+  }
+
+  if (cmd.type === 'DRAW') {
+    if (s.flags.drewThisTurn) throw new Error('Already drew this turn');
+    const c = drawToShed(s, actor);
+    if (!c) { s.log.push('No cards to draw'); advanceShed(s); return s; }
+    s.flags.drewThisTurn = true;
+    s.flags.drawnCardId = c.id;
+    s.log.push(s.players[actor].name + ' drew a card');
+    return s;
+  }
+
+  if (cmd.type === 'PASS') {
+    s.flags.drewThisTurn = false;
+    s.flags.drawnCardId = undefined;
+    s.log.push(s.players[actor].name + ' passed');
+    advanceShed(s);
+    return s;
+  }
+  throw new Error('Unknown command: ' + cmd.type);
 }
 
-function shortLabel(name) {
-  if (!name) return '?';
-  const map = { skip: '⊘', reverse: '⇄', draw2: '+2', draw4: '+4', wild: '★', wild4: '★+4' };
-  const last = name.split(' ').pop().toLowerCase();
-  if (map[last]) return map[last];
-  if (name.length <= 4) return name;
-  // Take last word
-  const parts = name.split(' ');
-  return parts[parts.length - 1];
+function hasChooseEffect(effects) {
+  return effects && effects.some(e => e.type === 'chooseProp');
 }
 
-function sortHand(cards, defs) {
-  return [...cards].sort((a, b) => {
-    const da = defs[a.defId], db = defs[b.defId];
-    if (!da || !db) return 0;
-    if (da.isWild && !db.isWild) return 1;
-    if (!da.isWild && db.isWild) return -1;
-    const pa = da.props || {}, pb = db.props || {};
-    const ca = COLOR_ORDER[pa.color] ?? 99, cb = COLOR_ORDER[pb.color] ?? 99;
-    if (ca !== cb) return ca - cb;
-    const sa = SUIT_ORDER[pa.suit] ?? 99, sb = SUIT_ORDER[pb.suit] ?? 99;
-    if (sa !== sb) return sa - sb;
-    const ra = RANK_ORDER[pa.rank] ?? 99, rb = RANK_ORDER[pb.rank] ?? 99;
-    if (ra !== rb) return ra - rb;
-    return String(pa.rank ?? '').localeCompare(String(pb.rank ?? ''));
+function winShed(s, winner) {
+  s.ended = true;
+  s.winners = [winner];
+  s.log.push(s.players[winner].name + ' wins!');
+  return s;
+}
+
+function applyShedEffects(config, s, actor, effects) {
+  for (let i = 0; i < effects.length; i++) {
+    const eff = effects[i];
+    if (eff.type === 'chooseProp') {
+      s.flags.choosePropProp = eff.prop;
+      s.flags.pendingEffects = effects.slice(i + 1);
+      s.flags.pendingOwner = actor;
+      s.phase = 'chooseProp';
+      return 'paused';
+    }
+    const n = s.players.length;
+    if (eff.type === 'skip') {
+      advanceShed(s);
+      advanceShed(s);
+      s.flags._adv = true;
+      s.log.push(s.players[s.current].name + ' is skipped');
+    } else if (eff.type === 'reverse') {
+      s.flags.direction *= -1;
+      advanceShed(s);
+      if (n === 2) advanceShed(s);
+      s.flags._adv = true;
+    } else if (eff.type === 'drawAndSkip') {
+      advanceShed(s);
+      const target = s.current;
+      for (let j = 0; j < (eff.n || 2); j++) drawToShed(s, target);
+      s.log.push(s.players[target].name + ` draws ${eff.n || 2} and is skipped`);
+      advanceShed(s);
+      s.flags._adv = true;
+    } else if (eff.type === 'drawSelf') {
+      for (let j = 0; j < (eff.n || 1); j++) drawToShed(s, actor);
+      s.log.push(s.players[actor].name + ` draws ${eff.n || 1}`);
+    } else if (eff.type === 'score') {
+      s.flags.scores[actor] = (s.flags.scores[actor] || 0) + (eff.n || 1);
+    }
+  }
+  return 'done';
+}
+
+// ============================================================
+// FAMILY 2: ASK & COLLECT (Go Fish, custom)
+// ============================================================
+
+function createAskState(config, names) {
+  const s = {
+    family: 'ask',
+    scriptId: config.scriptId || 'custom',
+    players: names.map((name, id) => ({ id, name })),
+    current: 0, turn: 1, phase: 'ask',
+    flags: { scores: {} },
+    zones: {}, log: [], ended: false, winners: [],
+    config,
+  };
+  for (const p of s.players) s.flags.scores[p.id] = 0;
+
+  s.zones.draw = { cards: [] };
+  for (const p of s.players) {
+    s.zones['hand:' + p.id] = { owner: p.id, cards: [] };
+    s.zones['sets:' + p.id] = { owner: p.id, cards: [] };
+  }
+  const instances = [];
+  for (const c of config.cards) for (let i = 0; i < (c.count || 1); i++)
+    instances.push({ id: c.id + '_' + i, defId: c.id, faceUp: false });
+  s.zones.draw.cards = shuffle(instances);
+
+  for (const p of s.players)
+    for (let i = 0; i < config.deal; i++) {
+      const c = s.zones.draw.cards.pop();
+      if (c) s.zones['hand:' + p.id].cards.push(c);
+    }
+  for (const p of s.players) collectAskSets(config, s, p.id);
+  s.log.push(names[0] + ' starts.');
+  return s;
+}
+
+function collectAskSets(config, s, playerId) {
+  const hand = s.zones['hand:' + playerId];
+  if (!hand) return;
+  const byKey = {};
+  for (const c of hand.cards) {
+    const key = config.defs[c.defId]?.props?.[config.askProp];
+    if (key == null) continue;
+    (byKey[key] = byKey[key] || []).push(c);
+  }
+  for (const [key, cards] of Object.entries(byKey)) {
+    if (cards.length >= config.setSize) {
+      const take = cards.slice(0, config.setSize);
+      for (const c of take) {
+        hand.cards.splice(hand.cards.indexOf(c), 1);
+        c.faceUp = true;
+        s.zones['sets:' + playerId].cards.push(c);
+      }
+      s.flags.scores[playerId] = (s.flags.scores[playerId] || 0) + 1;
+      s.log.push(s.players[playerId].name + ' made a set of ' + key);
+    }
+  }
+}
+
+function legalAsk(config, s, player) {
+  if (s.ended || player !== s.current) return [];
+  const hand = s.zones['hand:' + player];
+  const out = [];
+  const myVals = new Set(hand.cards.map(c => config.defs[c.defId]?.props?.[config.askProp]).filter(Boolean));
+  for (const v of myVals) {
+    for (const p of s.players) {
+      if (p.id === player) continue;
+      out.push({ id: `ask-${p.id}-${v}`, value: v, target: p.id,
+        cmd: { type: 'ASK', target: p.id, value: v } });
+    }
+  }
+  if (out.length === 0) out.push({ id: 'draw', cmd: { type: 'DRAW' } });
+  return out;
+}
+
+function applyAsk(config, state, cmd) {
+  const s = clone(state);
+  const actor = s.current;
+
+  if (cmd.type === 'ASK') {
+    const target = cmd.target;
+    const value = cmd.value;
+    const actorHand = s.zones['hand:' + actor];
+    const targetHand = s.zones['hand:' + target];
+    if (!actorHand.cards.some(c => config.defs[c.defId]?.props?.[config.askProp] === value))
+      throw new Error('You must hold that card');
+    const matching = targetHand.cards.filter(c => config.defs[c.defId]?.props?.[config.askProp] === value);
+    let goAgain = false;
+    if (matching.length > 0) {
+      for (const c of matching) {
+        targetHand.cards.splice(targetHand.cards.indexOf(c), 1);
+        actorHand.cards.push(c);
+      }
+      s.log.push(`${s.players[actor].name} got ${matching.length}× ${value} from ${s.players[target].name}`);
+      goAgain = true;
+    } else {
+      const c = drawToAsk(s);
+      if (c) {
+        actorHand.cards.push(c);
+        const drawnVal = config.defs[c.defId]?.props?.[config.askProp];
+        s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${value}, drew a card`);
+        goAgain = drawnVal === value;
+      } else {
+        s.log.push(`${s.players[actor].name} asked ${s.players[target].name} for ${value}, got nothing`);
+      }
+    }
+    collectAskSets(config, s, actor);
+    checkAskEnd(config, s);
+    if (!s.ended && !goAgain) {
+      s.current = (s.current + 1) % s.players.length;
+      s.turn++;
+    }
+    return s;
+  }
+
+  if (cmd.type === 'DRAW') {
+    const c = drawToAsk(s);
+    if (!c) { s.log.push('No cards to draw'); s.current = (s.current + 1) % s.players.length; return s; }
+    s.zones['hand:' + actor].cards.push(c);
+    s.log.push(s.players[actor].name + ' drew a card');
+    s.current = (s.current + 1) % s.players.length;
+    return s;
+  }
+  throw new Error('Unknown command: ' + cmd.type);
+}
+
+function drawToAsk(s) {
+  return s.zones.draw.cards.pop() || null;
+}
+
+function checkAskEnd(config, s) {
+  const allEmpty = s.players.every(p => s.zones['hand:' + p.id].cards.length === 0);
+  const drawEmpty = s.zones.draw.cards.length === 0;
+  if (!allEmpty && !drawEmpty) return;
+  const totalSets = s.players.reduce((sum, p) => sum + s.flags.scores[p.id], 0);
+  const maxSets = Math.floor(config.cards.reduce((n, c) => n + c.count, 0) / config.setSize);
+  if (totalSets < maxSets && !allEmpty) return;
+  s.ended = true;
+  let best = -1;
+  s.winners = [];
+  for (const p of s.players) {
+    const score = s.flags.scores[p.id];
+    if (score > best) { best = score; s.winners = [p.id]; }
+    else if (score === best) s.winners.push(p.id);
+  }
+  s.log.push('Game over. ' + s.winners.map(w => s.players[w].name).join(', ') + ' win with ' + best + ' sets.');
+}
+
+// ============================================================
+// FAMILY 3: TRASH (per-player slot layout)
+// ============================================================
+
+function createTrashState(config, names) {
+  const s = {
+    family: 'trash',
+    scriptId: config.scriptId || 'custom',
+    players: names.map((name, id) => ({ id, name })),
+    current: 0, turn: 1, phase: 'draw',
+    flags: { scores: {} },
+    zones: {}, slots: {}, log: [], ended: false, winners: [],
+    drawnCard: null, drawnFrom: null,
+    config,
+  };
+  for (const p of s.players) s.flags.scores[p.id] = 0;
+
+  s.zones.draw = { cards: [] };
+  s.zones.discard = { cards: [] };
+
+  // Deck: standard 52, or custom if config.cards provided
+  let instances;
+  if (config.deckType === 'custom' && config.cards) {
+    instances = [];
+    for (const c of config.cards) for (let i = 0; i < (c.count || 1); i++)
+      instances.push({ id: c.id + '_' + i, defId: c.id, faceUp: false });
+  } else {
+    instances = stdCardInstances();
+  }
+  s.zones.draw.cards = shuffle(instances);
+
+  // Deal slots
+  const targetRanks = config.targetRanks || STD_RANKS.slice(0, config.slotCount || 10);
+  for (const p of s.players) {
+    s.slots[p.id] = [];
+    for (let i = 0; i < targetRanks.length; i++) {
+      const c = s.zones.draw.cards.pop();
+      s.slots[p.id].push(c || null);
+    }
+  }
+
+  s.log.push(names[0] + ' starts.');
+  return s;
+}
+
+function topDiscardTrash(s) { return s.zones.discard.cards[s.zones.discard.cards.length - 1]; }
+
+function legalTrash(config, s, player) {
+  if (s.ended || player !== s.current) return [];
+  const out = [];
+  if (s.phase === 'draw') {
+    if (s.zones.draw.cards.length > 0 || s.zones.discard.cards.length > 1)
+      out.push({ id: 'draw-deck', cmd: { type: 'DRAW_DECK' } });
+    if (s.zones.discard.cards.length > 0)
+      out.push({ id: 'take-discard', cmd: { type: 'TAKE_DISCARD' } });
+    return out;
+  }
+  if (s.phase === 'place') {
+    const targetRanks = config.targetRanks || STD_RANKS.slice(0, config.slotCount || 10);
+    for (let i = 0; i < targetRanks.length; i++) {
+      out.push({ id: 'slot-' + i, slot: i,
+        cmd: { type: 'PLACE_SLOT', slot: i } });
+    }
+    out.push({ id: 'discard-drawn', cmd: { type: 'DISCARD_DRAWN' } });
+    return out;
+  }
+  return out;
+}
+
+function targetRankForSlot(config, slot) {
+  const targetRanks = config.targetRanks || STD_RANKS.slice(0, config.slotCount || 10);
+  return targetRanks[slot];
+}
+
+function isWildTrash(config, card) {
+  const d = config.defs[card.defId];
+  if (!d) return false;
+  const wilds = config.wildRanks || ['J'];
+  return wilds.includes(d.rank);
+}
+
+function trashSlotMatches(config, card, slot) {
+  const target = targetRankForSlot(config, slot);
+  const d = config.defs[card.defId];
+  if (!d) return false;
+  if (isWildTrash(config, card)) return true;
+  return d.rank === target;
+}
+
+function applyTrash(config, state, cmd) {
+  const s = clone(state);
+  const actor = s.current;
+
+  if (cmd.type === 'DRAW_DECK') {
+    if (s.phase !== 'draw') throw new Error('Not in draw phase');
+    if (s.zones.draw.cards.length === 0) {
+      // Reshuffle
+      if (s.zones.discard.cards.length > 1) {
+        const top = s.zones.discard.cards.pop();
+        s.zones.draw.cards = shuffle(s.zones.discard.cards).map(c => ({ ...c, faceUp: false }));
+        s.zones.discard.cards = [top];
+        s.log.push('Deck reshuffled');
+      }
+      if (s.zones.draw.cards.length === 0) throw new Error('No cards to draw');
+    }
+    const c = s.zones.draw.cards.pop();
+    s.drawnCard = c;
+    s.drawnFrom = 'deck';
+    s.phase = 'place';
+    s.log.push(s.players[actor].name + ' drew from deck');
+    return s;
+  }
+
+  if (cmd.type === 'TAKE_DISCARD') {
+    if (s.phase !== 'draw') throw new Error('Not in draw phase');
+    if (s.zones.discard.cards.length === 0) throw new Error('Discard is empty');
+    const c = s.zones.discard.cards.pop();
+    s.drawnCard = c;
+    s.drawnFrom = 'discard';
+    s.phase = 'place';
+    s.log.push(s.players[actor].name + ' took from discard');
+    return s;
+  }
+
+  if (cmd.type === 'PLACE_SLOT') {
+    if (s.phase !== 'place') throw new Error('Not in place phase');
+    const slot = cmd.slot;
+    const mySlots = s.slots[actor];
+    if (slot < 0 || slot >= mySlots.length) throw new Error('Invalid slot');
+    const old = mySlots[slot];
+    if (old) {
+      old.faceUp = true;
+      s.zones.discard.cards.push(old);
+    }
+    const placed = s.drawnCard;
+    placed.faceUp = true;
+    mySlots[slot] = placed;
+    s.drawnCard = null;
+    s.drawnFrom = null;
+    s.phase = 'draw';
+    s.log.push(s.players[actor].name + ` placed ${config.defs[placed.defId]?.name} in slot ${slot + 1}`);
+    checkTrashWin(config, s, actor);
+    if (!s.ended) {
+      s.current = (s.current + 1) % s.players.length;
+      s.turn++;
+    }
+    return s;
+  }
+
+  if (cmd.type === 'DISCARD_DRAWN') {
+    if (s.phase !== 'place') throw new Error('Not in place phase');
+    s.drawnCard.faceUp = true;
+    s.zones.discard.cards.push(s.drawnCard);
+    s.log.push(s.players[actor].name + ` discarded ${config.defs[s.drawnCard.defId]?.name}`);
+    s.drawnCard = null;
+    s.drawnFrom = null;
+    s.phase = 'draw';
+    s.current = (s.current + 1) % s.players.length;
+    s.turn++;
+    return s;
+  }
+  throw new Error('Unknown command: ' + cmd.type);
+}
+
+function checkTrashWin(config, s, actor) {
+  const mySlots = s.slots[actor];
+  for (let i = 0; i < mySlots.length; i++) {
+    const c = mySlots[i];
+    if (!c || !c.faceUp) return;
+    if (!trashSlotMatches(config, c, i)) return;
+  }
+  s.ended = true;
+  s.winners = [actor];
+  s.log.push(s.players[actor].name + ' wins!');
+}
+
+// ============================================================
+// FAMILY 4: POKER (Texas Hold'em)
+// ============================================================
+
+function createPokerState(config, names) {
+  const s = {
+    family: 'poker',
+    scriptId: config.scriptId || 'custom',
+    players: names.map((name, id) => ({ id, name })),
+    playerState: {},
+    current: 0,
+    phase: 'preflop',
+    dealerId: 0,
+    handNumber: 1,
+    smallBlind: config.smallBlind,
+    bigBlind: config.bigBlind,
+    zones: { draw: { cards: [] } },
+    community: [],
+    hands: {},
+    pot: 0,
+    currentBet: 0,
+    minRaise: config.bigBlind,
+    lastAggressorId: null,
+    log: [], ended: false, winners: [],
+    config,
+  };
+  for (const p of s.players) {
+    s.playerState[p.id] = {
+      chips: config.startingChips,
+      bet: 0,
+      totalContribution: 0,
+      folded: false,
+      allIn: false,
+      hasActed: false,
+    };
+  }
+  pokerInitHand(s);
+  return s;
+}
+
+function pokerNewDeck() {
+  const cards = [];
+  for (const suit of SUITS) for (const rank of STD_RANKS) {
+    cards.push({ id: 'pk:' + suit + rank + ':' + Math.random(),
+      defId: 'std:' + suit + rank, faceUp: false });
+  }
+  return shuffle(cards);
+}
+
+function pokerPostBlind(s, playerId, amount) {
+  const ps = s.playerState[playerId];
+  const actual = Math.min(amount, ps.chips);
+  ps.chips -= actual;
+  ps.bet = actual;
+  ps.totalContribution = actual;
+  s.pot += actual;
+  if (ps.chips === 0) ps.allIn = true;
+}
+
+function pokerNextActive(s, fromId) {
+  const n = s.players.length;
+  for (let i = 1; i <= n; i++) {
+    const id = (fromId + i) % n;
+    const ps = s.playerState[id];
+    if (!ps.folded && !ps.allIn) return id;
+  }
+  return null;
+}
+
+function pokerInitHand(s) {
+  for (const p of s.players) {
+    const ps = s.playerState[p.id];
+    ps.bet = 0;
+    ps.totalContribution = 0;
+    ps.folded = false;
+    ps.allIn = false;
+    ps.hasActed = false;
+    if (ps.chips <= 0) {
+      ps.chips = s.config.startingChips; // simple auto-rebuy for demo
+    }
+  }
+  s.pot = 0;
+  s.community = [];
+  s.currentBet = 0;
+  s.minRaise = s.bigBlind;
+  s.phase = 'preflop';
+  s.ended = false;
+  s.winners = [];
+  s.zones.draw.cards = pokerNewDeck();
+  s.hands = {};
+
+  const n = s.players.length;
+  const sbId = n === 2 ? s.dealerId : (s.dealerId + 1) % n;
+  const bbId = n === 2 ? (s.dealerId + 1) % n : (s.dealerId + 2) % n;
+
+  pokerPostBlind(s, sbId, s.smallBlind);
+  pokerPostBlind(s, bbId, s.bigBlind);
+  s.currentBet = s.bigBlind;
+  s.minRaise = s.bigBlind;
+  s.lastAggressorId = bbId;
+
+  for (const p of s.players) {
+    s.hands[p.id] = [s.zones.draw.cards.pop(), s.zones.draw.cards.pop()];
+  }
+
+  pokerStartBettingRound(s);
+  s.log.push(`Hand ${s.handNumber}: blinds ${s.smallBlind}/${s.bigBlind}`);
+}
+
+function pokerStartBettingRound(s) {
+  for (const p of s.players) {
+    const ps = s.playerState[p.id];
+    ps.hasActed = ps.folded || ps.allIn;
+  }
+  const n = s.players.length;
+  const isHeadsUp = n === 2;
+  let firstActor;
+  if (s.phase === 'preflop') {
+    if (isHeadsUp) {
+      firstActor = s.dealerId;
+      const ps = s.playerState[firstActor];
+      if (ps.folded || ps.allIn) firstActor = pokerNextActive(s, firstActor);
+    } else {
+      const bb = (s.dealerId + 2) % n;
+      firstActor = pokerNextActive(s, bb);
+    }
+  } else {
+    firstActor = pokerNextActive(s, s.dealerId);
+  }
+  s.current = firstActor != null ? firstActor : s.dealerId;
+}
+
+function pokerRoundComplete(s) {
+  const active = s.players.filter(p => {
+    const ps = s.playerState[p.id];
+    return !ps.folded && !ps.allIn;
+  });
+  if (active.length === 0) return true;
+  const nonFolded = s.players.filter(p => !s.playerState[p.id].folded);
+  const maxBet = Math.max(0, ...nonFolded.map(p => s.playerState[p.id].bet));
+  for (const p of active) {
+    const ps = s.playerState[p.id];
+    if (!ps.hasActed) return false;
+    if (ps.bet < maxBet) return false;
+  }
+  return true;
+}
+
+function pokerAdvancePhase(s) {
+  for (const p of s.players) s.playerState[p.id].bet = 0;
+  s.currentBet = 0;
+  s.minRaise = s.bigBlind;
+
+  if (s.phase === 'preflop') {
+    s.zones.draw.cards.pop();
+    for (let i = 0; i < 3; i++) {
+      const c = s.zones.draw.cards.pop();
+      if (c) { c.faceUp = true; s.community.push(c); }
+    }
+    s.phase = 'flop';
+    s.log.push('Flop: ' + s.community.map(c => STD_DECK.defs[c.defId]?.name || '?').join(' '));
+  } else if (s.phase === 'flop') {
+    s.zones.draw.cards.pop();
+    const c = s.zones.draw.cards.pop();
+    if (c) { c.faceUp = true; s.community.push(c); }
+    s.phase = 'turn';
+    s.log.push('Turn: ' + (STD_DECK.defs[c?.defId]?.name || '?'));
+  } else if (s.phase === 'turn') {
+    s.zones.draw.cards.pop();
+    const c = s.zones.draw.cards.pop();
+    if (c) { c.faceUp = true; s.community.push(c); }
+    s.phase = 'river';
+    s.log.push('River: ' + (STD_DECK.defs[c?.defId]?.name || '?'));
+  } else if (s.phase === 'river') {
+    pokerShowdown(s);
+    return;
+  }
+  pokerStartBettingRound(s);
+}
+
+function pokerShowdown(s) {
+  s.phase = 'showdown';
+  const contenders = s.players.filter(p => !s.playerState[p.id].folded);
+  const hands = {};
+  for (const p of contenders) {
+    hands[p.id] = bestHand([...s.hands[p.id], ...s.community]);
+    s.log.push(`${p.name}: ${hands[p.id].name}`);
+  }
+
+  const contributions = s.players.map(p => ({
+    id: p.id,
+    amount: s.playerState[p.id].totalContribution,
+    folded: s.playerState[p.id].folded,
+  }));
+  const levels = [...new Set(contributions.map(c => c.amount).filter(a => a > 0))].sort((a,b) => a - b);
+  const pots = [];
+  let prev = 0;
+  for (const level of levels) {
+    const layer = level - prev;
+    const atLevel = contributions.filter(c => c.amount >= level);
+    const eligible = atLevel.filter(c => !c.folded).map(c => c.id);
+    const amount = layer * atLevel.length;
+    if (eligible.length > 0 && amount > 0) pots.push({ amount, eligible });
+    prev = level;
+  }
+
+  const winnings = {};
+  for (const pot of pots) {
+    const eligible = pot.eligible.filter(id => hands[id]);
+    if (eligible.length === 0) continue;
+    let best = null, bestIds = [];
+    for (const id of eligible) {
+      if (!best || compareHands(hands[id], best) > 0) { best = hands[id]; bestIds = [id]; }
+      else if (compareHands(hands[id], best) === 0) bestIds.push(id);
+    }
+    const share = Math.floor(pot.amount / bestIds.length);
+    const rem = pot.amount % bestIds.length;
+    for (let i = 0; i < bestIds.length; i++) {
+      winnings[bestIds[i]] = (winnings[bestIds[i]] || 0) + share + (i < rem ? 1 : 0);
+    }
+  }
+
+  for (const id in winnings) {
+    s.playerState[id].chips += winnings[id];
+    s.log.push(`${s.players[id].name} wins ${winnings[id]}`);
+  }
+
+  const maxWin = Math.max(...Object.values(winnings), 0);
+  s.winners = Object.keys(winnings).filter(id => winnings[id] === maxWin).map(Number);
+  s.ended = true;
+  s.pot = 0;
+}
+
+function legalPoker(config, s, player) {
+  if (s.ended || player !== s.current || s.phase === 'showdown') return [];
+  const ps = s.playerState[player];
+  if (ps.folded || ps.allIn) return [];
+  const toCall = s.currentBet - ps.bet;
+  const out = [];
+
+  out.push({ id: 'fold', cmd: { type: 'FOLD' } });
+  if (toCall <= 0) out.push({ id: 'check', cmd: { type: 'CHECK' } });
+  else {
+    const callAmt = Math.min(toCall, ps.chips);
+    out.push({ id: 'call', amount: callAmt, cmd: { type: 'CALL' } });
+  }
+  if (ps.chips > toCall) {
+    const minRaiseTo = s.currentBet + s.minRaise;
+    const maxRaiseTo = ps.bet + ps.chips;
+    if (maxRaiseTo > s.currentBet) {
+      out.push({ id: 'raise', min: Math.min(minRaiseTo, maxRaiseTo), max: maxRaiseTo,
+        cmd: { type: 'RAISE' } });
+    }
+  }
+  out.push({ id: 'allin', amount: ps.chips, cmd: { type: 'ALL_IN' } });
+  return out;
+}
+
+function applyPoker(config, state, cmd) {
+  const s = clone(state);
+  const actor = s.current;
+  const ps = s.playerState[actor];
+
+  if (s.ended) throw new Error('Hand is over');
+
+  if (cmd.type === 'FOLD') {
+    ps.folded = true;
+    ps.hasActed = true;
+    s.log.push(s.players[actor].name + ' folds');
+  } else if (cmd.type === 'CHECK') {
+    if (ps.bet !== s.currentBet) throw new Error('Cannot check — you must call');
+    ps.hasActed = true;
+    s.log.push(s.players[actor].name + ' checks');
+  } else if (cmd.type === 'CALL') {
+    const toCall = s.currentBet - ps.bet;
+    if (toCall <= 0) throw new Error('Nothing to call');
+    const actual = Math.min(toCall, ps.chips);
+    ps.chips -= actual;
+    ps.bet += actual;
+    ps.totalContribution += actual;
+    s.pot += actual;
+    if (ps.chips === 0) ps.allIn = true;
+    ps.hasActed = true;
+    s.log.push(`${s.players[actor].name} calls ${actual}${ps.allIn ? ' (all-in)' : ''}`);
+  } else if (cmd.type === 'RAISE') {
+    const target = cmd.amount;
+    if (target == null) throw new Error('Raise amount required');
+    if (target <= s.currentBet) throw new Error('Raise must exceed current bet');
+    const toAdd = target - ps.bet;
+    if (toAdd > ps.chips) throw new Error('Not enough chips');
+    const raiseAmt = target - s.currentBet;
+    if (raiseAmt < s.minRaise && target < ps.bet + ps.chips) throw new Error('Raise below minimum');
+    ps.chips -= toAdd;
+    ps.bet = target;
+    ps.totalContribution += toAdd;
+    s.pot += toAdd;
+    if (ps.chips === 0) ps.allIn = true;
+    s.minRaise = Math.max(s.minRaise, raiseAmt);
+    s.currentBet = target;
+    s.lastAggressorId = actor;
+    ps.hasActed = true;
+    for (const p of s.players) {
+      const other = s.playerState[p.id];
+      if (p.id !== actor && !other.folded && !other.allIn) other.hasActed = false;
+    }
+    s.log.push(`${s.players[actor].name} raises to ${target}`);
+  } else if (cmd.type === 'ALL_IN') {
+    const allIn = ps.chips;
+    if (allIn <= 0) throw new Error('No chips');
+    const target = ps.bet + allIn;
+    ps.chips = 0;
+    ps.bet = target;
+    ps.totalContribution += allIn;
+    s.pot += allIn;
+    ps.allIn = true;
+    ps.hasActed = true;
+    if (target > s.currentBet) {
+      const raiseAmt = target - s.currentBet;
+      s.minRaise = Math.max(s.minRaise, raiseAmt);
+      s.currentBet = target;
+      s.lastAggressorId = actor;
+      for (const p of s.players) {
+        const other = s.playerState[p.id];
+        if (p.id !== actor && !other.folded && !other.allIn) other.hasActed = false;
+      }
+    }
+    s.log.push(`${s.players[actor].name} goes all-in for ${target}`);
+  } else throw new Error('Unknown command: ' + cmd.type);
+
+  const nonFolded = s.players.filter(p => !s.playerState[p.id].folded);
+  if (nonFolded.length === 1) {
+    const winner = nonFolded[0];
+    s.playerState[winner.id].chips += s.pot;
+    s.log.push(`${winner.name} wins ${s.pot} (everyone else folded)`);
+    s.winners = [winner.id];
+    s.ended = true;
+    s.pot = 0;
+    return s;
+  }
+
+  if (pokerRoundComplete(s)) pokerAdvancePhase(s);
+  else {
+    const next = pokerNextActive(s, actor);
+    if (next != null) s.current = next;
+  }
+  return s;
+}
+
+// ============================================================
+// Family definitions & registry
+// ============================================================
+
+const FAMILIES = {
+  shed: {
+    id: 'shed', name: 'Shedding',
+    description: 'Play matching cards from your hand to empty it (UNO, Crazy Eights).',
+    createState: createShedState,
+    legalActions: legalShed,
+    applyAction: applyShed,
+    usesStandardDeck: false,
+    defaultConfig: () => {
+      const cards = [];
+      for (const color of ['red','yellow','green','blue']) {
+        const ColorName = color[0].toUpperCase() + color.slice(1);
+        cards.push({ id: newCardId(), name: ColorName + ' 0', count: 1, props: { color, rank: '0' }, value: 0, isWild: false, effects: [] });
+        for (let n = 1; n <= 9; n++)
+          cards.push({ id: newCardId(), name: ColorName + ' ' + n, count: 2, props: { color, rank: String(n) }, value: n, isWild: false, effects: [] });
+        cards.push({ id: newCardId(), name: ColorName + ' Skip', count: 2, props: { color, rank: 'skip' }, value: 20, isWild: false, effects: [{ type: 'skip' }] });
+        cards.push({ id: newCardId(), name: ColorName + ' Reverse', count: 2, props: { color, rank: 'reverse' }, value: 20, isWild: false, effects: [{ type: 'reverse' }] });
+        cards.push({ id: newCardId(), name: ColorName + ' Draw Two', count: 2, props: { color, rank: 'draw2' }, value: 20, isWild: false, effects: [{ type: 'drawAndSkip', n: 2 }] });
+      }
+      cards.push({ id: newCardId(), name: 'Wild', count: 4, props: { color: 'wild', rank: 'wild' }, value: 50, isWild: true, effects: [{ type: 'chooseProp', prop: 'color' }] });
+      cards.push({ id: newCardId(), name: 'Wild Draw Four', count: 4, props: { color: 'wild', rank: 'wild4' }, value: 50, isWild: true, effects: [{ type: 'chooseProp', prop: 'color' }, { type: 'drawAndSkip', n: 4 }] });
+      return {
+        name: 'UNO-style', gameMode: 'shed',
+        minPlayers: 2, maxPlayers: 6,
+        deal: 7, flipStart: true, matchProps: ['color', 'rank'],
+        turnMode: 'drawIfStuck', winCondition: 'emptyHand',
+        properties: [{ name: 'color', type: 'color' }, { name: 'rank', type: 'text' }],
+        cards,
+        description: 'Match color or rank. Action cards skip, reverse, or force draws.',
+      };
+    },
+  },
+  ask: {
+    id: 'ask', name: 'Ask & Collect',
+    description: 'Ask other players for cards you hold, form sets (Go Fish).',
+    createState: createAskState,
+    legalActions: legalAsk,
+    applyAction: applyAsk,
+    usesStandardDeck: false,
+    defaultConfig: () => {
+      const cards = [];
+      for (const suit of SUITS) for (const rank of STD_RANKS) {
+        cards.push({ id: newCardId(), name: rank + suit, count: 1,
+          props: { suit, rank, color: (suit === '♥' || suit === '♦') ? 'red' : 'black' },
+          value: RANK_ORDER[rank], isWild: false, effects: [] });
+      }
+      return {
+        name: 'Go Fish-style', gameMode: 'ask',
+        minPlayers: 2, maxPlayers: 6,
+        deal: 5,
+        askProp: 'rank', setSize: 4,
+        properties: [{ name: 'suit', type: 'suit' }, { name: 'rank', type: 'text' }],
+        cards,
+        description: 'Ask another player for a rank you already hold. Form 4-of-a-kind sets. Most sets wins.',
+      };
+    },
+  },
+  trash: {
+    id: 'trash', name: 'Trash / Garbage',
+    description: 'Fill your slots with matching cards. First to complete wins.',
+    createState: createTrashState,
+    legalActions: legalTrash,
+    applyAction: applyTrash,
+    usesStandardDeck: true,
+    defaultConfig: () => ({
+      name: 'Trash', gameMode: 'trash',
+      minPlayers: 2, maxPlayers: 4,
+      slotCount: 10,
+      targetRanks: ['A','2','3','4','5','6','7','8','9','10'],
+      wildRanks: ['J'],
+      deckType: 'standard52',
+      description: 'Each player has 10 face-down slots targeting A–10. On your turn draw from the deck or take from the discard, then place on any slot. Js are wild. First to fill all slots correctly wins.',
+    }),
+  },
+  poker: {
+    id: 'poker', name: 'Poker (Hold\'em)',
+    description: 'Texas Hold\'em. Bet chips, build the best 5-card hand.',
+    createState: createPokerState,
+    legalActions: legalPoker,
+    applyAction: applyPoker,
+    usesStandardDeck: true,
+    defaultConfig: () => ({
+      name: 'Texas Hold\'em', gameMode: 'poker',
+      minPlayers: 2, maxPlayers: 6,
+      startingChips: 1000,
+      smallBlind: 10,
+      bigBlind: 20,
+      description: 'Texas Hold\'em: 2 hole cards, 5 community cards. Bet across 4 rounds. Best 5-card hand wins the pot.',
+    }),
+  },
+};
+
+let _cardSeq = 1;
+function newCardId() { return 'c' + (_cardSeq++); }
+
+// ============================================================
+// Game registry & adapters
+// ============================================================
+
+const GAMES = {};
+
+function makeGameFromConfig(config) {
+  const family = FAMILIES[config.gameMode];
+  const defs = {};
+  if (config.gameMode === 'shed' || config.gameMode === 'ask') {
+    for (const c of config.cards) defs[c.id] = { ...c, kind: 'custom' };
+  } else {
+    // Trash and poker use standard deck
+    Object.assign(defs, STD_DECK.defs);
+  }
+  const fullConfig = { ...config, defs };
+  return {
+    id: config.id,
+    name: config.name,
+    family: config.gameMode,
+    minPlayers: config.minPlayers,
+    maxPlayers: config.maxPlayers,
+    defs,
+    config: fullConfig,
+    isCustom: config.id && !config.isBuiltIn,
+    rules: config.description,
+    create: names => family.createState(fullConfig, names),
+    legal: (s, p) => family.legalActions(fullConfig, s, p),
+    apply: (s, cmd) => family.applyAction(fullConfig, s, cmd),
+  };
+}
+
+// ============================================================
+// Persistence
+// ============================================================
+
+const STORAGE_KEY = 'card-table:games';
+
+function loadCustomGames() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    for (const cfg of raw) {
+      for (const c of cfg.cards || []) {
+        const m = /^c(\d+)$/.exec(c.id || '');
+        if (m) _cardSeq = Math.max(_cardSeq, parseInt(m[1]) + 1);
+      }
+      GAMES[cfg.id] = makeGameFromConfig(cfg);
+    }
+  } catch (e) { console.warn('Load failed', e); }
+}
+
+function persistGames() {
+  try {
+    const raw = [];
+    for (const id in GAMES) {
+      const g = GAMES[id];
+      if (!g.isCustom) continue;
+      const c = g.config;
+      raw.push({
+        id: c.id, name: c.name, gameMode: c.gameMode,
+        minPlayers: c.minPlayers, maxPlayers: c.maxPlayers,
+        cards: c.cards, deal: c.deal, flipStart: c.flipStart,
+        matchProps: c.matchProps, turnMode: c.turnMode, winCondition: c.winCondition,
+        askProp: c.askProp, setSize: c.setSize,
+        slotCount: c.slotCount, targetRanks: c.targetRanks, wildRanks: c.wildRanks, deckType: c.deckType,
+        startingChips: c.startingChips, smallBlind: c.smallBlind, bigBlind: c.bigBlind,
+        properties: c.properties, description: c.description,
+      });
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(raw));
+  } catch (e) { console.warn('Save failed', e); }
+}
+
+// ============================================================
+// Built-in games (UNO, Crazy Eights as shed presets)
+// ============================================================
+
+function buildBuiltinUno() {
+  const cfg = FAMILIES.shed.defaultConfig();
+  cfg.id = 'uno';
+  cfg.name = 'UNO';
+  cfg.isBuiltIn = true;
+  // Convert UNO-style card IDs and properties
+  for (const c of cfg.cards) {
+    if (c.name.startsWith('Wild')) { c.props = { color: 'wild', rank: c.name.includes('Four') ? 'wild4' : 'wild' }; }
+  }
+  return makeGameFromConfig(cfg);
+}
+
+function buildBuiltinCrazyEights() {
+  const cards = [];
+  for (const suit of SUITS) for (const rank of STD_RANKS) {
+    const isEight = rank === '8';
+    cards.push({
+      id: newCardId(), name: rank + suit, count: 1,
+      props: { suit, rank, color: (suit === '♥' || suit === '♦') ? 'red' : 'black' },
+      value: RANK_ORDER[rank], isWild: isEight,
+      effects: isEight ? [{ type: 'chooseProp', prop: 'suit' }] : [],
+    });
+  }
+  return makeGameFromConfig({
+    id: 'crazy-eights', name: 'Crazy Eights', isBuiltIn: true,
+    gameMode: 'shed', minPlayers: 2, maxPlayers: 7,
+    deal: 5, flipStart: true, matchProps: ['suit', 'rank'],
+    turnMode: 'drawIfStuck', winCondition: 'emptyHand',
+    properties: [{ name: 'suit', type: 'suit' }, { name: 'rank', type: 'text' }],
+    cards,
+    description: 'Match suit or rank. Eights are wild — play one and choose the next suit.',
   });
 }
 
-const COLOR_ORDER = Object.fromEntries(Object.keys(COLOR_HEX).map((c, i) => [c, i]));
+GAMES['uno'] = buildBuiltinUno();
+GAMES['crazy-eights'] = buildBuiltinCrazyEights();
+loadCustomGames();
+
+// ============================================================
+// App state
+// ============================================================
+
+let G = null;
+let SCREEN = 'menu';
+let VIEWER = 0;
+let undoStack = [];
+const MENU = { scriptId: 'uno', namesInput: 'Alice, Bob' };
+let editingGame = null;
+let editorTab = 'game';
+let _pendingAskValue = null;
+let _raiseAmount = null;
 
 // ============================================================
 // Screen router
@@ -1554,24 +1922,20 @@ function render() {
 function renderMenu(root) {
   const heroCards = el('div', { class: 'menu__cards' });
   heroCards.appendChild(renderStdCard({ rank: 'A', suit: '♠', color: 'black', kind: 'std' }));
-  heroCards.appendChild(renderUnoCard({ color: 'red', value: '7', kind: 'uno' }));
-  heroCards.appendChild(renderCustomCard({
-    name: 'Wild', isWild: true, props: {}, kind: 'custom',
-  }));
+  heroCards.appendChild(renderUnoStyle('red', '7', 'Red 7'));
+  heroCards.appendChild(renderUnoStyle('wild', 'wild', 'Wild'));
 
   const hero = el('div', { class: 'menu__hero' },
     heroCards,
     el('h1', null, 'Card ', el('em', null, 'Table')),
-    el('p', { class: 'menu__tagline' }, 'Build card games. Play them anywhere.'));
+    el('p', { class: 'menu__tagline' }, 'Build and play any card game.'));
 
-  const gameSelect = el('select', {
-    onchange: e => { MENU.scriptId = e.target.value; render(); },
-  });
+  const gameSelect = el('select', { onchange: e => { MENU.scriptId = e.target.value; render(); } });
   const customGames = Object.values(GAMES).filter(g => g.isCustom);
-  const builtInGames = Object.values(GAMES).filter(g => !g.isCustom);
-  if (builtInGames.length > 0) {
+  const builtIn = Object.values(GAMES).filter(g => !g.isCustom);
+  if (builtIn.length > 0) {
     const grp = el('optgroup', { label: 'Ready to play' });
-    for (const g of builtInGames) {
+    for (const g of builtIn) {
       const o = document.createElement('option');
       o.value = g.id; o.textContent = g.name; grp.appendChild(o);
     }
@@ -1591,8 +1955,7 @@ function renderMenu(root) {
   const currentGame = GAMES[MENU.scriptId];
   const namesInput = el('input', {
     type: 'text', placeholder: 'Alice, Bob',
-    value: MENU.namesInput,
-    oninput: e => { MENU.namesInput = e.target.value; },
+    value: MENU.namesInput, oninput: e => { MENU.namesInput = e.target.value; },
   });
 
   const panel = el('div', { class: 'menu__panel' },
@@ -1602,163 +1965,203 @@ function renderMenu(root) {
     el('button', { class: 'primary', onclick: startGame, style: { padding: '0.9rem', fontSize: '1rem' } }, 'Start game'));
 
   if (currentGame?.isCustom) {
-    panel.appendChild(el('div', { class: 'preset-row' },
-      el('button', { class: 'ghost', onclick: () => editCustomGame(MENU.scriptId) }, 'Edit'),
-      el('button', { class: 'ghost', onclick: () => duplicateGame(MENU.scriptId) }, 'Duplicate'),
-      el('button', { class: 'danger', onclick: () => deleteCustomGame(MENU.scriptId) }, 'Delete')));
+    panel.appendChild(el('div', { class: 'preset-row', style: { display: 'flex', gap: '0.4rem', flexWrap: 'wrap' } },
+      el('button', { class: 'ghost tiny', onclick: () => editCustomGame(MENU.scriptId) }, 'Edit'),
+      el('button', { class: 'ghost tiny', onclick: () => duplicateGame(MENU.scriptId) }, 'Duplicate'),
+      el('button', { class: 'danger tiny', onclick: () => deleteCustomGame(MENU.scriptId) }, 'Delete')));
   }
 
   panel.appendChild(el('div', { class: 'section-label' }, 'Create'));
-  panel.appendChild(el('button', { class: 'ghost', onclick: () => newCustomGame('blank') }, '+ New game from scratch'));
-  const presetRow = el('div', { class: 'preset-row', style: { marginTop: '-0.4rem' } });
-  presetRow.appendChild(el('span', { class: 'hint', style: { alignSelf: 'center', flex: 'none' } }, 'Start from:'));
-  presetRow.appendChild(el('button', { class: 'ghost tiny', onclick: () => newCustomGame('uno') }, 'UNO-style'));
-  presetRow.appendChild(el('button', { class: 'ghost tiny', onclick: () => newCustomGame('standard52') }, 'Standard 52'));
-  presetRow.appendChild(el('button', { class: 'ghost tiny', onclick: () => newCustomGame('gofish') }, 'Go Fish'));
-  presetRow.appendChild(el('button', { class: 'ghost tiny', onclick: () => newCustomGame('numbers') }, 'Numbers'));
-  panel.appendChild(presetRow);
+  panel.appendChild(el('button', { class: 'ghost', onclick: showFamilyPicker }, '+ New game'));
 
   root.appendChild(el('div', { class: 'menu' }, hero, panel));
+}
+
+function showFamilyPicker() {
+  const grid = el('div', { class: 'preset-grid' });
+  for (const family of Object.values(FAMILIES)) {
+    grid.appendChild(el('button', {
+      class: 'preset-card',
+      onclick: () => { closeModal(); newGameFromFamily(family.id); },
+    },
+      el('strong', null, family.name),
+      el('span', null, family.description)));
+  }
+  showModal(el('div', { class: 'modal modal--wide' },
+    el('h3', null, 'Pick a game family'),
+    el('p', null, 'Each family is a real engine with its own rules.'),
+    grid,
+    el('div', { class: 'modal__actions' },
+      el('button', { class: 'ghost', onclick: closeModal }, 'Cancel'))));
+}
+
+function newGameFromFamily(familyId) {
+  const cfg = FAMILIES[familyId].defaultConfig();
+  editingGame = {
+    id: 'custom_' + Date.now(),
+    ...cfg,
+  };
+  editorTab = familyId === 'poker' || familyId === 'trash' ? 'game' : 'deck';
+  SCREEN = 'editor';
+  render();
+}
+
+function editCustomGame(id) {
+  const g = GAMES[id];
+  if (!g) return;
+  editingGame = JSON.parse(JSON.stringify({
+    id: g.config.id, name: g.config.name, gameMode: g.config.gameMode,
+    minPlayers: g.config.minPlayers, maxPlayers: g.config.maxPlayers,
+    cards: g.config.cards || [], deal: g.config.deal, flipStart: g.config.flipStart,
+    matchProps: g.config.matchProps || [], turnMode: g.config.turnMode,
+    winCondition: g.config.winCondition, askProp: g.config.askProp, setSize: g.config.setSize,
+    slotCount: g.config.slotCount, targetRanks: g.config.targetRanks,
+    wildRanks: g.config.wildRanks, deckType: g.config.deckType,
+    startingChips: g.config.startingChips, smallBlind: g.config.smallBlind, bigBlind: g.config.bigBlind,
+    properties: g.config.properties || [], description: g.config.description,
+  }));
+  editorTab = (g.family === 'poker' || g.family === 'trash') ? 'game' : 'deck';
+  SCREEN = 'editor';
+  render();
+}
+
+function duplicateGame(id) {
+  const g = GAMES[id];
+  if (!g) return;
+  const copy = JSON.parse(JSON.stringify(g.config));
+  delete copy.defs;
+  copy.id = 'custom_' + Date.now();
+  copy.name = copy.name + ' copy';
+  copy.isBuiltIn = false;
+  if (copy.cards) for (const c of copy.cards) c.id = newCardId();
+  GAMES[copy.id] = makeGameFromConfig(copy);
+  persistGames();
+  MENU.scriptId = copy.id;
+  render();
+}
+
+function deleteCustomGame(id) {
+  if (!confirm('Delete "' + GAMES[id].name + '"?')) return;
+  delete GAMES[id];
+  persistGames();
+  if (MENU.scriptId === id) MENU.scriptId = 'uno';
+  render();
 }
 
 // ============================================================
 // Editor
 // ============================================================
 
-function newCustomGame(presetId) {
-  const preset = DECK_PRESETS[presetId]();
-  editingGame = {
-    id: 'custom_' + Date.now(),
-    name: preset.name,
-    gameMode: preset.gameMode,
-    minPlayers: preset.minPlayers,
-    maxPlayers: preset.maxPlayers,
-    deal: preset.deal,
-    flipStart: preset.flipStart,
-    matchProps: preset.matchProps || [],
-    turnMode: preset.turnMode || 'drawIfStuck',
-    winCondition: preset.winCondition || 'emptyHand',
-    setProp: preset.setProp || 'rank',
-    setSize: preset.setSize || 4,
-    properties: preset.properties.map(p => ({ ...p })),
-    cards: preset.cards.map(c => ({ ...c, props: { ...c.props }, effects: [...c.effects] })),
-    description: preset.description || '',
-  };
-  editorTab = 'deck';
-  SCREEN = 'editor';
-  render();
-}
-
-function editCustomGame(id) {
-  const def = CUSTOM_GAMES[id];
-  if (!def) return;
-  editingGame = JSON.parse(JSON.stringify({
-    id: def.id, name: def.name, gameMode: def.gameMode,
-    minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
-    cards: def.cards, deal: def.deal, flipStart: def.flipStart,
-    matchProps: def.matchProps, turnMode: def.turnMode,
-    winCondition: def.winCondition, setProp: def.setProp, setSize: def.setSize,
-    properties: def.properties, description: def.description,
-  }));
-  editorTab = 'deck';
-  SCREEN = 'editor';
-  render();
-}
-
-function duplicateGame(id) {
-  const def = CUSTOM_GAMES[id];
-  if (!def) return;
-  const copy = JSON.parse(JSON.stringify({
-    id: 'custom_' + Date.now(),
-    name: def.name + ' copy',
-    gameMode: def.gameMode, minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
-    cards: def.cards, deal: def.deal, flipStart: def.flipStart,
-    matchProps: def.matchProps, turnMode: def.turnMode,
-    winCondition: def.winCondition, setProp: def.setProp, setSize: def.setSize,
-    properties: def.properties, description: def.description,
-  }));
-  // Regenerate card ids to avoid collisions
-  for (const c of copy.cards) c.id = newCardId();
-  registerCustomGame(copy);
-  persistCustomGames();
-  MENU.scriptId = copy.id;
-  render();
-}
-
-function deleteCustomGame(id) {
-  if (!confirm('Delete "' + CUSTOM_GAMES[id].name + '"?')) return;
-  unregisterCustomGame(id);
-  if (MENU.scriptId === id) MENU.scriptId = Object.keys(GAMES)[0];
-  render();
-}
-
 function renderEditor(root) {
   const def = editingGame;
+  const family = FAMILIES[def.gameMode];
   const header = el('div', { class: 'editor__header' },
     el('h2', null, def.name || 'Untitled'),
     el('div', { class: 'editor__header-actions' },
-      el('button', { class: 'ghost', onclick: () => { SCREEN = 'menu'; render(); } }, 'Cancel'),
-      el('button', { class: 'primary', onclick: saveEditor }, 'Save')));
+      el('button', { class: 'ghost tiny', onclick: () => { SCREEN = 'menu'; render(); } }, 'Cancel'),
+      el('button', { class: 'primary tiny', onclick: saveEditor }, 'Save')));
 
-  const tabs = el('div', { class: 'tabs' },
-    el('button', { class: 'tab' + (editorTab === 'deck' ? ' active' : ''), onclick: () => { editorTab = 'deck'; render(); } }, 'Deck'),
-    el('button', { class: 'tab' + (editorTab === 'rules' ? ' active' : ''), onclick: () => { editorTab = 'rules'; render(); } }, 'Rules'),
-    el('button', { class: 'tab' + (editorTab === 'win' ? ' active' : ''), onclick: () => { editorTab = 'win'; render(); } }, 'Winning'),
-    el('button', { class: 'tab' + (editorTab === 'test' ? ' active' : ''), onclick: () => { editorTab = 'test'; render(); } }, 'Test'));
+  const tabs = el('div', { class: 'tabs' });
+  const tabList = family.usesStandardDeck ? ['game'] : ['game', 'deck', 'rules'];
+  tabList.push('test');
+  for (const t of tabList) {
+    const label = { game: 'Game', deck: 'Deck', rules: 'Rules', test: 'Test' }[t];
+    tabs.appendChild(el('button', {
+      class: 'tab' + (editorTab === t ? ' active' : ''),
+      onclick: () => { editorTab = t; render(); },
+    }, label));
+  }
+  if (!tabList.includes(editorTab)) editorTab = 'game';
 
   const content = el('div', { class: 'tab-content' });
-  if (editorTab === 'deck') renderDeckTab(content);
+  if (editorTab === 'game') renderGameTab(content);
+  else if (editorTab === 'deck') renderDeckTab(content);
   else if (editorTab === 'rules') renderRulesTab(content);
-  else if (editorTab === 'win') renderWinTab(content);
   else if (editorTab === 'test') renderTestTab(content);
 
   root.appendChild(el('div', { class: 'editor' }, header, tabs, content));
 }
 
-// --- Deck tab ---
-
-function renderDeckTab(container) {
+function renderGameTab(container) {
   const def = editingGame;
+  const family = FAMILIES[def.gameMode];
 
-  // Basic info
-  const basic = el('div', { class: 'panel' },
-    el('h3', null, 'Game'),
+  container.appendChild(el('div', { class: 'panel' },
+    el('h3', null, 'Basics'),
     el('div', { class: 'form-row' },
       el('div', { class: 'field' }, el('label', null, 'Name'),
-        el('input', { type: 'text', value: def.name, placeholder: 'My game',
+        el('input', { type: 'text', value: def.name,
           oninput: e => { def.name = e.target.value; } })),
+      el('div', { class: 'field' }, el('label', null, 'Family'),
+        el('span', { class: 'hint', style: { padding: '0.65rem 0.85rem', display: 'block',
+          background: 'rgba(0,0,0,0.2)', borderRadius: '0.55rem', border: '1px solid var(--border-hi)' } },
+          family.name))),
+    el('div', { class: 'form-row' },
       el('div', { class: 'field' }, el('label', null, 'Min players'),
         el('input', { type: 'number', min: 2, max: 12, value: def.minPlayers,
           oninput: e => { def.minPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } })),
       el('div', { class: 'field' }, el('label', null, 'Max players'),
         el('input', { type: 'number', min: 2, max: 12, value: def.maxPlayers,
-          oninput: e => { def.maxPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } }))));
+          oninput: e => { def.maxPlayers = Math.max(2, parseInt(e.target.value, 10) || 2); } }))),
+    el('div', { class: 'field' }, el('label', null, 'Description'),
+      el('input', { type: 'text', value: def.description || '', placeholder: 'What is this game about?',
+        oninput: e => { def.description = e.target.value; } }))));
+
+  if (def.gameMode === 'poker') {
+    container.appendChild(el('div', { class: 'panel' },
+      el('h3', null, 'Poker rules'),
+      el('div', { class: 'form-row' },
+        el('div', { class: 'field' }, el('label', null, 'Starting chips'),
+          el('input', { type: 'number', min: 100, value: def.startingChips,
+            oninput: e => { def.startingChips = Math.max(100, parseInt(e.target.value, 10) || 1000); } })),
+        el('div', { class: 'field' }, el('label', null, 'Small blind'),
+          el('input', { type: 'number', min: 1, value: def.smallBlind,
+            oninput: e => { def.smallBlind = Math.max(1, parseInt(e.target.value, 10) || 10); } })),
+        el('div', { class: 'field' }, el('label', null, 'Big blind'),
+          el('input', { type: 'number', min: 2, value: def.bigBlind,
+            oninput: e => { def.bigBlind = Math.max(2, parseInt(e.target.value, 10) || 20); } })))));
+  }
+
+  if (def.gameMode === 'trash') {
+    container.appendChild(el('div', { class: 'panel' },
+      el('h3', null, 'Trash rules'),
+      el('div', { class: 'form-row' },
+        el('div', { class: 'field' }, el('label', null, 'Slot count'),
+          el('input', { type: 'number', min: 5, max: 13, value: def.slotCount,
+            oninput: e => { def.slotCount = Math.max(5, Math.min(13, parseInt(e.target.value, 10) || 10)); updateTrashTargets(); } })),
+        el('div', { class: 'field' }, el('label', null, 'Wild ranks (comma-separated)'),
+          el('input', { type: 'text', value: (def.wildRanks || []).join(','),
+            oninput: e => { def.wildRanks = e.target.value.split(',').map(s => s.trim()).filter(Boolean); } }))),
+      el('div', { class: 'hint' }, 'Slots target: ' + (def.targetRanks || []).join(' '))));
+  }
+
+  function updateTrashTargets() {
+    const targetRanks = STD_RANKS.slice(0, def.slotCount);
+    def.targetRanks = targetRanks;
+  }
+}
+
+function renderDeckTab(container) {
+  const def = editingGame;
 
   // Properties
   const propList = el('div', { class: 'prop-list' });
-  for (const p of def.properties) {
+  for (const p of def.properties || []) {
     propList.appendChild(el('span', { class: 'prop-chip' },
       el('span', { class: 'prop-type' }, p.type), p.name,
-      el('button', {
-        title: 'Remove', onclick: () => {
-          if (def.properties.length <= 1) { alert('Keep at least one property'); return; }
-          def.properties = def.properties.filter(x => x.name !== p.name);
-          def.matchProps = def.matchProps.filter(x => x !== p.name);
-          for (const c of def.cards) delete c.props[p.name];
-          render();
-        },
-      }, '×')));
+      el('button', { onclick: () => {
+        if ((def.properties || []).length <= 1) { alert('Keep at least one property'); return; }
+        def.properties = def.properties.filter(x => x.name !== p.name);
+        def.matchProps = (def.matchProps || []).filter(x => x !== p.name);
+        for (const c of def.cards) delete c.props[p.name];
+        render();
+      } }, '×')));
   }
-  const addPropBtn = el('button', { class: 'ghost tiny', onclick: () => {
-    showAddPropertyModal();
-  } }, '+ Add property');
-
-  const propPanel = el('div', { class: 'panel' },
-    el('h3', null, 'Properties', el('span', { class: 'hint', style: { flex: 'none', textTransform: 'none', letterSpacing: 0 } }, 'What makes each card unique?')),
+  container.appendChild(el('div', { class: 'panel' },
+    el('h3', null, 'Properties',
+      el('button', { class: 'ghost tiny', onclick: showAddPropertyModal }, '+ Add')),
     propList,
-    el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' } },
-      el('span', { class: 'hint' }, 'Cards can have a value for each property.'),
-      addPropBtn));
+    el('div', { class: 'hint' }, 'Properties are what cards share — color, rank, suit, etc.')));
 
   // Card grid
   const cardGrid = el('div', { class: 'card-grid' });
@@ -1770,198 +2173,140 @@ function renderDeckTab(container) {
     cardGrid.appendChild(item);
   }
   cardGrid.appendChild(el('div', {
-    class: 'card-grid__add',
-    onclick: () => addNewCard(),
-    title: 'Add card',
+    class: 'card-grid__add', onclick: addNewCard, title: 'Add card',
   }, '+'));
 
   const total = def.cards.reduce((n, c) => n + (c.count || 1), 0);
-  const cardsPanel = el('div', { class: 'panel' },
+  container.appendChild(el('div', { class: 'panel' },
     el('h3', null, 'Cards',
-      el('span', { class: 'hint', style: { flex: 'none', textTransform: 'none', letterSpacing: 0 } },
+      el('span', { class: 'hint', style: { textTransform: 'none', letterSpacing: 0 } },
         def.cards.length + ' types · ' + total + ' total')),
-    cardGrid,
-    el('div', { class: 'hint' }, 'Tap a card to edit it. The + adds a new card.'));
-
-  // Preset loader
-  const presetsPanel = el('div', { class: 'panel' },
-    el('h3', null, 'Load a preset'),
-    el('div', { class: 'preset-row' },
-      el('button', { class: 'ghost tiny', onclick: () => loadPreset('uno') }, 'UNO deck'),
-      el('button', { class: 'ghost tiny', onclick: () => loadPreset('standard52') }, 'Standard 52'),
-      el('button', { class: 'ghost tiny', onclick: () => loadPreset('numbers') }, 'Numbers 1–10'),
-      el('button', { class: 'ghost tiny', onclick: () => loadPreset('blank') }, 'Clear all')),
-    el('div', { class: 'hint' }, 'Replaces cards and properties. Rules are kept.'));
-
-  container.appendChild(basic);
-  container.appendChild(propPanel);
-  container.appendChild(cardsPanel);
-  container.appendChild(presetsPanel);
+    cardGrid));
 }
 
 function addNewCard() {
   const def = editingGame;
   const props = {};
-  for (const p of def.properties) {
+  for (const p of def.properties || []) {
     if (p.type === 'color') props[p.name] = 'red';
     else if (p.type === 'suit') props[p.name] = '♠';
     else if (p.type === 'number') props[p.name] = 1;
     else props[p.name] = '1';
   }
-  const card = {
-    id: newCardId(), name: 'New card', count: 1,
-    props, value: 0, isWild: false, effects: [],
-  };
+  const card = { id: newCardId(), name: 'New card', count: 1, props, value: 0, isWild: false, effects: [] };
   def.cards.push(card);
   openCardEditor(card);
 }
 
-function loadPreset(id) {
-  if (!confirm('Replace all current cards with this preset?')) return;
-  const preset = DECK_PRESETS[id]();
-  editingGame.properties = preset.properties.map(p => ({ ...p }));
-  editingGame.cards = preset.cards.map(c => ({
-    ...c, id: newCardId(),
-    props: { ...c.props },
-    effects: c.effects.map(e => ({ ...e })),
-  }));
-  editingGame.matchProps = preset.matchProps.filter(m => preset.properties.some(p => p.name === m));
-  render();
-}
-
 function showAddPropertyModal() {
-  let name = '';
-  let type = 'text';
+  let name = ''; let type = 'text';
   const nameInput = el('input', { type: 'text', placeholder: 'e.g. color',
     oninput: e => { name = e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''); } });
   const typeSelect = el('select', { onchange: e => { type = e.target.value; } });
-  for (const [v, l] of [
-    ['text', 'Text (free value)'],
-    ['color', 'Color (palette)'],
-    ['suit', 'Suit (♠♥♦♣)'],
-    ['number', 'Number'],
-  ]) {
+  for (const [v, l] of [['text', 'Text'], ['color', 'Color'], ['suit', 'Suit'], ['number', 'Number']]) {
     const o = document.createElement('option');
     o.value = v; o.textContent = l; typeSelect.appendChild(o);
   }
-
-  const okBtn = el('button', { class: 'primary', onclick: () => {
-    if (!name) { alert('Enter a name'); return; }
-    if (editingGame.properties.some(p => p.name === name)) {
-      alert('Property already exists'); return;
-    }
-    editingGame.properties.push({ name, type });
-    // Give each existing card a default for this prop
-    for (const c of editingGame.cards) {
-      if (!c.props) c.props = {};
-      if (c.props[name] == null) {
-        if (type === 'color') c.props[name] = 'red';
-        else if (type === 'suit') c.props[name] = '♠';
-        else if (type === 'number') c.props[name] = 1;
-        else c.props[name] = '?';
-      }
-    }
-    closeModal();
-    render();
-  } }, 'Add property');
-
   showModal(el('div', { class: 'modal' },
     el('h3', null, 'Add property'),
-    el('p', null, 'A property is something all cards share a value for — color, rank, suit, number, family, etc.'),
     el('div', { class: 'field' }, el('label', null, 'Name'), nameInput),
     el('div', { class: 'field' }, el('label', null, 'Type'), typeSelect),
     el('div', { class: 'modal__actions' },
       el('button', { class: 'ghost', onclick: closeModal }, 'Cancel'),
-      okBtn)));
+      el('button', { class: 'primary', onclick: () => {
+        if (!name) { alert('Enter a name'); return; }
+        if (editingGame.properties.some(p => p.name === name)) { alert('Already exists'); return; }
+        editingGame.properties.push({ name, type });
+        for (const c of editingGame.cards) {
+          if (!c.props) c.props = {};
+          if (c.props[name] == null) {
+            if (type === 'color') c.props[name] = 'red';
+            else if (type === 'suit') c.props[name] = '♠';
+            else if (type === 'number') c.props[name] = 1;
+            else c.props[name] = '?';
+          }
+        }
+        closeModal(); render();
+      } }, 'Add'))));
 }
 
 function openCardEditor(card) {
   const def = editingGame;
   const draft = JSON.parse(JSON.stringify(card));
 
-  const preview = el('div', { class: 'modal-card-preview' });
-  function refreshPreview() {
+  const preview = el('div', { style: { display: 'flex', justifyContent: 'center', padding: '0.5rem 0' } });
+  function refresh() {
     preview.innerHTML = '';
     preview.appendChild(renderCustomCard({ ...draft, kind: 'custom' }));
   }
-  refreshPreview();
+  refresh();
 
-  // Name, count
   const nameInput = el('input', { type: 'text', value: draft.name,
-    oninput: e => { draft.name = e.target.value; refreshPreview(); } });
+    oninput: e => { draft.name = e.target.value; refresh(); } });
   const countInput = el('input', { type: 'number', min: 1, value: draft.count,
     oninput: e => { draft.count = Math.max(1, parseInt(e.target.value, 10) || 1); } });
   const valueInput = el('input', { type: 'number', min: 0, value: draft.value || 0,
     oninput: e => { draft.value = Math.max(0, parseInt(e.target.value, 10) || 0); } });
   const wildCheck = el('input', { type: 'checkbox', checked: draft.isWild,
-    onchange: e => { draft.isWild = e.target.checked; refreshPreview(); } });
+    onchange: e => { draft.isWild = e.target.checked; refresh(); } });
 
-  // Properties section
   const propsSection = el('div', { class: 'effects-list' });
-  for (const p of def.properties) {
+  for (const p of def.properties || []) {
     let input;
-    const curVal = draft.props?.[p.name] ?? '';
+    const cur = draft.props?.[p.name] ?? '';
     if (p.type === 'color') {
-      input = el('select', { onchange: e => { draft.props[p.name] = e.target.value; refreshPreview(); } });
+      input = el('select', { onchange: e => { draft.props[p.name] = e.target.value; refresh(); } });
       for (const c of Object.keys(COLOR_HEX)) {
         const o = document.createElement('option');
         o.value = c; o.textContent = c; input.appendChild(o);
       }
-      const wildOpt = document.createElement('option');
-      wildOpt.value = 'wild'; wildOpt.textContent = 'wild';
-      input.appendChild(wildOpt);
-      input.value = curVal || 'red';
+      const w = document.createElement('option');
+      w.value = 'wild'; w.textContent = 'wild'; input.appendChild(w);
+      input.value = cur || 'red';
     } else if (p.type === 'suit') {
-      input = el('select', { onchange: e => { draft.props[p.name] = e.target.value; refreshPreview(); } });
+      input = el('select', { onchange: e => { draft.props[p.name] = e.target.value; refresh(); } });
       for (const s of SUITS) {
         const o = document.createElement('option');
         o.value = s; o.textContent = s; input.appendChild(o);
       }
-      input.value = curVal || '♠';
+      input.value = cur || '♠';
     } else if (p.type === 'number') {
-      input = el('input', { type: 'number', value: curVal || 0,
-        oninput: e => { draft.props[p.name] = parseInt(e.target.value, 10) || 0; refreshPreview(); } });
+      input = el('input', { type: 'number', value: cur || 0,
+        oninput: e => { draft.props[p.name] = parseInt(e.target.value, 10) || 0; refresh(); } });
     } else {
-      input = el('input', { type: 'text', value: curVal,
-        oninput: e => { draft.props[p.name] = e.target.value; refreshPreview(); } });
+      input = el('input', { type: 'text', value: cur,
+        oninput: e => { draft.props[p.name] = e.target.value; refresh(); } });
     }
     propsSection.appendChild(el('div', { class: 'effect-item' },
-      el('span', { class: 'eff-label' }, p.name, ' ', el('small', null, '(' + p.type + ')')),
+      el('span', { class: 'eff-label' }, p.name, ' ', el('small', null, p.type)),
       input));
   }
 
-  // Effects section
   const effectsSection = el('div', { class: 'effects-list' });
   function renderEffects() {
     effectsSection.innerHTML = '';
     draft.effects.forEach((eff, idx) => {
-      let paramInput = null;
-      let label = effectLabel(eff);
+      let param = null;
       if (['drawAndSkip','drawSelf','discardSelf','score'].includes(eff.type)) {
-        paramInput = el('input', { type: 'number', min: 1, value: eff.n || 1,
-          oninput: e => { eff.n = Math.max(1, parseInt(e.target.value, 10) || 1); renderEffects(); } });
+        param = el('input', { type: 'number', min: 1, value: eff.n || 1,
+          oninput: e => { eff.n = Math.max(1, parseInt(e.target.value, 10) || 1); } });
       } else if (eff.type === 'chooseProp') {
-        paramInput = el('select', { onchange: e => { eff.prop = e.target.value; renderEffects(); } });
+        param = el('select', { onchange: e => { eff.prop = e.target.value; } });
         for (const p of def.properties) {
           const o = document.createElement('option');
-          o.value = p.name; o.textContent = p.name; paramInput.appendChild(o);
+          o.value = p.name; o.textContent = p.name; param.appendChild(o);
         }
-        paramInput.value = eff.prop || def.properties[0]?.name;
+        param.value = eff.prop || def.properties[0]?.name;
       }
       effectsSection.appendChild(el('div', { class: 'effect-item' },
-        el('span', { class: 'eff-label' }, label),
-        paramInput,
+        el('span', { class: 'eff-label' }, effectLabel(eff)),
+        param,
         el('button', { onclick: () => { draft.effects.splice(idx, 1); renderEffects(); } }, '×')));
     });
-    if (draft.effects.length === 0) {
-      effectsSection.appendChild(el('div', { class: 'hint' }, 'No effects yet — a card that just plays normally.'));
-    }
+    if (draft.effects.length === 0)
+      effectsSection.appendChild(el('div', { class: 'hint' }, 'No effects — normal play.'));
   }
   renderEffects();
-
-  const addEffectBtn = el('button', { class: 'ghost tiny', onclick: () => {
-    showEffectPicker(eff => { draft.effects.push(eff); renderEffects(); });
-  } }, '+ Add effect');
 
   const modal = el('div', { class: 'modal modal--wide modal--scroll' },
     el('h3', null, 'Edit card'),
@@ -1971,13 +2316,18 @@ function openCardEditor(card) {
       el('div', { class: 'field' }, el('label', null, 'Copies'), countInput),
       el('div', { class: 'field' }, el('label', null, 'Value'), valueInput)),
     el('div', { class: 'check-row' },
-      el('label', null, wildCheck, 'Wild — playable anytime')),
-    def.properties.length > 0 ? el('div', null,
+      el('label', null, wildCheck, 'Wild (playable anytime)')),
+    def.properties?.length > 0 ? el('div', null,
       el('h3', { style: { fontSize: '0.72rem', marginBottom: '0.5rem' } }, 'Properties'),
       propsSection) : null,
     el('div', null,
-      el('h3', { style: { fontSize: '0.72rem', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted)' } },
-        'Effects when played', addEffectBtn),
+      el('h3', { style: { fontSize: '0.72rem', marginBottom: '0.5rem',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted)' } },
+        'Effects when played',
+        el('button', { class: 'ghost tiny', onclick: () => showEffectPicker(eff => {
+          draft.effects.push(eff); renderEffects();
+        }) }, '+ Add')),
       effectsSection),
     el('div', { class: 'modal__actions', style: { marginTop: '0.5rem' } },
       el('button', { class: 'danger', onclick: () => {
@@ -1994,98 +2344,65 @@ function openCardEditor(card) {
 }
 
 function effectLabel(eff) {
-  const map = {
+  return ({
     skip: 'Skip next player',
     reverse: 'Reverse direction',
-    drawAndSkip: 'Next draws & skips',
-    drawSelf: 'Draw cards',
-    discardSelf: 'Discard cards',
-    chooseProp: 'Choose property value',
-    score: 'Gain points',
-  };
-  return map[eff.type] || eff.type;
+    drawAndSkip: 'Next draws N & skips',
+    drawSelf: 'You draw N',
+    discardSelf: 'You discard N',
+    chooseProp: 'Choose property',
+    score: 'Gain N points',
+  })[eff.type] || eff.type;
 }
 
 function showEffectPicker(onPick) {
   const options = [
-    { type: 'skip', label: 'Skip next player', desc: 'Next player loses their turn' },
-    { type: 'reverse', label: 'Reverse direction', desc: 'Flip play direction (2p = skip)' },
-    { type: 'drawAndSkip', label: 'Next draws & skips', desc: 'Next player draws N and is skipped', n: 2 },
-    { type: 'drawSelf', label: 'Draw cards', desc: 'You draw N cards', n: 1 },
-    { type: 'discardSelf', label: 'Discard cards', desc: 'You discard N cards', n: 1 },
-    { type: 'chooseProp', label: 'Choose property value', desc: 'Player picks next color/rank/etc.' },
-    { type: 'score', label: 'Gain points', desc: 'You score N points', n: 1 },
+    { type: 'skip', label: 'Skip next player' },
+    { type: 'reverse', label: 'Reverse direction' },
+    { type: 'drawAndSkip', label: 'Next draws N & skips', n: 2 },
+    { type: 'drawSelf', label: 'You draw N', n: 1 },
+    { type: 'discardSelf', label: 'You discard N', n: 1 },
+    { type: 'chooseProp', label: 'Choose property (wild)' },
+    { type: 'score', label: 'Gain N points', n: 1 },
   ];
-
   const list = el('div', { class: 'effects-list' });
   for (const opt of options) {
-    list.appendChild(el('div', {
-      class: 'effect-item',
-      style: { cursor: 'pointer' },
-      onclick: () => {
-        const eff = { type: opt.type };
-        if (opt.n != null) eff.n = opt.n;
-        if (opt.type === 'chooseProp') eff.prop = editingGame.properties[0]?.name;
-        closeModal();
-        onPick(eff);
-      },
-    },
-      el('div', { class: 'eff-label' }, opt.label,
-        el('small', { style: { display: 'block', marginTop: '0.15rem' } }, opt.desc)),
-      el('span', { style: { color: 'var(--accent)', fontSize: '1.1rem' } }, '›')));
+    list.appendChild(el('div', { class: 'effect-item', style: { cursor: 'pointer' }, onclick: () => {
+      const eff = { type: opt.type };
+      if (opt.n != null) eff.n = opt.n;
+      if (opt.type === 'chooseProp') eff.prop = editingGame.properties[0]?.name;
+      closeModal(); onPick(eff);
+    } },
+      el('div', { class: 'eff-label' }, opt.label),
+      el('span', { style: { color: 'var(--accent)' } }, '›')));
   }
-
   showModal(el('div', { class: 'modal modal--wide' },
     el('h3', null, 'Add effect'),
-    el('p', null, 'What happens when this card is played?'),
     list,
     el('div', { class: 'modal__actions' },
       el('button', { class: 'ghost', onclick: closeModal }, 'Cancel'))));
 }
 
-// --- Rules tab ---
-
 function renderRulesTab(container) {
   const def = editingGame;
 
-  // Game mode
-  const modeSelect = el('select', { onchange: e => { def.gameMode = e.target.value; render(); } });
-  for (const [v, l] of [
-    ['shed', 'Shed — play matching cards to empty hand (UNO, Crazy Eights)'],
-    ['ask', 'Ask — ask others for cards (Go Fish)'],
-  ]) {
-    const o = document.createElement('option');
-    o.value = v; o.textContent = l; modeSelect.appendChild(o);
-  }
-  modeSelect.value = def.gameMode;
-
-  const modePanel = el('div', { class: 'panel' },
-    el('h3', null, 'How do you play?'),
-    el('div', { class: 'field' }, modeSelect));
-
-  container.appendChild(modePanel);
-
   if (def.gameMode === 'shed') {
-    // Matching
     const matchSection = el('div', { class: 'check-row' });
-    for (const p of def.properties) {
+    for (const p of def.properties || []) {
       matchSection.appendChild(el('label', null,
-        el('input', {
-          type: 'checkbox', checked: def.matchProps.includes(p.name),
+        el('input', { type: 'checkbox', checked: def.matchProps.includes(p.name),
           onchange: e => {
             def.matchProps = e.target.checked
               ? [...new Set([...def.matchProps, p.name])]
               : def.matchProps.filter(x => x !== p.name);
-          },
-        }),
+          } }),
         'Match by ' + p.name));
     }
-
     const turnSelect = el('select', { onchange: e => { def.turnMode = e.target.value; } });
     for (const [v, l] of [
-      ['drawIfStuck', 'Draw only when you cannot play'],
-      ['drawFirst', 'Always draw one card first'],
-      ['playOnly', 'No drawing (play-only game)'],
+      ['drawIfStuck', 'Draw when you cannot play'],
+      ['drawFirst', 'Always draw first'],
+      ['playOnly', 'No drawing'],
     ]) {
       const o = document.createElement('option');
       o.value = v; o.textContent = l; turnSelect.appendChild(o);
@@ -2094,174 +2411,111 @@ function renderRulesTab(container) {
 
     container.appendChild(el('div', { class: 'panel' },
       el('h3', null, 'Matching'),
-      el('p', { class: 'hint' }, 'A card is playable if it shares ANY selected property with the top card of the discard pile. Wild cards bypass this.'),
       matchSection,
       el('div', { class: 'divider' }),
-      el('h3', null, 'Turn structure'),
-      el('div', { class: 'field' }, turnSelect)));
-
-    container.appendChild(el('div', { class: 'panel' },
       el('h3', null, 'Setup'),
       el('div', { class: 'form-row' },
-        el('div', { class: 'field' }, el('label', null, 'Cards dealt'),
+        el('div', { class: 'field' }, el('label', null, 'Deal'),
           el('input', { type: 'number', min: 1, value: def.deal,
             oninput: e => { def.deal = Math.max(1, parseInt(e.target.value, 10) || 1); } })),
-        el('div', { class: 'field', style: { justifyContent: 'flex-end' } },
-          el('label', null, 'Starting card'),
-          el('label', { style: { display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', textTransform: 'none', letterSpacing: 0, color: 'var(--text-dim)', fontWeight: 500, padding: '0.5rem 0' } },
-            el('input', { type: 'checkbox', checked: def.flipStart,
-              onchange: e => { def.flipStart = e.target.checked; } }),
-            'Flip one to start')))));
-  } else if (def.gameMode === 'ask') {
-    const propOptions = el('select', { onchange: e => { def.setProp = e.target.value; } });
-    for (const p of def.properties) {
+        el('div', { class: 'field' }, el('label', null, 'Turn mode'), turnSelect)),
+      el('label', { style: { display: 'flex', alignItems: 'center', gap: '0.5rem',
+        fontSize: '0.85rem', color: 'var(--text-dim)' } },
+        el('input', { type: 'checkbox', checked: def.flipStart,
+          onchange: e => { def.flipStart = e.target.checked; } }),
+        'Flip starting card')));
+  }
+
+  if (def.gameMode === 'ask') {
+    const propOptions = el('select', { onchange: e => { def.askProp = e.target.value; } });
+    for (const p of def.properties || []) {
       const o = document.createElement('option');
       o.value = p.name; o.textContent = p.name; propOptions.appendChild(o);
     }
-    propOptions.value = def.setProp || def.properties[0]?.name;
+    propOptions.value = def.askProp || def.properties?.[0]?.name;
 
     container.appendChild(el('div', { class: 'panel' },
-      el('h3', null, 'Go Fish rules'),
-      el('p', { class: 'hint' }, 'Players ask others for a card by one property value. If the target has it, they hand all copies over — you go again. Otherwise you draw one and check if it matches what you asked.'),
+      el('h3', null, 'Ask rules'),
       el('div', { class: 'form-row' },
         el('div', { class: 'field' }, el('label', null, 'Ask for'), propOptions),
-        el('div', { class: 'field' }, el('label', null, 'Cards dealt'),
+        el('div', { class: 'field' }, el('label', null, 'Cards per set'),
+          el('input', { type: 'number', min: 2, max: 6, value: def.setSize,
+            oninput: e => { def.setSize = Math.max(2, parseInt(e.target.value, 10) || 4); } })),
+        el('div', { class: 'field' }, el('label', null, 'Deal'),
           el('input', { type: 'number', min: 1, value: def.deal,
-            oninput: e => { def.deal = Math.max(1, parseInt(e.target.value, 10) || 1); } }))),
-      el('p', { class: 'hint' }, 'Win condition is set to "Most sets" on the Winning tab.')));
+            oninput: e => { def.deal = Math.max(1, parseInt(e.target.value, 10) || 5); } })))));
   }
 }
-
-// --- Win tab ---
-
-function renderWinTab(container) {
-  const def = editingGame;
-
-  const winSelect = el('select', { onchange: e => { def.winCondition = e.target.value; render(); } });
-  for (const [v, l] of [
-    ['emptyHand', 'First to empty their hand'],
-    ['mostSets', 'Most sets collected (points)'],
-  ]) {
-    const o = document.createElement('option');
-    o.value = v; o.textContent = l; winSelect.appendChild(o);
-  }
-  winSelect.value = def.winCondition;
-
-  const panel = el('div', { class: 'panel' },
-    el('h3', null, 'Win condition'),
-    el('div', { class: 'field' }, winSelect));
-
-  if (def.winCondition === 'mostSets') {
-    const propOptions = el('select', { onchange: e => { def.setProp = e.target.value; } });
-    for (const p of def.properties) {
-      const o = document.createElement('option');
-      o.value = p.name; o.textContent = p.name; propOptions.appendChild(o);
-    }
-    propOptions.value = def.setProp || def.properties[0]?.name;
-
-    panel.appendChild(el('div', { class: 'form-row' },
-      el('div', { class: 'field' }, el('label', null, 'Set is grouped by'), propOptions),
-      el('div', { class: 'field' }, el('label', null, 'Cards per set'),
-        el('input', { type: 'number', min: 2, max: 8, value: def.setSize,
-          oninput: e => { def.setSize = Math.max(2, parseInt(e.target.value, 10) || 4); } }))));
-    panel.appendChild(el('p', { class: 'hint' },
-      'Each card contributes its "Value" to your score when the set completes. Highest total wins.'));
-  }
-
-  container.appendChild(panel);
-}
-
-// --- Test tab ---
 
 function renderTestTab(container) {
   const def = editingGame;
-  const total = def.cards.reduce((n, c) => n + (c.count || 1), 0);
-
-  // Preview
-  const preview = el('div', { class: 'preview-deck' });
-  const sample = def.cards.slice(0, 15);
-  for (const c of sample) preview.appendChild(renderCustomCard({ ...c, kind: 'custom' }));
+  const family = FAMILIES[def.gameMode];
 
   container.appendChild(el('div', { class: 'panel' },
     el('h3', null, 'Summary'),
-    el('div', { class: 'stat' },
-      `${def.cards.length} card types · ${total} total cards · `
-      + `deal ${def.deal} each to ${def.minPlayers}–${def.maxPlayers} players`),
-    el('div', { class: 'stat' },
-      'Mode: ' + (def.gameMode === 'ask' ? 'Ask' : 'Shed') + ' · '
-      + 'Win: ' + (def.winCondition === 'emptyHand' ? 'Empty hand' : 'Most sets')),
-    preview));
+    el('div', { class: 'stat' }, family.name + ' · ' + def.minPlayers + '–' + def.maxPlayers + ' players'),
+    el('div', { class: 'stat' }, def.description || '(no description)')));
 
-  container.appendChild(el('div', { class: 'editor-footer' },
-    el('button', { class: 'primary', onclick: testCustomGame }, 'Save & play test'),
-    el('button', { class: 'ghost', onclick: saveEditor }, 'Save & back to menu')));
+  container.appendChild(el('div', { style: { display: 'flex', gap: '0.5rem', flexWrap: 'wrap' } },
+    el('button', { class: 'primary', style: { flex: 1, minWidth: '8rem' }, onclick: testGame }, 'Save & test'),
+    el('button', { class: 'ghost', style: { flex: 1, minWidth: '8rem' }, onclick: saveEditor }, 'Save')));
 
-  container.appendChild(el('h3', {
-    style: { margin: '0.5rem 0 0', fontSize: '0.72rem', color: 'var(--muted)',
-      textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '700' },
-  }, 'JSON definition'));
-  container.appendChild(el('pre', { class: 'json-view' },
-    JSON.stringify({
-      name: def.name, gameMode: def.gameMode,
-      minPlayers: def.minPlayers, maxPlayers: def.maxPlayers,
-      deal: def.deal, flipStart: def.flipStart,
-      matchProps: def.matchProps, turnMode: def.turnMode,
-      winCondition: def.winCondition, setProp: def.setProp, setSize: def.setSize,
-      properties: def.properties, cards: def.cards,
-    }, null, 2)));
+  container.appendChild(el('h3', { style: { margin: '0.5rem 0 0', fontSize: '0.72rem',
+    color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 } },
+    'JSON definition'));
+  const cfg = { ...def };
+  delete cfg.defs;
+  container.appendChild(el('pre', { class: 'json-view' }, JSON.stringify(cfg, null, 2)));
 }
 
 function validateEditor() {
   const def = editingGame;
-  if (!def.name || !def.name.trim()) { alert('Give your game a name'); return false; }
-  if (def.cards.length === 0) { alert('Add at least one card'); return false; }
-  if (def.gameMode === 'shed' && def.matchProps.length === 0) {
-    alert('Pick at least one match property on the Rules tab'); return false;
+  if (!def.name?.trim()) { alert('Give your game a name'); return false; }
+  if (def.maxPlayers < def.minPlayers) { alert('Max < min players'); return false; }
+  if (def.gameMode === 'shed' || def.gameMode === 'ask') {
+    if (!def.cards || def.cards.length === 0) { alert('Add cards'); return false; }
+    const total = def.cards.reduce((n, c) => n + (c.count || 1), 0);
+    if (total < def.deal * def.minPlayers) {
+      alert('Not enough cards: need ' + (def.deal * def.minPlayers));
+      return false;
+    }
   }
-  if (def.maxPlayers < def.minPlayers) {
-    alert('Max players cannot be less than min'); return false;
-  }
-  const total = def.cards.reduce((n, c) => n + (c.count || 1), 0);
-  if (total < def.deal * def.minPlayers) {
-    alert(`Not enough cards: dealing ${def.deal} to ${def.minPlayers} players needs at least ${def.deal * def.minPlayers}`);
-    return false;
-  }
-  if (!def.description) def.description = 'Custom game: ' + def.name;
+  if (!def.description) def.description = FAMILIES[def.gameMode].name + ' custom';
   return true;
 }
 
 function saveEditor() {
   if (!validateEditor()) return;
-  registerCustomGame(editingGame);
-  persistCustomGames();
+  GAMES[editingGame.id] = makeGameFromConfig(editingGame);
+  persistGames();
   MENU.scriptId = editingGame.id;
   SCREEN = 'menu';
   render();
 }
 
-function testCustomGame() {
+function testGame() {
   if (!validateEditor()) return;
-  registerCustomGame(editingGame);
-  persistCustomGames();
+  GAMES[editingGame.id] = makeGameFromConfig(editingGame);
+  persistGames();
   const names = MENU.namesInput.split(',').map(s => s.trim()).filter(Boolean);
   while (names.length < editingGame.minPlayers) names.push('Player ' + (names.length + 1));
   while (names.length > editingGame.maxPlayers) names.pop();
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
-  G = createCustomState(CUSTOM_GAMES[editingGame.id], names);
-  VIEWER = 0; SCREEN = 'pass'; undoStack = [];
+  G = GAMES[editingGame.id].create(names);
+  VIEWER = 0; SCREEN = 'pass'; undoStack = []; _pendingAskValue = null; _raiseAmount = null;
   render();
 }
 
 // ============================================================
-// Modal helpers
+// Modals
 // ============================================================
 
 function showModal(content) {
   const overlay = el('div', { class: 'overlay', onclick: e => {
     if (e.target === overlay) closeModal();
   } }, content);
-  document.body.appendChild(overlay);
   overlay.id = 'modal-overlay';
+  document.body.appendChild(overlay);
 }
 function closeModal() {
   const o = document.getElementById('modal-overlay');
@@ -2275,13 +2529,11 @@ function closeModal() {
 function renderPass(root) {
   const player = G.players[VIEWER];
   const initial = (player.name[0] || '?').toUpperCase();
-  const onContinue = () => { SCREEN = 'game'; render(); };
-  const content = el('div', { class: 'pass', onclick: onContinue },
+  root.appendChild(el('div', { class: 'pass', onclick: () => { SCREEN = 'game'; render(); } },
     el('div', { class: 'pass__label' }, 'Pass to'),
     el('div', { class: 'pass__avatar' }, initial),
     el('h2', null, player.name),
-    el('p', { class: 'pass__hint' }, 'Tap anywhere when ready'));
-  root.appendChild(content);
+    el('p', { class: 'pass__hint' }, 'Tap anywhere when ready')));
   if (undoStack.length > 0) {
     root.appendChild(el('button', { class: 'pass__undo',
       onclick: e => { e.stopPropagation(); undo(); } }, 'Undo last move'));
@@ -2289,202 +2541,379 @@ function renderPass(root) {
 }
 
 // ============================================================
-// Game screen
+// Game screen (family-aware)
 // ============================================================
 
 function renderGame(root) {
   const game = GAMES[G.scriptId];
-  const isMyTurn = !G.ended && G.current === VIEWER;
-  const actions = isMyTurn ? game.legal(G, VIEWER) : [];
-  const hasPendingChoice = G.phase === 'chooseProp' || G.phase === 'chooseColor';
+  const family = game.family;
 
   const header = el('div', { class: 'game__header' },
     el('span', { class: 'game__header-title' }, game.name),
     el('span', { class: 'game__header-info' },
-      'Turn ', el('strong', null, String(G.turn)),
-      '·', el('strong', null, G.players[G.current].name)),
-    el('div', { class: 'controls' },
+      'Turn ', el('strong', null, String(G.turn || G.handNumber || 1)),
+      '·', el('strong', null, G.players[G.current]?.name || '')),
+    el('div', { style: { display: 'flex', gap: '0.35rem' } },
       undoStack.length > 0 ? el('button', { class: 'ghost game__header-btn', onclick: undo }, 'Undo') : null));
 
+  const opponents = renderOpponents(game, family);
+  const felt = family === 'poker' ? renderPokerFelt(game) :
+               family === 'trash' ? renderTrashFelt(game) :
+               renderGenericFelt(game);
+  const actions = renderActions(game, family);
+  const log = el('div', { class: 'log' });
+  for (const line of G.log.slice(-5)) log.appendChild(el('div', null, line));
+
+  const handArea = family === 'trash' ? renderTrashSlots(game) :
+                   family === 'poker' ? renderPokerHand(game) :
+                   renderGenericHand(game);
+
+  root.appendChild(el('div', { class: 'game' },
+    header, opponents, felt, actions, log, handArea));
+
+  if (G.ended) root.appendChild(renderGameOver());
+}
+
+function renderOpponents(game, family) {
   const opponents = el('div', { class: 'opponents' });
   for (const p of G.players) {
     if (p.id === VIEWER) continue;
-    const hand = G.zones['hand:' + p.id];
-    const sets = G.zones['sets:' + p.id];
-    const score = G.flags.scores?.[p.id];
-    const item = el('div', { class: 'opponent' + (G.current === p.id && !G.ended ? ' current' : '') },
-      el('strong', null, p.name),
-      el('span', { class: 'meta' }, hand.cards.length + ' card' + (hand.cards.length === 1 ? '' : 's')));
-    if (sets) item.appendChild(el('span', { class: 'meta' }, 'Sets: ' + Math.floor(sets.cards.length / (game._def?.setSize || 4))));
-    if (score != null) item.appendChild(el('span', { class: 'meta' }, score + ' pts'));
+    const item = el('div', { class: 'opponent' + (G.current === p.id && !G.ended ? ' current' : '') });
+
+    if (family === 'poker') {
+      const ps = G.playerState[p.id];
+      if (ps.folded) item.classList.add('folded');
+      item.appendChild(el('strong', null, p.name));
+      item.appendChild(el('span', { class: 'meta' }, 'Chips: ' + ps.chips));
+      item.appendChild(el('span', { class: 'meta' },
+        ps.folded ? 'Folded' : ps.allIn ? 'All-in' : 'Bet: ' + ps.bet));
+      item.appendChild(el('span', { class: 'meta', style: { display: 'flex', gap: '0.2rem', marginTop: '0.2rem' } },
+        ...G.hands[p.id]?.map(c => {
+          const card = renderCardEl(c);
+          card.classList.add('card--small');
+          return card;
+        }) || []));
+    } else if (family === 'trash') {
+      const slots = G.slots[p.id] || [];
+      const revealed = slots.filter(c => c && c.faceUp).length;
+      item.appendChild(el('strong', null, p.name));
+      item.appendChild(el('span', { class: 'meta' }, revealed + '/' + slots.length + ' revealed'));
+    } else {
+      const hand = G.zones['hand:' + p.id];
+      const sets = G.zones['sets:' + p.id];
+      item.appendChild(el('strong', null, p.name));
+      item.appendChild(el('span', { class: 'meta' }, (hand?.cards.length || 0) + ' cards'));
+      if (sets) item.appendChild(el('span', { class: 'meta' },
+        'Sets: ' + Math.floor((sets.cards.length || 0) / (game.config.setSize || 4))));
+    }
     opponents.appendChild(item);
   }
+  return opponents;
+}
 
+function renderGenericFelt(game) {
   const felt = el('div', { class: 'felt' });
+  const row = el('div', { class: 'row' });
 
   // Deck
   const deckPile = el('div', { class: 'pile' });
   deckPile.appendChild(el('span', { class: 'pile__label' }, 'Deck'));
-  const deck = el('div', { class: 'deck' });
   const deckCount = G.zones.draw.cards.length;
+  const deck = el('div', { class: 'deck' });
   const showCount = Math.min(3, Math.max(1, Math.ceil(deckCount / 15)));
   for (let i = 0; i < showCount; i++) deck.appendChild(el('div', { class: 'card card--back' }));
   if (deckCount > 0) deck.appendChild(el('span', { class: 'deck__count' }, String(deckCount)));
   else deck.appendChild(el('div', { class: 'pile__empty' }, '0'));
   deckPile.appendChild(deck);
-  felt.appendChild(deckPile);
+  row.appendChild(deckPile);
 
   // Discard
-  const discard = G.zones.discard;
   const discardPile = el('div', { class: 'pile' });
   discardPile.appendChild(el('span', { class: 'pile__label' }, 'Discard'));
-  if (discard && discard.cards.length > 0) discardPile.appendChild(renderCardEl(topOf(discard)));
+  if (G.zones.discard && G.zones.discard.cards.length > 0)
+    discardPile.appendChild(renderCardEl(topOf(G.zones.discard)));
   else discardPile.appendChild(el('div', { class: 'pile__empty' }, 'empty'));
-  felt.appendChild(discardPile);
+  row.appendChild(discardPile);
 
-  // Active color/suit
-  if (game._def && game._def.matchProps?.[0]) {
-    const propName = game._def.matchProps[0];
-    const activeVal = G.flags.activeProps?.[propName] || G.flags.activeColor;
-    if (activeVal) {
-      let bg = COLOR_HEX[activeVal] || '#6b7280';
-      let fg = LIGHT_COLORS.has(activeVal) ? '#1a1a1a' : 'white';
-      if (activeVal === '♥' || activeVal === '♦') bg = '#cf2430';
-      else if (activeVal === '♠' || activeVal === '♣') bg = '#1c1c20';
-      const badgePile = el('div', { class: 'pile' });
-      badgePile.appendChild(el('span', { class: 'pile__label' }, 'Active'));
-      badgePile.appendChild(el('span', { class: 'color-badge', style: { background: bg, color: fg } }, String(activeVal)));
-      felt.appendChild(badgePile);
-    }
-  } else if (G.flags.activeColor) {
-    // UNO/Crazy Eights
-    let bg = COLOR_HEX[G.flags.activeColor] || '#6b7280';
-    let fg = LIGHT_COLORS.has(G.flags.activeColor) ? '#1a1a1a' : 'white';
-    if (G.flags.activeColor === '♥' || G.flags.activeColor === '♦') bg = '#cf2430';
-    else if (G.flags.activeColor === '♠' || G.flags.activeColor === '♣') bg = '#1c1c20';
-    const badgePile = el('div', { class: 'pile' });
-    badgePile.appendChild(el('span', { class: 'pile__label' }, 'Active'));
-    badgePile.appendChild(el('span', { class: 'color-badge', style: { background: bg, color: fg } }, String(G.flags.activeColor)));
-    felt.appendChild(badgePile);
+  // Active color
+  const activeProps = G.flags.activeProps || {};
+  const activeColor = G.flags.activeColor || activeProps.color || activeProps.suit;
+  if (activeColor) {
+    let bg = COLOR_HEX[activeColor] || '#6b7280';
+    let fg = LIGHT_COLORS.has(activeColor) ? '#1a1a1a' : 'white';
+    if (activeColor === '♥' || activeColor === '♦') bg = '#cf2430';
+    else if (activeColor === '♠' || activeColor === '♣') bg = '#1c1c20';
+    const p = el('div', { class: 'pile' });
+    p.appendChild(el('span', { class: 'pile__label' }, 'Active'));
+    p.appendChild(el('span', { class: 'color-badge', style: { background: bg, color: fg } }, String(activeColor)));
+    row.appendChild(p);
   }
 
-  // My sets/score
-  if (G.zones['sets:' + VIEWER]) {
-    const sets = G.zones['sets:' + VIEWER].cards.length;
-    const size = game._def?.setSize || 4;
-    const score = G.flags.scores?.[VIEWER] || 0;
-    const pile = el('div', { class: 'pile' });
-    pile.appendChild(el('span', { class: 'pile__label' }, 'Your sets'));
-    pile.appendChild(el('span', { class: 'color-badge',
-      style: { background: 'var(--surface-glow)', color: 'var(--text)' } },
-      Math.floor(sets / size) + ' · ' + score + ' pts'));
-    felt.appendChild(pile);
-  } else if (G.flags.scores && game._def) {
-    const score = G.flags.scores[VIEWER] || 0;
-    const pile = el('div', { class: 'pile' });
-    pile.appendChild(el('span', { class: 'pile__label' }, 'Score'));
-    pile.appendChild(el('span', { class: 'color-badge',
-      style: { background: 'var(--surface-glow)', color: 'var(--text)' } },
-      score + ' pts'));
-    felt.appendChild(pile);
+  felt.appendChild(row);
+  return felt;
+}
+
+function renderPokerFelt(game) {
+  const felt = el('div', { class: 'felt' });
+
+  // Pot
+  const potDisplay = el('div', { class: 'pot-display' },
+    el('span', { class: 'pot-display__label' }, 'Pot'),
+    el('span', { class: 'pot-display__amount' }, String(G.pot || 0)));
+  felt.appendChild(potDisplay);
+
+  // Community cards
+  const communityRow = el('div', { style: { display: 'flex', gap: '0.35rem', justifyContent: 'center' } });
+  for (let i = 0; i < 5; i++) {
+    const card = G.community[i];
+    if (card) communityRow.appendChild(renderCardEl(card));
+    else communityRow.appendChild(el('div', { class: 'pile__empty' }));
   }
+  felt.appendChild(communityRow);
 
-  // Actions bar
-  const actionsEl = el('div', { class: 'actions-bar' });
-  if (hasPendingChoice && isMyTurn) {
-    actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Choose:'));
-    for (const a of actions) {
-      if (a.cmd.type === 'CHOOSE_PROP' || a.cmd.type === 'CHOOSE_COLOR') {
-        const v = a.cmd.value || a.cmd.color;
-        const btn = el('button', { class: 'chip', onclick: () => takeAction(a.cmd) });
-        const hex = COLOR_HEX[v];
-        if (hex) { btn.style.background = hex; btn.style.color = LIGHT_COLORS.has(v) ? '#111' : 'white'; }
-        else if (v === '♠' || v === '♣') { btn.style.background = '#1c1c20'; btn.style.color = 'white'; }
-        else if (v === '♥' || v === '♦') { btn.style.background = '#cf2430'; btn.style.color = 'white'; }
-        btn.textContent = v;
-        actionsEl.appendChild(btn);
-      }
-    }
-  } else if (isMyTurn) {
-    if (game.uiMode === 'ask') renderAskActions(actionsEl, actions);
-    else renderPlayActions(actionsEl, actions, game);
-  } else if (G.ended) {
-    actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Game over'));
-  } else {
-    actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Waiting for ' + G.players[G.current].name));
-  }
+  // Phase + current bet
+  const info = el('div', { style: { display: 'flex', gap: '0.6rem', alignItems: 'center' } },
+    el('span', { class: 'color-badge', style: { background: 'var(--surface-glow)' } }, G.phase),
+    G.currentBet > 0 ? el('span', { class: 'color-badge',
+      style: { background: 'var(--gold)', color: '#111' } }, 'Bet: ' + G.currentBet) : null);
+  felt.appendChild(info);
 
-  const logEl = el('div', { class: 'log' });
-  for (const line of G.log.slice(-5)) logEl.appendChild(el('div', null, line));
+  return felt;
+}
 
-  // Hand
-  const hand = G.zones['hand:' + VIEWER];
-  const playableIds = new Set();
-  if (isMyTurn) for (const a of actions)
-    if (a.cmd.type === 'PLAY_CARD') playableIds.add(a.cmd.cardId);
-  const sortedHand = hand ? sortHand(hand.cards, game.defs) : [];
+function renderPokerHand(game) {
+  const hand = G.hands[VIEWER] || [];
+  const wrap = el('div', { class: 'hand-wrap' });
   const handEl = el('div', { class: 'hand' });
-  for (const c of sortedHand) {
-    const cardEl = renderCardEl(c);
-    if (playableIds.has(c.id)) {
-      cardEl.classList.add('card--playable');
-      cardEl.addEventListener('click', () => {
-        const action = actions.find(a => a.cmd.type === 'PLAY_CARD' && a.cmd.cardId === c.id);
-        if (action) takeAction(action.cmd);
-      });
-    } else if (isMyTurn && G.flags.drewThisTurn && c.id !== G.flags.drawnCardId) {
-      cardEl.classList.add('card--dimmed');
-    }
-    handEl.appendChild(cardEl);
+  for (const c of hand) handEl.appendChild(renderCardEl(c));
+
+  // Show current hand rank
+  if (hand.length + G.community.length >= 5) {
+    const h = bestHand([...hand, ...G.community]);
+    wrap.appendChild(el('div', { class: 'stat', style: { textAlign: 'center', paddingBottom: '0.35rem' } },
+      'Your best: ' + h.name));
+  }
+  wrap.appendChild(handEl);
+  return wrap;
+}
+
+function renderTrashFelt(game) {
+  const felt = el('div', { class: 'felt' });
+  const row = el('div', { class: 'row' });
+
+  const deckPile = el('div', { class: 'pile' });
+  deckPile.appendChild(el('span', { class: 'pile__label' }, 'Deck'));
+  const deckCount = G.zones.draw.cards.length;
+  const deck = el('div', { class: 'deck' });
+  for (let i = 0; i < Math.min(3, Math.max(1, Math.ceil(deckCount / 15))); i++)
+    deck.appendChild(el('div', { class: 'card card--back' }));
+  if (deckCount > 0) deck.appendChild(el('span', { class: 'deck__count' }, String(deckCount)));
+  deckPile.appendChild(deck);
+  row.appendChild(deckPile);
+
+  const discardPile = el('div', { class: 'pile' });
+  discardPile.appendChild(el('span', { class: 'pile__label' }, 'Discard'));
+  if (G.zones.discard.cards.length > 0) discardPile.appendChild(renderCardEl(topOf(G.zones.discard)));
+  else discardPile.appendChild(el('div', { class: 'pile__empty' }, 'empty'));
+  row.appendChild(discardPile);
+
+  if (G.drawnCard) {
+    const drawnPile = el('div', { class: 'pile' });
+    drawnPile.appendChild(el('span', { class: 'pile__label' }, 'Drawn'));
+    drawnPile.appendChild(renderCardEl(G.drawnCard));
+    row.appendChild(drawnPile);
   }
 
-  root.appendChild(el('div', { class: 'game' },
-    header, opponents, felt, actionsEl, logEl, el('div', { class: 'hand-wrap' }, handEl)));
-
-  if (G.ended) root.appendChild(renderGameOver());
+  felt.appendChild(row);
+  return felt;
 }
 
-function renderPlayActions(container, actions, game) {
-  const drawAction = actions.find(a => a.cmd.type === 'DRAW');
-  const passAction = actions.find(a => a.cmd.type === 'PASS');
-  const playActions = actions.filter(a => a.cmd.type === 'PLAY_CARD');
-  if (playActions.length > 0)
-    container.appendChild(el('span', { class: 'actions-bar__label' }, 'Tap a card to play'));
-  if (drawAction) container.appendChild(el('button', {
-    class: 'primary', onclick: () => takeAction(drawAction.cmd),
-  }, 'Draw a card'));
-  if (passAction) container.appendChild(el('button', {
-    class: 'ghost', onclick: () => takeAction(passAction.cmd),
-  }, 'Pass'));
-  if (!drawAction && !passAction && playActions.length === 0)
-    container.appendChild(el('span', { class: 'actions-bar__label' }, 'No moves available'));
+function renderTrashSlots(game) {
+  const wrap = el('div', { class: 'hand-wrap' });
+  const slots = G.slots[VIEWER] || [];
+  const targetRanks = game.config.targetRanks || [];
+  const isPlacing = G.current === VIEWER && G.phase === 'place' && G.drawnCard;
+  const grid = el('div', { class: 'slot-grid' });
+
+  for (let i = 0; i < slots.length; i++) {
+    const c = slots[i];
+    const target = targetRanks[i];
+    const slotEl = el('div', { class: 'slot' });
+    slotEl.appendChild(el('span', { class: 'slot__target' }, target));
+    const cardEl = c ? renderCardEl(c) : el('div', { class: 'pile__empty' });
+    if (isPlacing) {
+      cardEl.style.cursor = 'pointer';
+      cardEl.classList.add('card--playable');
+      cardEl.addEventListener('click', () => takeAction({ type: 'PLACE_SLOT', slot: i }));
+    }
+    slotEl.appendChild(cardEl);
+    grid.appendChild(slotEl);
+  }
+
+  wrap.appendChild(grid);
+  return wrap;
 }
 
-let _pendingAskValue = null;
-function renderAskActions(container, actions) {
+function renderGenericHand(game) {
+  const hand = G.zones['hand:' + VIEWER];
+  const handEl = el('div', { class: 'hand' });
+  if (hand) {
+    const sorted = [...hand.cards].sort((a, b) => {
+      const da = game.defs[a.defId], db = game.defs[b.defId];
+      if (!da || !db) return 0;
+      const ca = COLOR_ORDER[da.props?.color] ?? 99;
+      const cb = COLOR_ORDER[db.props?.color] ?? 99;
+      if (ca !== cb) return ca - cb;
+      const sa = SUIT_ORDER[da.props?.suit] ?? 99;
+      const sb = SUIT_ORDER[db.props?.suit] ?? 99;
+      if (sa !== sb) return sa - sb;
+      return String(da.props?.rank ?? '').localeCompare(String(db.props?.rank ?? ''));
+    });
+    for (const c of sorted) handEl.appendChild(renderCardEl(c));
+  }
+  return el('div', { class: 'hand-wrap' }, handEl);
+}
+
+function renderActions(game, family) {
+  const actionsEl = el('div', { class: 'actions-bar' });
+  const isMyTurn = !G.ended && G.current === VIEWER;
+
+  if (!isMyTurn) {
+    if (G.ended) actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Game over'));
+    else actionsEl.appendChild(el('span', { class: 'actions-bar__label' }, 'Waiting for ' + G.players[G.current].name));
+    return actionsEl;
+  }
+
+  if (family === 'poker') return renderPokerActions(game, actionsEl);
+  if (family === 'trash') return renderTrashActions(game, actionsEl);
+  if (family === 'ask') return renderAskActions(game, actionsEl);
+  return renderShedActions(game, actionsEl);
+}
+
+function renderShedActions(game, container) {
+  const actions = game.legal(G, VIEWER);
+  if (G.phase === 'chooseProp') {
+    container.appendChild(el('span', { class: 'actions-bar__label' }, 'Choose:'));
+    for (const a of actions) {
+      const btn = el('button', { class: 'chip', onclick: () => takeAction(a.cmd) });
+      const hex = COLOR_HEX[a.value];
+      if (hex) { btn.style.background = hex; btn.style.color = LIGHT_COLORS.has(a.value) ? '#111' : 'white'; }
+      else if (a.value === '♠' || a.value === '♣') { btn.style.background = '#1c1c20'; btn.style.color = 'white'; }
+      else if (a.value === '♥' || a.value === '♦') { btn.style.background = '#cf2430'; btn.style.color = 'white'; }
+      btn.textContent = a.value;
+      container.appendChild(btn);
+    }
+    return container;
+  }
+  const draw = actions.find(a => a.cmd.type === 'DRAW');
+  const pass = actions.find(a => a.cmd.type === 'PASS');
+  const plays = actions.filter(a => a.cmd.type === 'PLAY_CARD');
+  if (plays.length > 0) container.appendChild(el('span', { class: 'actions-bar__label' }, 'Tap a card'));
+  if (draw) container.appendChild(el('button', { class: 'primary', onclick: () => takeAction(draw.cmd) }, 'Draw'));
+  if (pass) container.appendChild(el('button', { class: 'ghost', onclick: () => takeAction(pass.cmd) }, 'Pass'));
+
+  // Wire hand click
+  const hand = G.zones['hand:' + VIEWER];
+  const handEl = document.querySelectorAll('.hand .card');
+  plays.forEach(a => {
+    const card = hand?.cards.find(c => c.id === a.cmd.cardId);
+    if (!card) return;
+    const idx = [...(hand?.cards || [])].sort((x, y) => {
+      const da = game.defs[x.defId], db = game.defs[y.defId];
+      const ca = COLOR_ORDER[da?.props?.color] ?? 99, cb = COLOR_ORDER[db?.props?.color] ?? 99;
+      return ca - cb;
+    }).findIndex(c => c.id === a.cmd.cardId);
+    if (handEl[idx]) {
+      handEl[idx].classList.add('card--playable');
+      handEl[idx].addEventListener('click', () => takeAction(a.cmd));
+    }
+  });
+  return container;
+}
+
+function renderAskActions(game, container) {
+  const actions = game.legal(G, VIEWER);
   const values = [...new Set(actions.filter(a => a.cmd.type === 'ASK').map(a => a.value))];
   if (_pendingAskValue === null) {
     if (values.length === 0) {
       container.appendChild(el('button', { class: 'primary',
         onclick: () => takeAction({ type: 'DRAW' }) }, 'Draw a card'));
-      return;
+      return container;
     }
     container.appendChild(el('span', { class: 'actions-bar__label' }, 'Ask for:'));
     for (const v of values) {
       container.appendChild(el('button', { class: 'chip',
         onclick: () => { _pendingAskValue = v; render(); } }, String(v)));
     }
-    return;
+    return container;
   }
-  container.appendChild(el('span', { class: 'actions-bar__label' }, `Ask for ${_pendingAskValue} from:`));
+  container.appendChild(el('span', { class: 'actions-bar__label' }, `Ask for ${_pendingAskValue}:`));
   for (const a of actions) {
     if (a.cmd.type !== 'ASK' || a.value !== _pendingAskValue) continue;
     container.appendChild(el('button', { class: 'chip',
       onclick: () => { const cmd = a.cmd; _pendingAskValue = null; takeAction(cmd); } },
       G.players[a.target].name));
   }
-  container.appendChild(el('button', { class: 'ghost',
+  container.appendChild(el('button', { class: 'ghost tiny',
     onclick: () => { _pendingAskValue = null; render(); } }, 'Cancel'));
+  return container;
+}
+
+function renderTrashActions(game, container) {
+  const actions = game.legal(G, VIEWER);
+  if (G.phase === 'draw') {
+    container.appendChild(el('span', { class: 'actions-bar__label' }, 'Draw:'));
+    for (const a of actions) {
+      if (a.cmd.type === 'DRAW_DECK')
+        container.appendChild(el('button', { class: 'primary', onclick: () => takeAction(a.cmd) }, 'Draw from deck'));
+      if (a.cmd.type === 'TAKE_DISCARD')
+        container.appendChild(el('button', { class: 'ghost', onclick: () => takeAction(a.cmd) }, 'Take from discard'));
+    }
+  } else if (G.phase === 'place') {
+    container.appendChild(el('span', { class: 'actions-bar__label' }, 'Tap a slot to place'));
+    container.appendChild(el('button', { class: 'ghost tiny', onclick: () => takeAction({ type: 'DISCARD_DRAWN' }) }, 'Discard'));
+  }
+  return container;
+}
+
+function renderPokerActions(game, container) {
+  const actions = game.legal(G, VIEWER);
+  const ps = G.playerState[VIEWER];
+  const fold = actions.find(a => a.cmd.type === 'FOLD');
+  const check = actions.find(a => a.cmd.type === 'CHECK');
+  const call = actions.find(a => a.cmd.type === 'CALL');
+  const raise = actions.find(a => a.cmd.type === 'RAISE');
+  const allin = actions.find(a => a.cmd.type === 'ALL_IN');
+
+  if (fold) container.appendChild(el('button', { class: 'danger', onclick: () => takeAction(fold.cmd) }, 'Fold'));
+  if (check) container.appendChild(el('button', { class: 'primary', onclick: () => takeAction(check.cmd) }, 'Check'));
+  if (call) container.appendChild(el('button', { class: 'primary', onclick: () => takeAction(call.cmd) }, 'Call ' + call.amount));
+
+  if (raise) {
+    const min = raise.min, max = raise.max;
+    if (_raiseAmount == null) _raiseAmount = min;
+    _raiseAmount = Math.max(min, Math.min(max, _raiseAmount));
+    const slider = el('input', {
+      type: 'range', min: min, max: max, value: _raiseAmount,
+      oninput: e => { _raiseAmount = parseInt(e.target.value, 10); render(); },
+    });
+    container.appendChild(el('div', { class: 'bet-slider' },
+      el('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--muted)' } },
+        el('span', null, 'Raise to ' + _raiseAmount),
+        el('span', null, min + '–' + max)),
+      slider,
+      el('div', { style: { display: 'flex', gap: '0.35rem', flexWrap: 'wrap' } },
+        el('button', { class: 'primary', onclick: () => {
+          takeAction({ type: 'RAISE', amount: _raiseAmount });
+          _raiseAmount = null;
+        } }, 'Raise to ' + _raiseAmount),
+        el('button', { class: 'ghost tiny', onclick: () => { _raiseAmount = Math.min(ps.bet + ps.chips, min); render(); } }, 'Min'),
+        el('button', { class: 'ghost tiny', onclick: () => { _raiseAmount = Math.floor((G.pot + G.currentBet) / 2); render(); } }, 'Half pot'),
+        el('button', { class: 'ghost tiny', onclick: () => { _raiseAmount = max; render(); } }, 'Max'))));
+  } else if (allin) {
+    container.appendChild(el('button', { class: 'danger', onclick: () => takeAction(allin.cmd) }, 'All-in ' + allin.amount));
+  }
+  return container;
 }
 
 function renderGameOver() {
@@ -2508,19 +2937,20 @@ function startGame() {
   if (names.length > game.maxPlayers) { alert('At most ' + game.maxPlayers + ' players'); return; }
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = game.create(names);
-  VIEWER = 0; SCREEN = 'pass'; undoStack = []; _pendingAskValue = null;
+  VIEWER = 0; SCREEN = 'pass'; undoStack = []; _pendingAskValue = null; _raiseAmount = null;
   render();
 }
 
 function takeAction(cmd) {
   const game = GAMES[G.scriptId];
-  const prev = { state: structuredClone(G), viewer: VIEWER };
+  const prev = { state: clone(G), viewer: VIEWER };
   const prevCurrent = G.current;
   let next;
   try { next = game.apply(G, cmd); }
   catch (e) { alert(e.message); return; }
   undoStack.push(prev);
   G = next;
+  _raiseAmount = null;
   if (G.ended) SCREEN = 'game';
   else if (G.current !== prevCurrent && G.phase !== 'chooseProp') {
     VIEWER = G.current; SCREEN = 'pass';
@@ -2532,7 +2962,7 @@ function undo() {
   if (undoStack.length === 0) return;
   const entry = undoStack.pop();
   G = entry.state; VIEWER = entry.viewer;
-  SCREEN = 'game';
+  SCREEN = 'game'; _pendingAskValue = null; _raiseAmount = null;
   render();
 }
 
@@ -2541,7 +2971,7 @@ function playAgain() {
   const game = GAMES[G.scriptId];
   seedRng((Date.now() ^ 0x9e3779b9) >>> 0);
   G = game.create(names);
-  VIEWER = 0; SCREEN = 'pass'; undoStack = []; _pendingAskValue = null;
+  VIEWER = 0; SCREEN = 'pass'; undoStack = []; _pendingAskValue = null; _raiseAmount = null;
   render();
 }
 
